@@ -9,4 +9,27 @@
 .main {
     width: 2560px;
     height: 1440px;
+    background-image: url("static/mappool\ showcase.png")
 }
+
+/* Logo */
+.logo {
+    position: absolute;
+    top: 21px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+/* Showcase Text */
+.logo-text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Zain";
+    font-size: 29px;
+    color: white;
+}
+.showcase-text {
+    top: 107px;
+    font-weight: 800;
+}
+.round-text { top: 132px; }
