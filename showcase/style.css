@@ -33,3 +33,76 @@
     font-weight: 800;
 }
 .round-text { top: 132px; }
+
+/* Left Section */
+.left-section {
+    position: absolute;
+    top: 180px;
+    left: 0;
+    width: 320px;
+    height: 1080px;
+}
+/* Left Section Background */
+.left-section-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.51;
+}
+/* #left-section-sea-background { background-color: #e05d5c; } */
+#left-section-leng-background { background-color: #5c9ae0; display: none;}
+#left-section-date-background { background-color: #52bf57; display: none;}
+/* Left Section Map Wrapper */
+.left-section-map-wrapper {
+    position: absolute;
+    top: 52px;
+    left: 18px;
+    display: flex;
+    flex-direction: column;
+}
+/* Left Section Map */
+.left-section-map {
+    margin-bottom: 17px;
+}
+/* Left Section Mod */
+.left-section-map-active > .left-section-map-mod {
+    opacity: 1;
+}
+.left-section-map-mod {
+    font-size: 31px;
+    color: white;
+    font-weight: 800;
+    font-family: "Zain";
+    opacity: 0.35;
+}
+/* Map Background */
+.left-section-map-active > .left-section-map-container {
+    opacity: 1;
+}
+.left-section-map-active > .left-section-map-container-sea { box-shadow: 0 0 35px #f28c8c; }
+.left-section-map-active > .left-section-map-container-leng { box-shadow: 0 0 35px #5ff783 ; }
+.left-section-map-active > .left-section-map-container-date { box-shadow: 0 0 35px #95abff; }
+.left-section-map-container {
+    position: relative;
+    top: -6px;
+    left: 18px;
+    opacity: 0.34;
+    width: 250px;
+    height: 90px;
+    background-image: url("https://assets.ppy.sh/beatmaps/2287722/covers/cover.jpg");
+    background-size: cover;
+    background-position: center;
+}
+/* .left-section-map-container-sea { background-color: #8d2d2d; } */
+.left-section-map-container-leng { background-color: #1b5f33; }
+.left-section-map-container-date { background-color: #2d418d; }
+/* Map Mod Image */
+.left-section-map-mod-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+}
