@@ -1,0 +1,12 @@
+/* Background Video / Logo (Stream idle will be deleted later) */
+.background-video, .main {
+    position: absolute;
+    top: 0;
+    left: 0;   
+}
+
+/* Main */
+.main {
+    width: 2560px;
+    height: 1440px;
+}
