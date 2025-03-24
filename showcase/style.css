@@ -16,7 +16,6 @@
 .main {
     width: 2560px;
     height: 1440px;
-    background-image: url("static/mappool\ showcase.png")
 }
 
 /* Logo */
@@ -134,7 +133,7 @@
     height: 100%;
     opacity: 0.51;
     transition: 500ms ease-in-out;
-    /* background-color: var(--background-sea); */
+    background-color: var(--background-sea);
 }
 /* Right Section First Row */
 .first-row {
@@ -212,3 +211,43 @@
     font-weight: 600;
 }
 .now-playing-replayer-name { color: white; }
+
+/* Bottom Section */
+.bottom-section {
+    position: absolute;
+    top: 1335px;
+    left: 50%;
+    transform: translateX(-50%); 
+    display: flex;
+    align-items: center;
+}
+.bottom-section-time-text {
+    opacity: 0.361;
+    font-size: 16px;
+    color: white;
+    font-weight: 500;
+    font-family: "Inter Tight";
+}
+.bottom-section-progress {
+    position: relative;
+    width: 367px;
+    height: 3px;
+    margin: 0 8px;
+}
+.bottom-section-progress-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.259;
+    width: 367px;
+    height: 3px;
+    background-color: white;
+}
+.bottom-section-progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 127px;
+    height: 3px;
+    background-color: #358aff;
+}
