@@ -23,3 +23,10 @@ function getCookie(cname) {
     }
     return "";
 }
+
+function displayTimeMs(element, time) {
+    const totalSeconds = Math.round(time / 1000)
+    const minutes = Math.floor(totalSeconds / 60)
+    const seconds = totalSeconds % 60
+    element.innerText = `${minutes}:${seconds.toString().padStart(2, '0')}`
+}

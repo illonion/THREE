@@ -1,13 +1,3 @@
-// 4881165
-// 4472446
-// 4638483
-// 3940190
-// 4068366
-// 4503510   
-// 1560572
-// 4788639
-// 3453706
-
 // Now Playing Details
 const nowPlayingArtistEl = document.getElementById("now-playing-artist")
 const nowPlayingSongNameEl = document.getElementById("now-playing-song-name")
@@ -36,11 +26,4 @@ socket.onmessage = event => {
     displayTimeMs(nowPlayingCurrentTimeEl, data.menu.bm.time.current)
     nowPlayingTimeProgressEl.style.width = `${data.menu.bm.time.current / data.menu.bm.time.mp3 * 367}px`
     displayTimeMs(nowPlayingEndTimeEl, data.menu.bm.time.mp3)
-}
-
-function displayTimeMs(element, time) {
-    const totalSeconds = Math.round(time / 1000)
-    const minutes = Math.floor(totalSeconds / 60)
-    const seconds = totalSeconds % 60
-    element.innerText = `${minutes}:${seconds.toString().padStart(2, '0')}`
 }

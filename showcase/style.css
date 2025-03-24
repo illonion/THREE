@@ -187,10 +187,10 @@
     flex-wrap: wrap;
 }
 .now-playing-stats-1 {
-    width: 123px;
+    width: 158px;
     margin-bottom: 92px;
 }
-.now-playing-stats-2 { width: 87px; }
+.now-playing-stats-2 { width: 122px; }
 .now-playing-stats-header {
     color: var(--right-section-gray);
     margin-bottom: 10px;
@@ -199,7 +199,7 @@
 .now-playing-stats-2 > .now-playing-stats-header {  width: 37px; }
 .now-playing-stats-body { 
     color: white;
-    width: 50px;
+    width: 85px;
 }
 /* Now Playing Replayer */
 .now-playing-replayer {
