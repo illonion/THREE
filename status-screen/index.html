@@ -22,20 +22,21 @@
 
     <!-- -->
     <div class="main">
-        <div class="now-playing-text now-playing-left-side now-playing-artist">supercell</div>
-        <div class="now-playing-text now-playing-left-side now-playing-song-name">Hakushu Kassai Uttawase</div>
+        <div class="now-playing-text now-playing-left-side now-playing-artist" id="now-playing-artist">supercell</div>
+        <div class="now-playing-text now-playing-left-side now-playing-song-name" id="now-playing-song-name">Hakushu Kassai Uttawase</div>
         <div class="now-playing-timer now-playing-left-side">
-            <div class="now-playing-text now-playing-time-text now-playing-start-time">0:49</div>
+            <div class="now-playing-text now-playing-time-text now-playing-current-time" id="now-playing-current-time">0:49</div>
             <div class="now-playing-time-progress-bar">
                 <div class="now-playing-time-progress-background"></div>
-                <div class="now-playing-time-progress"></div>
+                <div class="now-playing-time-progress" id="now-playing-time-progress"></div>
             </div>
-            <div class="now-playing-text now-playing-time-text now-playing-end-time">1:30</div>
+            <div class="now-playing-text now-playing-time-text now-playing-end-time" id="now-playing-end-time">1:30</div>
         </div>
-        <div class="now-playing-map-background"></div>
+        <div class="now-playing-map-background" id="now-playing-map-background"></div>
     </div>
 
     <script src="../_shared/deps/reconnecting-websocket.min.js"></script>
+    <script src="../_shared/utils.js"></script>
     <script src="index.js"></script>
 </body>
 </html>
