@@ -33,5 +33,14 @@ socket.onmessage = event => {
     }
 
     // Constantly changing time
-    // nowPlayingCurrentTimeEl.innerText = 
+    displayTimeMs(nowPlayingCurrentTimeEl, data.menu.bm.time.current)
+    nowPlayingTimeProgressEl.style.width = `${data.menu.bm.time.current / data.menu.bm.time.mp3 * 367}px`
+    displayTimeMs(nowPlayingEndTimeEl, data.menu.bm.time.mp3)
+}
+
+function displayTimeMs(element, time) {
+    const totalSeconds = Math.round(time / 1000)
+    const minutes = Math.floor(totalSeconds / 60)
+    const seconds = totalSeconds % 60
+    element.innerText = `${minutes}:${seconds.toString().padStart(2, '0')}`
 }
