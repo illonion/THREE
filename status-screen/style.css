@@ -1,0 +1,67 @@
+/* Background Video / Logo (Stream idle will be deleted later) */
+.background-video, .logo, .main {
+    position: absolute;
+    top: 0;
+    left: 0;   
+}
+
+/* Main */
+.main {
+    width: 2560px;
+    height: 1440px;
+}
+
+/* Now Playing Section */
+/* Now Playing Text */
+.now-playing-text {
+    color: white;
+    font-weight: 500;
+    font-family: "Inter Tight";
+    font-size: 22px;
+    opacity: 0.5;
+}
+/* Now Playing Left Side */
+.now-playing-left-side {
+    position: absolute;
+    right: 154px;
+}
+.now-playing-artist { bottom: 86px; }
+.now-playing-song-name { bottom: 48px; }
+.now-playing-timer { bottom: 14px; }
+/* Now Playing Timer */
+.now-playing-timer {
+    position: absolute;
+    display: flex;
+    align-items: center;
+}
+.now-playing-time-text { font-size: 16px; }
+.now-playing-start-time { margin-right: 8px; }
+.now-playing-end-time { margin-left: 8px; }
+.now-playing-time-progress-bar {
+    position: relative;
+    width: 367px;
+    height: 3px;
+}
+.now-playing-time-progress-bar > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
+}
+.now-playing-time-progress-background {
+    opacity: 0.259;
+    background-color: white;
+}
+.now-playing-time-progress { 
+    background-color: #358aff;
+}
+/* Now Playing Map Background */
+.now-playing-map-background {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    width: 123px;
+    height: 123px;
+    border: 1px solid black;
+}

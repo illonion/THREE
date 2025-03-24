@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Screen</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <!-- Background Video -->
+    <video class="background-video" autoplay loop muted>
+        <source src="../_shared/assets/bg.mp4">
+    </video>
+
+    <!-- Three Logo Top Right Corner -->
+    <img class="logo" src="static/three-logo-top-right-corner.png">
+
+    <!-- -->
+    <div class="main">
+        <div class="now-playing-text now-playing-left-side now-playing-artist">supercell</div>
+        <div class="now-playing-text now-playing-left-side now-playing-song-name">Hakushu Kassai Uttawase</div>
+        <div class="now-playing-timer now-playing-left-side">
+            <div class="now-playing-text now-playing-time-text now-playing-start-time">0:49</div>
+            <div class="now-playing-time-progress-bar">
+                <div class="now-playing-time-progress-background"></div>
+                <div class="now-playing-time-progress"></div>
+            </div>
+            <div class="now-playing-text now-playing-time-text now-playing-end-time">1:30</div>
+        </div>
+        <div class="now-playing-map-background"></div>
+    </div>
+
+    <script src="../_shared/deps/reconnecting-websocket.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
