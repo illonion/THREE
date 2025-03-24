@@ -1,3 +1,10 @@
+:root {
+    --background-sea: #e05d5c;
+    --background-leng: #5c9ae0;
+    --background-date: #52bf57;
+    --right-section-gray: #9F9F9F;
+}
+
 /* Background Video / Logo (Stream idle will be deleted later) */
 .background-video, .main {
     position: absolute;
@@ -41,6 +48,8 @@
     left: 0;
     width: 320px;
     height: 1080px;
+    transition: 500ms ease-in-out;
+    opacity: 1;
 }
 /* Left Section Background */
 .left-section-background {
@@ -50,10 +59,11 @@
     width: 100%;
     height: 100%;
     opacity: 0.51;
+    transition: 500ms ease-in-out;
 }
-/* #left-section-sea-background { background-color: #e05d5c; } */
-#left-section-leng-background { background-color: #5c9ae0; display: none;}
-#left-section-date-background { background-color: #52bf57; display: none;}
+#left-section-sea-background { background-color: var(--background-sea); }
+#left-section-leng-background { background-color: var(--background-leng); opacity: 0; }
+#left-section-date-background { background-color: var(--background-date); opacity: 0; }
 /* Left Section Map Wrapper */
 .left-section-map-wrapper {
     position: absolute;
@@ -106,3 +116,99 @@
     transform: translate(-50%, -50%);
     width: 80px;
 }
+
+/* Right Section */
+.right-section {
+    position: absolute;
+    top: 180px;
+    right: 0;
+    width: 320px;
+    height: 1080px;
+    font-family: "Inter Tight"
+}
+.right-section-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.51;
+    transition: 500ms ease-in-out;
+    /* background-color: var(--background-sea); */
+}
+/* Right Section First Row */
+.first-row {
+    position: absolute; 
+    top: 15px;
+    left: 8px;
+    display: flex;
+    align-items: center;
+}
+.right-section-mod-icon {
+    width: 110px;
+}
+.right-section-mod-text {
+    margin-left: -7px;
+    font-size: 24px;
+    color: white;
+    font-weight: 900;
+}
+/* Now Playing Container */
+.right-section-container {
+    position: absolute;
+    top: 132px;
+    left: 29px;
+    display: flex;
+    flex-direction: column;
+}
+/* Now Playing Metadata */
+.now-playing-metadata {
+    font-size: 19px;
+    color: white;
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+.now-playing-difficulty { 
+    color: var(--right-section-gray);
+    height: 56px;
+}
+.now-playing-mapper { 
+    color: var(--right-section-gray);
+    font-weight: 600;
+    height: 108px;
+}
+.now-playing-mapper-name { color: white; }
+
+/* Now Playing Stats 1 */
+.now-playing-stats {
+    display: flex;
+    font-size: 19px;
+    font-weight: 600;
+    display: flex;
+    flex-wrap: wrap;
+}
+.now-playing-stats-1 {
+    width: 123px;
+    margin-bottom: 92px;
+}
+.now-playing-stats-2 { width: 87px; }
+.now-playing-stats-header {
+    color: var(--right-section-gray);
+    margin-bottom: 10px;
+}
+.now-playing-stats-1 > .now-playing-stats-header {  width: 72px; }
+.now-playing-stats-2 > .now-playing-stats-header {  width: 37px; }
+.now-playing-stats-body { 
+    color: white;
+    width: 50px;
+}
+/* Now Playing Replayer */
+.now-playing-replayer {
+    position: absolute;
+    bottom: 68px;
+    left: 29px;
+    font-size: 19px;
+    color: #9f9f9f;
+    font-weight: 600;
+}
+.now-playing-replayer-name { color: white; }
