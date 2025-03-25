@@ -1,0 +1,17 @@
+{
+    "SEA": [
+        { "beatmapset_id": 2287722, "beatmap_id": 4881165, "mod": "NM" },
+        { "beatmapset_id": 2115947, "beatmap_id": 4472446, "mod": "NM" },
+        { "beatmapset_id": 2183079, "beatmap_id": 4638483, "mod": "HR" }
+    ],
+    "LENG": [
+        { "beatmapset_id": 3940190, "beatmap_id": 3940190, "mod": "HD" },
+        { "beatmapset_id": 1962932, "beatmap_id": 4068366, "mod": "HR" },
+        { "beatmapset_id": 2139817, "beatmap_id": 4503510, "mod": "DT" }
+    ],
+    "DATE": [
+        { "beatmapset_id": 739646, "beatmap_id": 1560572, "mod": "NM" },
+        { "beatmapset_id": 2251125, "beatmap_id": 4788639, "mod": "HD" },
+        { "beatmapset_id": 1688877, "beatmap_id": 3453706, "mod": "DT" }
+    ]
+}

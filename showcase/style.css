@@ -1,7 +1,7 @@
 :root {
     --background-sea: #e05d5c;
-    --background-leng: #5c9ae0;
-    --background-date: #52bf57;
+    --background-leng: #52bf57;
+    --background-date: #5c9ae0;
     --right-section-gray: #9F9F9F;
 }
 
@@ -50,6 +50,8 @@
     transition: 500ms ease-in-out;
     opacity: 1;
 }
+#left-section-leng { opacity: 0; }
+#left-section-date { opacity: 0; }
 /* Left Section Background */
 .left-section-background {
     position: absolute;
@@ -61,8 +63,8 @@
     transition: 500ms ease-in-out;
 }
 #left-section-sea-background { background-color: var(--background-sea); }
-#left-section-leng-background { background-color: var(--background-leng); opacity: 0; }
-#left-section-date-background { background-color: var(--background-date); opacity: 0; }
+#left-section-leng-background { background-color: var(--background-leng); }
+#left-section-date-background { background-color: var(--background-date); }
 /* Left Section Map Wrapper */
 .left-section-map-wrapper {
     position: absolute;
@@ -85,6 +87,7 @@
     font-weight: 800;
     font-family: "Zain";
     opacity: 0.35;
+    transition: 500ms ease-in-out;
 }
 /* Map Background */
 .left-section-map-active > .left-section-map-container {
@@ -103,8 +106,9 @@
     background-image: url("https://assets.ppy.sh/beatmaps/2287722/covers/cover.jpg");
     background-size: cover;
     background-position: center;
+    transition: 500ms ease-in-out;
 }
-/* .left-section-map-container-sea { background-color: #8d2d2d; } */
+.left-section-map-container-sea { background-color: #8d2d2d; }
 .left-section-map-container-leng { background-color: #1b5f33; }
 .left-section-map-container-date { background-color: #2d418d; }
 /* Map Mod Image */
@@ -114,6 +118,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 80px;
+    transition: 500ms ease-in-out;
 }
 
 /* Right Section */
@@ -250,4 +255,10 @@
     width: 127px;
     height: 3px;
     background-color: #358aff;
+}
+
+/* Preload Image */
+#preload-image {
+    position: absolute;
+    display: none;
 }

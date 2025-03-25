@@ -25,40 +25,23 @@
         <!-- Left Sections -->
         <div class="left-section" id="left-section-sea">
             <div class="left-section-background" id="left-section-sea-background"></div>
-            <div class="left-section-map-wrapper">
-                <div class="left-section-map left-section-map-active">
-                    <div class="left-section-map-mod">NM</div>
-                    <div class="left-section-map-container left-section-map-container-sea">
-                        <img class="left-section-map-mod-image" src="../_shared/assets/mod-icons/SEA1.png">
-                    </div>
-                </div>
-                <div class="left-section-map">
-                    <div class="left-section-map-mod">NM</div>
-                    <div class="left-section-map-container left-section-map-container-sea">
-                        <img class="left-section-map-mod-image" src="../_shared/assets/mod-icons/SEA2.png">
-                    </div>
-                </div>
-                <div class="left-section-map">
-                    <div class="left-section-map-mod">HR</div>
-                    <div class="left-section-map-container left-section-map-container-sea">
-                        <img class="left-section-map-mod-image" src="../_shared/assets/mod-icons/SEA2.png">
-                    </div>
-                </div>
-            </div>
+            <div class="left-section-map-wrapper"></div>
         </div>
         <div class="left-section" id="left-section-leng">
             <div class="left-section-background" id="left-section-leng-background"></div>
+            <div class="left-section-map-wrapper"></div>
         </div>
         <div class="left-section" id="left-section-date">
             <div class="left-section-background" id="left-section-date-background"></div>
+            <div class="left-section-map-wrapper"></div>
         </div>
 
         <!-- Right Sections -->
         <div class="right-section">
-            <div class="right-section-background"></div>
+            <div class="right-section-background" id="right-section-background"></div>
             <div class="first-row">
-                <img class="right-section-mod-icon" src="../_shared/assets/mod-icons/SEA1.png">
-                <div class="right-section-mod-text">- NM</div>
+                <img class="right-section-mod-icon" id="right-section-mod-icon" src="../_shared/assets/mod-icons/SEA1.png">
+                <div class="right-section-mod-text" id="right-section-mod-text">- NM</div>
             </div>
             <div class="right-section-container">
                 <div class="now-playing-metadata now-playing-artist" id="now-playing-artist">supercell</div>
@@ -99,6 +82,8 @@
             <div class="bottom-section-time-text bottom-section-end-time" id="bottom-section-end-time">3:23</div>
         </div>
     </div>
+
+    <img id="preload-image">
 
     <script src="../_shared/deps/reconnecting-websocket.min.js"></script>
     <script src="../_shared/utils.js"></script>

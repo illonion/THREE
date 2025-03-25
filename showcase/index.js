@@ -1,3 +1,57 @@
+// Load showcase beatmaps in
+const preloadImageEl = document.getElementById("preload-image")
+let allBeatamps
+async function loadBeatmaps() {
+    const response = await fetch("../_data/showcase-beatmaps.json")
+    const responseJson = await response.json()
+    allBeatamps = responseJson
+
+    for (const key in allBeatamps) {
+        // Get section element
+        const sectionElementEl = document.getElementById(`left-section-${key.toLowerCase()}`).children[1]
+
+        const beatmaps = allBeatamps[key];
+        for (let i = 0; i < beatmaps.length; i++) {
+            // Create element
+            const leftSectionMap = document.createElement("div")
+            leftSectionMap.classList.add("left-section-map")
+            leftSectionMap.setAttribute("id", beatmaps[i].beatmap_id)
+
+            const leftSectionMapMod = document.createElement("div")
+            leftSectionMapMod.classList.add("left-section-map-mod")
+            leftSectionMapMod.innerText = beatmaps[i].mod
+
+            const leftSectionMapContainer = document.createElement("div")
+            leftSectionMapContainer.classList.add("left-section-map-container", `left-section-map-container-${key.toLowerCase()}`)
+            leftSectionMapContainer.style.backgroundImage = "url('')"
+
+            const leftSectionMapModImage = document.createElement("img")
+            leftSectionMapModImage.classList.add("left-section-map-mod-image")
+            leftSectionMapModImage.setAttribute("src", `../_shared/assets/mod-icons/${key}${i + 1}.png`)
+
+            leftSectionMapContainer.append(leftSectionMapModImage)
+            leftSectionMap.append(leftSectionMapMod, leftSectionMapContainer)
+            sectionElementEl.append(leftSectionMap)
+
+            // Preload image
+            preloadImageEl.setAttribute("src", `https://assets.ppy.sh/beatmaps/${beatmaps[i].beatmapset_id}/covers/cover.jpg`)
+        }
+    }
+}
+loadBeatmaps()
+
+// Get category by beatmap id
+function getObjectByBeatmapId(id) {
+    for (const category in allBeatamps) {
+        const index = allBeatamps[category].findIndex(obj => obj.beatmap_id === id)
+        if (index !== -1) {
+            const obj = allBeatamps[category][index]
+            return { ...obj, category, index }
+        }
+    }
+    return null
+}
+
 // Now Playing Metadata
 const nowPlayingArtistEl = document.getElementById("now-playing-artist")
 const nowPlayingTitleEl = document.getElementById("now-playing-title")
@@ -15,6 +69,11 @@ const nowPlayingStatsCsEl = document.getElementById("now-playing-stats-cs")
 const nowPlayingStatsArEl = document.getElementById("now-playing-stats-ar")
 const nowPlayingStatsOdEl = document.getElementById("now-playing-stats-od")
 const nowPlayingStatsSrEl = document.getElementById("now-playing-stats-sr")
+
+// Right Section
+const rightSectionBackgroundEl = document.getElementById("right-section-background")
+const rightSectionModIconEl = document.getElementById("right-section-mod-icon")
+const rightSectionModTextEl = document.getElementById("right-section-mod-text")
 
 // Bottom Section
 const bottomSectionCurrentTimeEl = document.getElementById("bottom-section-current-time")
@@ -35,6 +94,35 @@ socket.onmessage = event => {
         nowPlayingTitleEl.innerText = data.menu.bm.metadata.title
         nowPlayingDifficultyEl.innerText = `[${data.menu.bm.metadata.difficulty}]`
         nowPlayingMapperNameEl.innerText = data.menu.bm.metadata.mapper
+
+        // Find the right section
+        const object = getObjectByBeatmapId(mapId)
+        if (object) {
+            // opacity 0 for all sections
+            const leftSectionEls = document.getElementsByClassName("left-section")
+            for (let i = 0; i < leftSectionEls.length; i++) {
+                leftSectionEls[i].style.opacity = 0
+            }
+
+            // Set background as well
+            document.getElementById(`left-section-${object.category.toLowerCase()}`).style.opacity = 1
+
+            // all active elmeents
+            const leftSectionMapEls = document.getElementsByClassName("left-section-map")
+            for (let i = 0; i < leftSectionMapEls.length; i++) {
+                leftSectionMapEls[i].classList.remove("left-section-map-active")
+            }
+
+            // Find right beatmap
+            const beatmapTile = document.getElementById(`${mapId}`)
+            beatmapTile.classList.add("left-section-map-active")
+            beatmapTile.children[1].style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${object.beatmapset_id}/covers/cover.jpg")`
+
+            // Right Section
+            rightSectionBackgroundEl.style.backgroundColor = `var(--background-${object.category.toLowerCase()})`
+            rightSectionModIconEl.setAttribute("src", `../_shared/assets/mod-icons/${object.category}${object.index + 1}.png`)
+            rightSectionModTextEl.innerText = `- ${object.mod}`
+        }
     }
 
     // Update stats
