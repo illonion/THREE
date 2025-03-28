@@ -1,7 +1,15 @@
 :root {
+    /* QL */
     --background-sea: #e05d5c;
     --background-leng: #52bf57;
     --background-date: #5c9ae0;
+    /* RO32 */
+    --background-tcom: #e05d5c;
+    --background-vvd: #e09a5c;
+    --background-rps: #e0d85c;
+    --background-bang: #52bf57;
+    --background-abc: #5c9ae0;
+    --background-tb: #655ce0;
     --right-section-gray: #9F9F9F;
 }
 
