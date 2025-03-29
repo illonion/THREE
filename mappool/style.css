@@ -1,5 +1,6 @@
 :root {
-    --team-icon-horizontal-dimension: 174px
+    --team-icon-horizontal-dimension: 174px;
+    --team-name-star-horizontal-dimension: 279px;
 }
 
 /* Background Video / Logo (Stream idle will be deleted later) */
@@ -43,3 +44,67 @@
     right: var(--team-icon-horizontal-dimension);
     box-shadow: 0 0 10px white;
 }
+
+/* Team Name */
+.team-name {
+    position: absolute;
+    top: 60px;
+    font-size: 36px;
+    font-weight: 700;
+    font-family: "Zain";
+}
+.red-team-name {
+    left: var(--team-name-star-horizontal-dimension);
+    color: #ffbfbf;
+    text-shadow: 0 0 10px #ffbfbf;
+}
+.blue-team-name {
+    right: var(--team-name-star-horizontal-dimension);
+    color: #bfddff;
+    text-shadow: 0 0 10px #bfddff;
+}
+
+/* Team Star Container */
+.team-star-container {
+    position: absolute;
+    top: 118px;
+    display: flex;
+    gap: 6px;
+}
+.red-team-star-container {
+    left: var(--team-name-star-horizontal-dimension);
+}
+.blue-team-star-container {
+    right: var(--team-name-star-horizontal-dimension);
+    flex-direction: row-reverse;
+}
+.team-star {
+    --dimension: 36px;
+    width: var(--dimension);
+    height: var(--dimension);
+    border-radius: 5px;
+}
+.team-star-fill { background-color: white; }
+.team-star-empty { background-color: rgba(255,255,255,0.3686274509803922); }
+
+/* Logo */
+.logo {
+    position: absolute;
+    top: 34px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+/* Showcase Text */
+.logo-text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Zain";
+    font-size: 29px;
+    color: white;
+}
+.showcase-text {
+    top: 120px;
+    font-weight: 800;
+}
+.round-text { top: 145px; }
