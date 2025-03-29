@@ -1,0 +1,45 @@
+:root {
+    --team-icon-horizontal-dimension: 174px
+}
+
+/* Background Video / Logo (Stream idle will be deleted later) */
+.background-video, .main {
+    position: absolute;
+    top: 0;
+    left: 0;   
+}
+
+/* Main */
+.main {
+    width: 2560px;
+    height: 1440px;
+    background-image: url("static/background.png");
+}
+
+/* Top Section */
+.top-section {
+    position: absolute;
+    width: 100%;
+    height: 210px;
+}
+
+/* Team Icon */
+.team-icon {
+    position: absolute;
+    top: 64px;
+    --dimension: 90px;
+    width: var(--dimension);
+    height: var(--dimension);
+    border-radius: 15px;
+    background-color: #000000;
+}
+.red-team-icon { 
+    border: 2px solid #FF5757;
+    left: var(--team-icon-horizontal-dimension);
+    box-shadow: 0 0 10px white;
+}
+.blue-team-icon { 
+    border: 2px solid #57A2FF;
+    right: var(--team-icon-horizontal-dimension);
+    box-shadow: 0 0 10px white;
+}
