@@ -58,8 +58,11 @@
     transition: 500ms ease-in-out;
     opacity: 1;
 }
-#left-section-leng { opacity: 0; }
-#left-section-date { opacity: 0; }
+#left-section-vvd { opacity: 0; }
+#left-section-rps { opacity: 0; }
+#left-section-bang { opacity: 0; }
+#left-section-abc { opacity: 0; }
+#left-section-tb { opacity: 0; }
 /* Left Section Background */
 .left-section-background {
     position: absolute;
@@ -70,9 +73,13 @@
     opacity: 0.51;
     transition: 500ms ease-in-out;
 }
-#left-section-sea-background { background-color: var(--background-sea); }
-#left-section-leng-background { background-color: var(--background-leng); }
-#left-section-date-background { background-color: var(--background-date); }
+#left-section-tcom-background { background-color: var(--background-tcom); }
+#left-section-vvd-background { background-color: var(--background-vvd); }
+#left-section-rps-background { background-color: var(--background-rps); }
+#left-section-bang-background { background-color: var(--background-bang); }
+#left-section-abc-background { background-color: var(--background-abc); }
+#left-section-tb-background { background-color: var(--background-tb); }
+
 /* Left Section Map Wrapper */
 .left-section-map-wrapper {
     position: absolute;

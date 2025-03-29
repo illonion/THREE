@@ -27,7 +27,7 @@ async function loadBeatmaps() {
 
             const leftSectionMapModImage = document.createElement("img")
             leftSectionMapModImage.classList.add("left-section-map-mod-image")
-            leftSectionMapModImage.setAttribute("src", `../_shared/assets/mod-icons/${key}${i + 1}.png`)
+            leftSectionMapModImage.setAttribute("src", `../_shared/assets/mod-icons/${key}-${i + 1}.png`)
 
             leftSectionMapContainer.append(leftSectionMapModImage)
             leftSectionMap.append(leftSectionMapMod, leftSectionMapContainer)
@@ -120,7 +120,7 @@ socket.onmessage = event => {
 
             // Right Section
             rightSectionBackgroundEl.style.backgroundColor = `var(--background-${object.category.toLowerCase()})`
-            rightSectionModIconEl.setAttribute("src", `../_shared/assets/mod-icons/${object.category}${object.index + 1}.png`)
+            rightSectionModIconEl.setAttribute("src", `../_shared/assets/mod-icons/${object.category}-${object.index + 1}.png`)
             rightSectionModTextEl.innerText = `- ${object.mod}`
         }
     }
