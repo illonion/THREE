@@ -206,3 +206,33 @@
     left: 38px;
     height: 60px;
 }
+
+/* Chat Display */
+.chat-display {
+    position: absolute;
+    bottom: 31px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 874px;
+    height: 293px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 5px 50px;
+    gap: 4px;
+}
+.chat-display-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
+    opacity: 0.231;
+}
+.chat-message-container {
+    width: 100%;
+    font-weight: 700;
+    font-family: "Inter Tight";
+    color: white;
+    font-size: 19px;
+    letter-spacing: 0.25px;
+}
