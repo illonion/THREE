@@ -236,3 +236,102 @@
     font-size: 19px;
     letter-spacing: 0.25px;
 }
+
+/* Animation Card Wrapper Background */
+.animation-card-wrapper-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.588;
+}
+/* Animation Card */
+.animation-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 840px;
+    height: 866px;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 35px rgba(255, 255, 255, 1);
+    background-image: linear-gradient(155deg, #181755 0%, #390847 100%);
+}
+/* Animation Card Background */
+.animation-card-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.3844;
+}
+/* Animation Card Map Background */
+.animation-card-map-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: 50%;
+    background-image: url("https://assets.ppy.sh/beatmaps/820229/covers/cover.jpg");
+    background-position: center;
+    background-size: cover;
+}
+/* Animation Card Category Id */
+.animation-card-category-id {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+/* Animation Card Left Details */
+.animation-card-left-details {
+    position: absolute;
+    top: calc(50% + 15px);
+    left: 20px;
+    width: 60%;
+    height: calc(50% - 30px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+/* Animation Card Left Metadata */
+.animation-card-left-metadata {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.animation-card-left-metadata-text {
+    font-size: 26px;
+    color: white;
+    font-weight: 900;
+    font-family: "Inter Tight";
+}
+/* Difficulty and Mapper */
+.color-gray { color: rgba(255,255,255,0.3686274509803922); }
+.color-white { color: white; }
+.color-gold { color: gold; }
+/* Animation Left Stat Container */
+.animation-card-left-stats-container {
+    display: flex;
+    justify-content: space-between;
+}
+.animation-card-left-stat-header { padding-right: 10px; }
+/* Animation Right */
+.animation-card-right-details {
+    position: absolute;
+    top: calc(50% + 15px);
+    right: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, auto);
+    gap: 5px;
+}
+.animation-card-right-details > div:nth-child(odd) {
+    color: rgba(255,255,255,0.3686274509803922);
+}
+.animation-card-right-details > div:nth-child(even) {
+    text-align: right;
+}
