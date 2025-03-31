@@ -2,6 +2,7 @@
 const roundTextEl = document.getElementById("round-text")
 
 // Get beatmaps
+const mappoolSectionEl = document.getElementById("mappool-section")
 let currentBestOf = 0, currentFirstTo = 0, currentRedScore = 0, currentBlueScore = 0
 let allBeatmaps
 async function getBeatmaps() {
@@ -23,6 +24,86 @@ async function getBeatmaps() {
     currentFirstTo = Math.ceil(currentBestOf / 2)
 
     createStarDisplay()
+
+    for (const key in allBeatmaps) {
+        const beatmaps = allBeatmaps[key];
+
+        // Create category section
+        const categorySection = document.createElement("section")
+        categorySection.classList.add("category-section")
+        categorySection.style.backgroundColor = `var(--background-${key.toLowerCase()})`
+
+        // Create category icon
+        const categoryIcon = document.createElement("img")
+        categoryIcon.classList.add("category-icon")
+        categoryIcon.setAttribute("src", `../_shared/assets/mod-icons/${key}.png`)
+
+        // Create category map container
+        const categoryMapContainer = document.createElement("div")
+        categoryMapContainer.classList.add("category-map-container")
+
+        for (let i = 0; i < beatmaps.length; i++) {
+            // Create category map
+            const categoryMap = document.createElement("div")
+            categoryMap.classList.add("category-map")
+
+            // Create category detail container
+            const categoryMapDetailContainer = document.createElement("div")
+            categoryMapDetailContainer.classList.add("category-map-detail-container")
+            // Create category map background image
+            const categoryMapBackgroundImage = document.createElement("div")
+            categoryMapBackgroundImage.classList.add("category-map-background-image")
+            categoryMapBackgroundImage.style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${beatmaps[i].beatmapset_id}/covers/cover.jpg")`
+            // Create category map artist
+            const categoryMapArtist = document.createElement("div")
+            categoryMapArtist.classList.add("category-map-metadata", "category-map-artist")
+            categoryMapArtist.innerText = beatmaps[i].artist
+            // Create category map title
+            const categoryMapTitle = document.createElement("div")
+            categoryMapTitle.classList.add("category-map-metadata", "category-map-title")
+            categoryMapTitle.innerText = beatmaps[i].title
+
+            // Create category map mod
+            const categoryMapMod = document.createElement("div")
+            categoryMapMod.classList.add("category-map-metadata", "category-map-mod")
+            // Category map mod text
+            if (beatmaps[i].mod === "DTFM") {
+                const categoryMapModTextDT = document.createElement("span")
+                categoryMapModTextDT.classList.add(`category-map-mod-dt`)
+                categoryMapModTextDT.innerText = "DT"
+                const categoryMapModTextFM = document.createElement("span")
+                categoryMapModTextFM.classList.add(`category-map-mod-fm`)
+                categoryMapModTextFM.innerText = "FM"
+                categoryMapMod.append("+ ", categoryMapModTextDT, categoryMapModTextFM)
+            } else {
+                const categoryMapModText = document.createElement("span")
+                categoryMapModText.classList.add(`category-map-mod-${beatmaps[i].mod.toLowerCase()}`)
+                categoryMapModText.innerText = beatmaps[i].mod
+                categoryMapMod.append("+ ", categoryMapModText)
+            }
+
+            categoryMapDetailContainer.append(categoryMapBackgroundImage, categoryMapArtist, categoryMapTitle, categoryMapMod)
+
+            // Create categry map picke by
+            const categoryMapPickedBy = document.createElement("div")
+            categoryMapPickedBy.classList.add("category-map-picked-by")
+            const categoryMapPickBanAction = document.createElement("span")
+            categoryMapPickBanAction.classList.add("category-map-pick-ban-action")
+            const categoryMapPickedByTeam = document.createElement("span")
+            categoryMapPickedByTeam.classList.add("cateogry-map-pick-ban-team")
+            categoryMapPickedBy.append(categoryMapPickBanAction, " by ", categoryMapPickedByTeam)
+
+            // Create category map winner
+            const categoryMapWinner = document.createElement("img")
+            categoryMapWinner.classList.add("cateogry-map-winner")
+
+            categoryMap.append(categoryMapDetailContainer, categoryMapPickedBy, categoryMapWinner)
+            categoryMapContainer.append(categoryMap)
+        }
+
+        categorySection.append(categoryIcon, categoryMapContainer)
+        mappoolSectionEl.append(categorySection)
+    }
 }
 getBeatmaps()
 

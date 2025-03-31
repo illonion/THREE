@@ -3,6 +3,17 @@
     --team-name-star-horizontal-dimension: 279px;
 }
 
+:root {
+    /* RO32 */
+    /* Background */
+    --background-tcom: #8d2d2da0;
+    --background-rps: #8d4a2da0;
+    --background-abc: #8d872da0;
+    --background-vvd: #1b5f33a0;
+    --background-bang: #2d418da0;
+    --background-tb: #4c2d8da0;
+}
+
 /* Background Video / Logo (Stream idle will be deleted later) */
 .background-video, .main {
     position: absolute;
@@ -128,6 +139,14 @@
     display: flex;
     align-items: center;
 }
+/* Category Icon */
+.category-icon {
+    position: absolute;
+    top: 50%;
+    left: 160px;
+    transform: translateY(-50%);
+    height: 100px;
+}
 /* Category Maps Container */
 .category-map-container {
     position: absolute;
@@ -189,6 +208,8 @@
 .category-map-mod-hd { color: #ffb735; }
 .category-map-mod-hr { color: #ff7575; }
 .category-map-mod-dt { color: #75acff; }
+.category-map-mod-fm { color: #ff75cd; }
+.category-map-mod-rx { color: #75fff7; }
 /* Category Map Picked By */
 .category-map-picked-by {
     position: absolute;
@@ -198,6 +219,7 @@
     color: #7f7f7f;
     font-weight: 700;
     font-family: "Inter Tight";
+    display: none;
 }
 .category-map-picked-by-team { color: white; }
 /* Category Map Winner */
@@ -217,11 +239,7 @@
     transform: translateX(-50%);
     width: 874px;
     height: 293px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
     padding: 5px 50px;
-    gap: 4px;
 }
 .chat-display-background {
     position: absolute;
@@ -229,6 +247,14 @@
     left: 0;
     background-color: black;
     opacity: 0.231;
+}
+.chat-display-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 4px;
 }
 .chat-message-container {
     width: 100%;
