@@ -33,6 +33,8 @@
     height: var(--dimension);
     border-radius: 15px;
     background-color: #000000;
+    background-size: cover;
+    background-position: center;
 }
 .red-team-icon { 
     border: 2px solid #FF5757;
@@ -237,6 +239,11 @@
     letter-spacing: 0.25px;
 }
 
+/* Animation Card Wrapper */
+.animation-card-wrapper {
+    display: none;
+    opacity: 0;
+}
 /* Animation Card Wrapper Background */
 .animation-card-wrapper-background {
     position: absolute;

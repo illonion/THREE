@@ -20,13 +20,13 @@
     <div class="main">
         <!-- Top Section -->
         <section class="top-section">
-            <div class="team-icon red-team-icon"></div>
-            <div class="team-icon blue-team-icon"></div>
+            <div class="team-icon red-team-icon" id="red-team-icon"></div>
+            <div class="team-icon blue-team-icon" id="blue-team-icon"></div>
 
-            <div class="team-name red-team-name">long team name - ffbfbf</div>
-            <div class="team-name blue-team-name">Zain - Bold - 36 - bfddff</div>
+            <div class="team-name red-team-name" id="red-team-name">long team name - ffbfbf</div>
+            <div class="team-name blue-team-name" id="blue-team-name">Zain - Bold - 36 - bfddff</div>
 
-            <div class="team-star-container red-team-star-container">
+            <div class="team-star-container red-team-star-container" id="red-team-star-container">
                 <div class="team-star team-star-fill"></div>
                 <div class="team-star team-star-empty"></div>
                 <div class="team-star team-star-empty"></div>
@@ -34,7 +34,7 @@
                 <div class="team-star team-star-empty"></div>
                 <div class="team-star team-star-empty"></div>
             </div>
-            <div class="team-star-container blue-team-star-container">
+            <div class="team-star-container blue-team-star-container" id="blue-team-star-container">
                 <div class="team-star team-star-fill"></div>
                 <div class="team-star team-star-empty"></div>
                 <div class="team-star team-star-empty"></div>
@@ -130,6 +130,8 @@
         </div>
     </div>
 
+    <script src="../_shared/deps/reconnecting-websocket.min.js"></script>
+    <script src="../_shared/utils.js"></script>
     <script src="index.js"></script>
 </body>
 </html>
