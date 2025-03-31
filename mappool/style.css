@@ -234,17 +234,19 @@
 /* Chat Display */
 .chat-display {
     position: absolute;
-    bottom: 31px;
+    bottom: 9px;
     left: 50%;
     transform: translateX(-50%);
     width: 874px;
     height: 293px;
-    padding: 5px 50px;
+    padding: 10px 25px;
 }
 .chat-display-background {
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
     background-color: black;
     opacity: 0.231;
 }
@@ -264,6 +266,10 @@
     font-size: 19px;
     letter-spacing: 0.25px;
 }
+.unknown { color: yellow; }
+.bot { color: greenyellow; }
+.left { color: lightsalmon; }
+.blue { color: lightblue; }
 
 /* Animation Card Wrapper */
 .animation-card-wrapper {
