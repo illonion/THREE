@@ -2,6 +2,8 @@
 const roundTextEl = document.getElementById("round-text")
 
 // Get beatmaps
+const RO32DefaultBeatmap = "847197"
+const RO16DefaultBeatmap = 0
 const mappoolSectionEl = document.getElementById("mappool-section")
 let currentBestOf = 0, currentFirstTo = 0, currentRedScore = 0, currentBlueScore = 0
 let allBeatmaps
@@ -46,6 +48,12 @@ async function getBeatmaps() {
             // Create category map
             const categoryMap = document.createElement("div")
             categoryMap.classList.add("category-map")
+            categoryMap.dataset.id = beatmaps[i].beatmap_id
+            categoryMap.dataset.pickerTeam = "false"
+            categoryMap.dataset.bannedByRed = "false"
+            categoryMap.dataset.bannedByBlue = "false"
+            categoryMap.addEventListener("mousedown", mapClickEvent)
+            categoryMap.addEventListener("contextmenu", function(event) {event.preventDefault()})
 
             // Create category detail container
             const categoryMapDetailContainer = document.createElement("div")
@@ -107,6 +115,15 @@ async function getBeatmaps() {
 }
 getBeatmaps()
 
+function findBeatmapById(beatmapId) {
+    for (const category in allBeatmaps) {
+        const beatmaps = allBeatmaps[category]
+        const result = beatmaps.find(beatmap => beatmap.beatmap_id === beatmapId)
+        if (result) return result
+    }
+    return null
+}
+
 // Star container
 const redTeamStarContainerEl = document.getElementById("red-team-star-container")
 const blueTeamStarContainerEl = document.getElementById("blue-team-star-container")
@@ -129,6 +146,43 @@ function createStarDisplay() {
         const newStar = document.createElement("div")
         newStar.classList.add("team-star", `team-star-${status}`)
         return newStar
+    }
+}
+
+// Map Click Event
+function mapClickEvent(event) {
+    console.log("do we get ere")
+    // Find map
+    const currentMapId = this.dataset.id
+    const currentMap = findBeatmapById(currentMapId)
+    if (!currentMap) return
+
+    // Team
+    let team
+    if (event.button === 0) team = "red"
+    else if (event.button === 2) team = "blue"
+    if (!team) return
+
+    // Action
+    let action = "pick"
+    if (event.ctrlKey) action = "ban"
+    if (event.shiftKey) action = "reset"
+
+    // Check if it is the default pick
+    if (currentMapId === RO32DefaultBeatmap) {
+        team = "wheel"
+        action = "pick"
+    }
+
+    if (action === "ban") {
+        this.children[1].style.display = "block"
+        this.children[1].children[0].innerText = "banned"
+        this.children[1].children[1].innerText = team
+    }
+    if (action === "pick") {
+        this.children[1].style.display = "block"
+        this.children[1].children[0].innerText = "picked"
+        this.children[1].children[1].innerText = team
     }
 }
 
