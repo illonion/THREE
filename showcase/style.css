@@ -1,15 +1,41 @@
 :root {
     /* QL */
+    /* Background */
     --background-sea: #e05d5c;
     --background-leng: #52bf57;
     --background-date: #5c9ae0;
+    /* Glow */
+    --glow-sea: #f28c8c;
+    --glow-leng: #5ff783;
+    --glow-date: #95abff;
+    /* Panel */
+    --panel-sea: #8d2d2d;
+    --panel-leng: #1b5f33;
+    --panel-date: #2d418d;
+
     /* RO32 */
+    /* Background */
     --background-tcom: #e05d5c;
-    --background-vvd: #e09a5c;
-    --background-rps: #e0d85c;
-    --background-bang: #52bf57;
-    --background-abc: #5c9ae0;
-    --background-tb: #655ce0;
+    --background-rps: #e09a5c;
+    --background-abc: #e0db5c;
+    --background-vvd: #52bf57;
+    --background-bang: #5c9ae0;
+    --background-tb: #8e5ce0;
+    /* Glow */
+    --glow-tcom: #ff9595;
+    --glow-rps: #ffbd95;
+    --glow-abc: #feff95;
+    --glow-vvd: #5ff783;
+    --glow-bang: #95abff;
+    --glow-tb: #c295ff;
+    /* Panel */
+    --panel-tcom: #8d2d2d;
+    --panel-rps: #8d4a2d;
+    --panel-abc: #8d872d;
+    --panel-vvd: #1b5f33;
+    --panel-bang: #2d418d;
+    --panel-tb: #4c2d8d;
+    
     --right-section-gray: #9F9F9F;
 }
 
@@ -74,10 +100,10 @@
     transition: 500ms ease-in-out;
 }
 #left-section-tcom-background { background-color: var(--background-tcom); }
-#left-section-vvd-background { background-color: var(--background-vvd); }
 #left-section-rps-background { background-color: var(--background-rps); }
-#left-section-bang-background { background-color: var(--background-bang); }
 #left-section-abc-background { background-color: var(--background-abc); }
+#left-section-vvd-background { background-color: var(--background-vvd); }
+#left-section-bang-background { background-color: var(--background-bang); }
 #left-section-tb-background { background-color: var(--background-tb); }
 
 /* Left Section Map Wrapper */
@@ -108,9 +134,17 @@
 .left-section-map-active > .left-section-map-container {
     opacity: 1;
 }
-.left-section-map-active > .left-section-map-container-sea { box-shadow: 0 0 35px #f28c8c; }
-.left-section-map-active > .left-section-map-container-leng { box-shadow: 0 0 35px #5ff783 ; }
-.left-section-map-active > .left-section-map-container-date { box-shadow: 0 0 35px #95abff; }
+/* Panel Colour QL */
+.left-section-map-active > .left-section-map-container-sea { box-shadow: 0 0 35px var(--glow-sea); }
+.left-section-map-active > .left-section-map-container-leng { box-shadow: 0 0 35px var(--glow-leng) ; }
+.left-section-map-active > .left-section-map-container-date { box-shadow: 0 0 35px var(--glow-date); }
+/* Panel Colour RO32 */
+.left-section-map-active > .left-section-map-container-tcom { box-shadow: 0 0 35px var(--glow-tcom); }
+.left-section-map-active > .left-section-map-container-rps { box-shadow: 0 0 35px var(--glow-rps) ; }
+.left-section-map-active > .left-section-map-container-abc { box-shadow: 0 0 35px var(--glow-abc); }
+.left-section-map-active > .left-section-map-container-vvd { box-shadow: 0 0 35px var(--glow-vvd); }
+.left-section-map-active > .left-section-map-container-bang { box-shadow: 0 0 35px var(--glow-bang) ; }
+.left-section-map-active > .left-section-map-container-tb { box-shadow: 0 0 35px var(--glow-tb); }
 .left-section-map-container {
     position: relative;
     top: -6px;
@@ -123,9 +157,18 @@
     background-position: center;
     transition: 500ms ease-in-out;
 }
-.left-section-map-container-sea { background-color: #8d2d2d; }
-.left-section-map-container-leng { background-color: #1b5f33; }
-.left-section-map-container-date { background-color: #2d418d; }
+/* Container Background */
+/* QL */
+.left-section-map-container-sea { background-color: var(--panel-sea); }
+.left-section-map-container-leng { background-color: var(--panel-leng); }
+.left-section-map-container-date { background-color: var(--panel-date); }
+/* RO32 */
+.left-section-map-container-tcom { background-color: var(--panel-tcom); }
+.left-section-map-container-rps { background-color: var(--panel-rps); }
+.left-section-map-container-abc { background-color: var(--panel-abc); }
+.left-section-map-container-vvd { background-color: var(--panel-vvd); }
+.left-section-map-container-bang { background-color: var(--panel-bang); }
+.left-section-map-container-tb { background-color: var(--panel-tb); }
 /* Map Mod Image */
 .left-section-map-mod-image {
     position: absolute;
