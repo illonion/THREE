@@ -349,6 +349,23 @@ socket.onmessage = event => {
     }
 }
 
+// Update star count
+function updateStarCount(side, action) {
+    if (!isStarOn) return
+
+    if (side === "red" && action === "plus") currentRedScore++
+    else if (side === "blue" && action === "plus") currentBlueScore++
+    else if (side === "red" && action === "minus") currentRedScore--
+    else if (side === "blue" && action === "minus") currentBlueScore--
+
+    if (currentRedScore > currentFirstTo) currentRedScore = currentFirstTo
+    else if (currentRedScore < 0) currentRedScore = 0
+    if (currentBlueScore > currentFirstTo) currentBlueScore = currentFirstTo
+    else if (currentBlueScore < 0) currentBlueScore = 0
+
+    createStarDisplay()
+}
+
 // Toggle Stars
 const toggleStarsEl = document.getElementById("toggle-stars")
 let isStarOn = true
