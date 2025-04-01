@@ -388,7 +388,8 @@
     font-family: "Inter Tight";
 }
 .sidebar-section {
-    margin-top: 20px;
+    padding: 20px 0;
+    border-bottom: 2px solid white;
 }
 .sidebar-header {
     font-size: 2.5em;
@@ -420,4 +421,5 @@
     color: var(--dark-purple);
     background-color: white;
 }
-.sidebar-button-container .toggle-stars { width: 265px; }
+.sidebar-button-container .full-length-button { width: 265px; }
+#toggle-animations { height: 100px;}

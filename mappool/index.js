@@ -231,6 +231,9 @@ async function mapClickEvent(event) {
         this.children[2].style.display = "none"
         return
     }
+    
+    if (!isAnimationOn) return
+
     // Animation card details
     // Map Metadata
     animationCardBackgroundEl.style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${currentMap.beatmapset_id}/covers/cover.jpg")`
@@ -383,3 +386,11 @@ function toggleStars() {
     document.cookie = `toggleStars=${isStarOn}; path=/`
 }
 document.cookie = `toggleStars=${isStarOn}; path=/`
+
+// Toggle animations
+const toggleAnimationsEl = document.getElementById("toggle-animations")
+let isAnimationOn = true
+function toggleAnimations() {
+    isAnimationOn = !isAnimationOn
+    toggleAnimationsEl.innerText = `Toggle Animations: ${isAnimationOn? "ON" : "OFF"}`
+}
