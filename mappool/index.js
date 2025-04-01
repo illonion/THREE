@@ -124,6 +124,15 @@ function findBeatmapById(beatmapId) {
     return null
 }
 
+function getCategoryByBeatmapId(id) {
+    for (const category in allBeatmaps) {
+        if (allBeatmaps[category].some(obj => obj.beatmap_id === id)) {
+            return category
+        }
+    }
+    return null
+}
+
 // Star container
 const redTeamStarContainerEl = document.getElementById("red-team-star-container")
 const blueTeamStarContainerEl = document.getElementById("blue-team-star-container")
@@ -149,8 +158,27 @@ function createStarDisplay() {
     }
 }
 
+// Animation elements
+const animationCardWrapperEl = document.getElementById("animation-card-wrapper")
+const animationCardBackgroundEl = document.getElementById("animation-card-background")
+const animationCardCategoryIdEl = document.getElementById("animation-card-category-id")
+const animationCardArtistEl = document.getElementById("animation-card-artist")
+const animationCardTitleEl = document.getElementById("animation-card-title")
+const animationCardDifficultyEl = document.getElementById("animation-card-difficulty")
+const animationCardMapperEl = document.getElementById("animation-card-mapper")
+const animationMapCsEl = document.getElementById("animation-map-cs")
+const animationMapArEl = document.getElementById("animation-map-ar")
+const animationMapOdEl = document.getElementById("animation-map-od")
+const animationMapSrEl = document.getElementById("animation-map-sr")
+const animationMapLengthEl = document.getElementById("animation-map-length")
+const animationMapBpmEl = document.getElementById("animation-map-bpm")
+const animationMapCirclesEl = document.getElementById("animation-map-circles")
+const animationMapSlidersEl = document.getElementById("animation-map-sliders")
+const animationCardPickBanTeamEl = document.getElementById("animation-card-pick-ban-team")
+const animationCardPickBanActionEl = document.getElementById("animation-card-pick-ban-action")
+
 // Map Click Event
-function mapClickEvent(event) {
+async function mapClickEvent(event) {
     console.log("do we get ere")
     // Find map
     const currentMapId = this.dataset.id
@@ -184,6 +212,65 @@ function mapClickEvent(event) {
         this.children[1].children[0].innerText = "picked"
         this.children[1].children[1].innerText = team
     }
+
+    // Animation card details
+    // Map Metadata
+    animationCardBackgroundEl.style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${currentMap.beatmapset_id}/covers/cover.jpg")`
+    animationCardCategoryIdEl.setAttribute("src", `../_shared/assets/mod-icons/${getCategoryByBeatmapId(currentMap.beatmap_id)}-${currentMap.order + 1}.png`)
+    animationCardArtistEl.innerText = currentMap.artist
+    animationCardTitleEl.innerText = currentMap.title
+    animationCardDifficultyEl.innerText = `[${currentMap.version}]`
+    animationCardMapperEl.innerText = currentMap.creator
+    animationCardPickBanTeamEl.innerText = team
+    animationCardPickBanActionEl.innerText = action
+
+    // Map Stats
+    animationMapSrEl.innerText = Math.round(Number(currentMap.difficultyrating) * 100) / 100
+    if (currentMap.mod.includes("DT")) {
+        if (Number(currentMap.diff_approach) > 5) animationMapArEl.innerText = Math.round((((1200 - (( 1200 - (Number(currentMap.diff_approach) - 5) * 150) * 2 / 3)) / 150) + 5) * 10) / 10
+        else Math.round((1800 - ((1800 - (Number(currentMap.diff_approach) * 120) * 2 / 3)) / 120 * 10) / 10)
+        animationMapOdEl.innerText = Math.round((79.5 - (( 79.5 - 6 * Number(currentMap.diff_overall)) * 2 / 3)) / 6 * 10) / 10
+        animationMapCsEl.innerText = Number(currentMap.diff_size)
+    } else if (currentMap.mod.includes("HR")) {
+        animationMapCsEl.innerText = Math.min(Math.round(Number(currentMap.diff_size) * 1.3 * 10) / 10, 10)
+        animationMapArEl.innerText = Math.min(Math.round(Number(currentMap.diff_approach) * 1.4 * 10) / 10, 10)
+        animationMapOdEl.innerText = Math.min(Math.round(Number(currentMap.diff_overall) * 1.4 * 10) / 10, 10)
+    } else {
+        animationMapCsEl.innerText = currentMap.diff_size
+        animationMapArEl.innerText = currentMap.diff_approach
+        animationMapOdEl.innerText = currentMap.diff_overall
+    }
+
+    // Right hand side stats
+    if (currentMap.mod.includes("DT")) {
+        console.log(Math.round(Number(currentMap.hit_length) / 3 * 2))
+        animationMapLengthEl.innerText = displayLength(Math.round(Number(currentMap.hit_length) / 3 * 2))
+        animationMapBpmEl.innerText = Math.round(Number(currentMap.bpm) * 3 / 2)
+    } else {
+        animationMapLengthEl.innerText = displayLength(Number(currentMap.hit_length))
+        animationMapBpmEl.innerText = currentMap.bpm
+    }
+    animationMapCirclesEl.innerText = currentMap.count_normal
+    animationMapSlidersEl.innerText = currentMap.count_slider
+
+
+
+    // Actual animation
+    animationCardWrapperEl.style.display = "block"
+    await delay(100)
+    animationCardWrapperEl.style.opacity = 1
+    await delay(5000)
+    animationCardWrapperEl.style.opacity = 0
+    await delay(300)
+    animationCardWrapperEl.style.display = "none"
+}
+
+// Display length
+function displayLength(second) {
+    const minutes = Math.floor(second / 60)
+    const seconds = second % 60
+    const pad = num => num.toString().padStart(2, "0")
+    return `${minutes}:${pad(seconds)}`
 }
 
 // Team Info

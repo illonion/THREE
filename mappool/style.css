@@ -275,6 +275,7 @@
 .animation-card-wrapper {
     display: none;
     opacity: 0;
+    transition: 200ms ease-in-out;
 }
 /* Animation Card Wrapper Background */
 .animation-card-wrapper-background {
