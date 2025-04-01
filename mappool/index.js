@@ -394,3 +394,19 @@ function toggleAnimations() {
     isAnimationOn = !isAnimationOn
     toggleAnimationsEl.innerText = `Toggle Animations: ${isAnimationOn? "ON" : "OFF"}`
 }
+
+// Next Autopicker
+const nextAutopickerEl = document.getElementById("next-auto-picker-team")
+let nextPicker
+function updateNextAutoPicker(team) {
+    nextAutopickerEl.innerText = team.slice(0, 1).toUpperCase() + team.slice(1)
+    nextPicker = team
+}
+
+// Toggle autopick
+const toggleAutopickEl = document.getElementById("toggle-autopick")
+let isAutopickOn = true
+function toggleAutopick() {
+    isAutopickOn = !isAutopickOn
+    toggleAutopickEl.innerText = `Toggle Autopick: ${isAutopickOn? "ON" : "OFF"}`
+}

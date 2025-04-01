@@ -391,8 +391,17 @@
     padding: 20px 0;
     border-bottom: 2px solid white;
 }
+/* Sidebar Text */
 .sidebar-header {
     font-size: 2.5em;
+    font-weight: 800;
+    color: white;
+    width: inherit;
+    text-align: center;
+}
+.sidebar-text {
+    margin-top: 10px;
+    font-size: 2em;
     font-weight: 800;
     color: white;
     width: inherit;
@@ -422,4 +431,4 @@
     background-color: white;
 }
 .sidebar-button-container .full-length-button { width: 265px; }
-#toggle-animations { height: 100px;}
+.sidebar-button-container .extra-height-button { height: 75px;}

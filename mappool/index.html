@@ -109,7 +109,16 @@
         <div class="sidebar-section">
             <div class="sidebar-header">Pick Ban Animation</div>
             <div class="sidebar-button-container">
-                <button class="full-length-button" id="toggle-animations" onclick="toggleAnimations()">Toggle Animation: ON</button>
+                <button class="full-length-button extra-height-button" id="toggle-animations" onclick="toggleAnimations()">Toggle Animation: ON</button>
+            </div>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-header">Next Auto<br>Picker</div>
+            <div class="sidebar-text" id="next-auto-picker-team"></div><br>
+            <div class="sidebar-button-container">
+                <button onclick="updateNextAutoPicker('red')">Red</button>
+                <button onclick="updateNextAutoPicker('blue')">Blue</button>
+                <button class="full-length-button extra-height-button" id="toggle-autopick" onclick="toggleAutopick()">Toggle Autopick: ON</button>
             </div>
         </div>
     </section>
