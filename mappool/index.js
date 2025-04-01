@@ -2,8 +2,8 @@
 const roundTextEl = document.getElementById("round-text")
 
 // Get beatmaps
-const RO32DefaultBeatmap = "847197"
-const RO16DefaultBeatmap = 0
+const RO32DefaultBeatmap = "2263578"
+const RO16DefaultBeatmap = "10842"
 const mappoolSectionEl = document.getElementById("mappool-section")
 let currentBestOf = 0, currentFirstTo = 0, currentRedScore = 0, currentBlueScore = 0
 let allBeatmaps
@@ -212,7 +212,6 @@ async function mapClickEvent(event) {
 
         if (this.dataset.bannedByRed === "true" && this.dataset.bannedByBlue === "true") this.children[1].children[1].innerText = "red / blue"
         else if (this.dataset.bannedByRed === "true" || this.dataset.bannedByBlue === "true") this.children[1].children[1].innerText = team
-        
     }
     if (action === "pick") {
         this.dataset.picker = team
@@ -349,3 +348,21 @@ socket.onmessage = event => {
         chatDisplayEl.scrollTop = chatDisplayEl.scrollHeight
     }
 }
+
+// Toggle Stars
+const toggleStarsEl = document.getElementById("toggle-stars")
+let isStarOn = true
+function toggleStars() {
+    isStarOn = !isStarOn
+    if (isStarOn) {
+        redTeamStarContainerEl.style.display = "flex"
+        blueTeamStarContainerEl.style.display = "flex"
+        toggleStarsEl.innerText = "Toggle Stars: ON"
+    } else {
+        redTeamStarContainerEl.style.display = "none"
+        blueTeamStarContainerEl.style.display = "none"
+        toggleStarsEl.innerText = "Toggle Stars: OFF"
+    }
+    document.cookie = `toggleStars=${isStarOn}; path=/`
+}
+document.cookie = `toggleStars=${isStarOn}; path=/`

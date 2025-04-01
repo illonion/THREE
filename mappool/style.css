@@ -1,6 +1,7 @@
 :root {
     --team-icon-horizontal-dimension: 174px;
     --team-name-star-horizontal-dimension: 279px;
+    --dark-purple: #3F1161
 }
 
 :root {
@@ -375,3 +376,48 @@
 .animation-card-right-details > div:nth-child(even) {
     text-align: right;
 }
+
+/* Sidebar */
+.sidebar {
+    position: absolute;
+    top: 0;
+    left: 2560px;
+    width: 325px;
+    height: 1440px;
+    background-color: var(--dark-purple);
+    font-family: "Inter Tight";
+}
+.sidebar-section {
+    margin-top: 20px;
+}
+.sidebar-header {
+    font-size: 2.5em;
+    font-weight: 800;
+    color: white;
+    width: inherit;
+    text-align: center;
+}
+/* Sidebar buttons */
+.sidebar-button-container {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: inherit;
+    gap: 15px;
+}
+.sidebar-button-container button {
+    width: 125px;
+    height: 50px;
+    font-weight: 700;
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    font-size: 1.5em;
+    border-radius: 15px;
+}
+.sidebar-button-container button:active {
+    color: var(--dark-purple);
+    background-color: white;
+}
+.sidebar-button-container .toggle-stars { width: 265px; }
