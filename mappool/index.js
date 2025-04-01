@@ -203,16 +203,35 @@ async function mapClickEvent(event) {
     }
 
     if (action === "ban") {
+        this.dataset.picker = "false"
+        if (team === "red") this.dataset.bannedByRed = "true"
+        if (team === "blue") this.dataset.bannedByBlue = "true"
+
         this.children[1].style.display = "block"
         this.children[1].children[0].innerText = "banned"
-        this.children[1].children[1].innerText = team
+
+        if (this.dataset.bannedByRed === "true" && this.dataset.bannedByBlue === "true") this.children[1].children[1].innerText = "red / blue"
+        else if (this.dataset.bannedByRed === "true" || this.dataset.bannedByBlue === "true") this.children[1].children[1].innerText = team
+        
     }
     if (action === "pick") {
+        this.dataset.picker = team
+        this.dataset.bannedByRed = "false"
+        this.dataset.bannedByBlue = "false"
+
         this.children[1].style.display = "block"
         this.children[1].children[0].innerText = "picked"
         this.children[1].children[1].innerText = team
     }
 
+    if (action === "reset") {
+        this.dataset.picker = "false"
+        this.dataset.bannedByRed = "false"
+        this.dataset.bannedByBlue = "false"
+        this.children[1].style.display = "none"
+        this.children[2].style.display = "none"
+        return
+    }
     // Animation card details
     // Map Metadata
     animationCardBackgroundEl.style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${currentMap.beatmapset_id}/covers/cover.jpg")`
@@ -252,8 +271,6 @@ async function mapClickEvent(event) {
     }
     animationMapCirclesEl.innerText = currentMap.count_normal
     animationMapSlidersEl.innerText = currentMap.count_slider
-
-
 
     // Actual animation
     animationCardWrapperEl.style.display = "block"
