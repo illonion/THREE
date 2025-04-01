@@ -400,12 +400,18 @@
     text-align: center;
 }
 .sidebar-text {
-    margin-top: 10px;
-    font-size: 2em;
+    margin-top: 20px;
     font-weight: 800;
     color: white;
     width: inherit;
     text-align: center;
+}
+#next-auto-picker-team { font-size: 2em; }
+#pick-ban-instructions-text { 
+    width: 94%;
+    margin: auto;
+    margin-top: 20px;
+    font-size: 1.5em;
 }
 /* Sidebar buttons */
 .sidebar-button-container {
