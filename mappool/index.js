@@ -108,7 +108,7 @@ async function getBeatmaps() {
 
             // Create category map winner
             const categoryMapWinner = document.createElement("img")
-            categoryMapWinner.classList.add("cateogry-map-winner")
+            categoryMapWinner.classList.add("category-map-winner")
 
             categoryMap.append(categoryMapDetailContainer, categoryMapPickedBy, categoryMapWinner)
             categoryMapContainer.append(categoryMap)
@@ -534,6 +534,62 @@ function pickBanManagementSelectAction() {
         }
     }
 
+    if (pickBanManagementCurrentAction === "setWinner") {
+        // Select Map
+        const whichMap = document.createElement("div")
+        whichMap.innerText = "Which Map?"
+        whichMap.classList.add("pick-ban-management-title")
+        
+        // Select Map
+        const pickbanManagementButtonContainer = document.createElement("div")
+        pickbanManagementButtonContainer.classList.add("pick-ban-management-button-container")   
+
+        // Get all category maps
+        const categoryMapEls = document.getElementsByClassName("category-map")
+        for (let i = 0; i < categoryMapEls.length; i++) {
+            if (categoryMapEls[i].dataset.pickerTeam !== "false") {
+
+                // Find map 
+                const beatmap = findBeatmapById(categoryMapEls[i].dataset.id)
+                // Find category
+                const category = getCategoryByBeatmapId(categoryMapEls[i].dataset.id)
+
+
+                const mapButton = document.createElement("div")
+                mapButton.classList.add("pick-ban-management-map-button")
+                mapButton.innerText = `${category}${beatmap.order + 1}`
+                mapButton.addEventListener("click", pickBanManagementSetMap)
+                mapButton.dataset.id = beatmap.beatmap_id
+                pickbanManagementButtonContainer.append(mapButton)
+            }
+        }
+
+        pickBanManagementEl.append(whichMap, pickbanManagementButtonContainer)
+
+        if (pickBanManagementCurrentAction === "setWinner") {
+            // Which Team?
+            const whichTeam = document.createElement("div")
+            whichTeam.innerText = "Which Team?"
+            whichTeam.classList.add("pick-ban-management-title")
+
+            // Create select for all teams
+            const teamSelect = document.createElement("select")
+            teamSelect.setAttribute("size", "2")
+            teamSelect.setAttribute("id", "pick-ban-management-select-team")
+            teamSelect.setAttribute("onchange", "pickBanManagementSelectTeam()")
+            // Get all teams
+            const redTeam = document.createElement("option")
+            redTeam.setAttribute("value", "red")
+            redTeam.innerText = "Red"
+            const blueTeam = document.createElement("option")
+            blueTeam.setAttribute("value", "blue")
+            blueTeam.innerText = "Blue"
+            teamSelect.append(redTeam, blueTeam)
+
+            pickBanManagementEl.append(whichTeam, teamSelect)
+        }
+    }
+
     // Apply Changes Button Container
     const applyChangesButtonContainer = document.createElement("div")
     applyChangesButtonContainer.classList.add("sidebar-button-container")
@@ -555,6 +611,9 @@ function pickBanManagementSelectAction() {
             break
         case "removePick":
             applyChangesButton.setAttribute("onclick", "pickBanManagementRemovePick()")
+            break
+        case "setWinner":
+            applyChangesButton.setAttribute("onclick", "pickBanManagementSetWinner()")
             break
     }
 
@@ -693,4 +752,14 @@ function pickBanManagementRemovePick() {
         currentMapElement.children[1].style.display = "none"
         currentMapElement.children[0].classList.remove("category-map-detail-container-actioned")
     }
+}
+
+// Pick Ban Management Add Winner
+function pickBanManagementSetWinner() {
+    if (!pickBanManagementCurrentTeam || !pickBanManagementCurrentMap) return
+    const currentMapElement = document.getElementById(pickBanManagementCurrentMap)
+    if (!currentMapElement) return
+
+    currentMapElement.children[2].style.display = "block"
+    currentMapElement.children[2].setAttribute("src", `static/${pickBanManagementCurrentTeam}-won.png`)
 }
