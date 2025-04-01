@@ -215,7 +215,7 @@ async function mapClickEvent(event) {
     if (action === "ban") {
         this.children[0].classList.add("category-map-detail-container-actioned")
 
-        this.dataset.picker = "false"
+        this.dataset.pickerTeam = "false"
         if (team === "red") this.dataset.bannedByRed = "true"
         if (team === "blue") this.dataset.bannedByBlue = "true"
 
@@ -228,7 +228,7 @@ async function mapClickEvent(event) {
     if (action === "pick") {
         this.children[0].classList.add("category-map-detail-container-actioned")
 
-        this.dataset.picker = team
+        this.dataset.pickerTeam = team
         this.dataset.bannedByRed = "false"
         this.dataset.bannedByBlue = "false"
 
@@ -238,7 +238,7 @@ async function mapClickEvent(event) {
     }
 
     if (action === "reset") {
-        this.dataset.picker = "false"
+        this.dataset.pickerTeam = "false"
         this.dataset.bannedByRed = "false"
         this.dataset.bannedByBlue = "false"
         this.children[1].style.display = "none"
@@ -438,7 +438,7 @@ function pickBanManagementSelectAction() {
     }
 
     // Set Ban
-    if (pickBanManagementCurrentAction === "setBan") {
+    if (pickBanManagementCurrentAction === "setBan" || pickBanManagementCurrentAction === "removeBan") {
         // Select Map
         const whichMap = document.createElement("div")
         whichMap.innerText = "Which Map?"
@@ -498,6 +498,9 @@ function pickBanManagementSelectAction() {
         case "setBan":
             applyChangesButton.setAttribute("onclick", "pickBanManagementSetBan()")
             break
+        case "removeBan":
+            applyChangesButton.setAttribute("onclick", "pickBanManagementRemoveBan()")
+            break
     }
 
     applyChangesButtonContainer.append(applyChangesButton)
@@ -535,17 +538,59 @@ function pickBanManagementSetBan() {
         currentMapElement.children[0].classList.add("category-map-detail-container-actioned")
     }
 
+    currentMapElement.dataset.pickerTeam = "false"
+    currentMapElement.dataset.bannedByRed = "false"
+    currentMapElement.dataset.bannedByBlue = "false"
+
     // Set ban
     currentMapElement.children[1].children[0].innerText = "banned"
     currentMapElement.children[1].style.display = "block"
     if (pickBanManagementCurrentTeam === "red") {
         currentMapElement.children[1].children[1].innerText = "red"
+        currentMapElement.dataset.bannedByRed = "true"
     } else if (pickBanManagementCurrentTeam === "blue") {
         currentMapElement.children[1].children[1].innerText = "blue"
+        currentMapElement.dataset.bannedByBlue = "true"
     } else if (pickBanManagementCurrentTeam === "all") {
         currentMapElement.children[1].children[1].innerText = "red / blue"
+        currentMapElement.dataset.bannedByRed = "true"
+        currentMapElement.dataset.bannedByBlue = "true"
     }
 
     // Remove winner
     currentMapElement.children[2].style.display = "none"
+}
+
+// Pick Ban Management Remove Ban
+function pickBanManagementRemoveBan() {
+    if (!pickBanManagementCurrentTeam || !pickBanManagementCurrentMap) return
+    const currentMapElement = document.getElementById(pickBanManagementCurrentMap)
+
+    // Check if the map is picked before removing the actioned
+    if (currentMapElement.dataset.pickerTeam === "false") {
+
+        console.log(pickBanManagementCurrentTeam)
+
+        // Check who banned it
+        if (pickBanManagementCurrentTeam === "all") {
+            currentMapElement.dataset.bannedByRed = "false"
+            currentMapElement.dataset.bannedByBlue = "false"
+        } else if (pickBanManagementCurrentTeam === "red") {
+            currentMapElement.dataset.bannedByRed = "false"
+        } else if (pickBanManagementCurrentTeam === "blue") {
+            currentMapElement.dataset.bannedByBlue = "false"
+        }
+
+        // If no more bans
+        if (currentMapElement.dataset.bannedByBlue === "false" && currentMapElement.dataset.bannedByRed === "false") {
+            currentMapElement.children[1].style.display = "none"
+            currentMapElement.children[0].classList.remove("category-map-detail-container-actioned")
+        } else if (currentMapElement.dataset.bannedByRed === "true") {
+            currentMapElement.children[1].style.display = "block"
+            currentMapElement.children[1].children[1].innerText = "red"
+        } else if (currentMapElement.dataset.bannedByBlue === "true") {
+            currentMapElement.children[1].style.display = "block"
+            currentMapElement.children[1].children[1].innerText = "blue"
+        }
+    }
 }
