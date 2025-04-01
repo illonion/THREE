@@ -534,7 +534,7 @@ function pickBanManagementSelectAction() {
         }
     }
 
-    if (pickBanManagementCurrentAction === "setWinner") {
+    if (pickBanManagementCurrentAction === "setWinner" || pickBanManagementCurrentAction === "removeWinner") {
         // Select Map
         const whichMap = document.createElement("div")
         whichMap.innerText = "Which Map?"
@@ -614,6 +614,9 @@ function pickBanManagementSelectAction() {
             break
         case "setWinner":
             applyChangesButton.setAttribute("onclick", "pickBanManagementSetWinner()")
+            break
+        case "removeWinner":
+            applyChangesButton.setAttribute("onclick", "pickBanManagementRemoveWinner()")
             break
     }
 
@@ -762,4 +765,13 @@ function pickBanManagementSetWinner() {
 
     currentMapElement.children[2].style.display = "block"
     currentMapElement.children[2].setAttribute("src", `static/${pickBanManagementCurrentTeam}-won.png`)
+}
+
+// Pick Ban Management Remove Winner
+function pickBanManagementRemoveWinner() {
+    if (!pickBanManagementCurrentTeam || !pickBanManagementCurrentMap) return
+    const currentMapElement = document.getElementById(pickBanManagementCurrentMap)
+    if (!currentMapElement) return
+
+    currentMapElement.children[2].style.display = "none"
 }
