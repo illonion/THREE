@@ -426,168 +426,35 @@ function toggleAutopick() {
 // Select Action
 const pickBanManagementEl = document.getElementById("pick-ban-management")
 const pickBanManagementSelctOptionEl = document.getElementById("pick-ban-management-select-action")
+const pickBanManagementAllActions = ["setBan","removeBan","setPick","removePick","setWinner","removeWinner"]
 let pickBanManagementCurrentAction
 function pickBanManagementSelectAction() {
     pickBanManagementCurrentAction = pickBanManagementSelctOptionEl.value
+    if (!pickBanManagementAllActions.includes(pickBanManagementCurrentAction)) return
     pickBanManagementCurrentTeam = undefined
     pickBanManagementCurrentMap = undefined
 
     // Remove unwanted elements
-    while (pickBanManagementEl.childElementCount > 3) {
-        pickBanManagementEl.lastElementChild.remove()
-    }
+    while (pickBanManagementEl.childElementCount > 3) pickBanManagementEl.lastElementChild.remove()
 
-    // Set Ban
-    if (pickBanManagementCurrentAction === "setBan" || pickBanManagementCurrentAction === "removeBan") {
-        // Select Map
-        const whichMap = document.createElement("div")
-        whichMap.innerText = "Which Map?"
-        whichMap.classList.add("pick-ban-management-title")
-        
-        // Select Map
-        const pickbanManagementButtonContainer = document.createElement("div")
-        pickbanManagementButtonContainer.classList.add("pick-ban-management-button-container")   
-        
-        for (const key in allBeatmaps) {
-            const beatmaps = allBeatmaps[key]
-            for (let i = 0; i < beatmaps.length; i++) {
-                const mapButton = document.createElement("div")
-                mapButton.classList.add("pick-ban-management-map-button")
-                mapButton.innerText = `${key}${beatmaps[i].order + 1}`
-                mapButton.addEventListener("click", pickBanManagementSetMap)
-                mapButton.dataset.id = beatmaps[i].beatmap_id
-                pickbanManagementButtonContainer.append(mapButton)
-            }
-        }
+    // Which Map Title
+    const whichMap = pickBanManagementCreateTitle("Which Map?")
+    // Select Map
+    const pickbanManagementButtonContainer = document.createElement("div")
+    pickbanManagementButtonContainer.classList.add("pick-ban-management-button-container")
 
-        // Which Team?
-        const whichTeam = document.createElement("div")
-        whichTeam.innerText = "Which Team?"
-        whichTeam.classList.add("pick-ban-management-title")
-
-        // Create select for all teams
-        const teamSelect = document.createElement("select")
-        teamSelect.setAttribute("size", "3")
-        teamSelect.setAttribute("id", "pick-ban-management-select-team")
-        teamSelect.setAttribute("onchange", "pickBanManagementSelectTeam()")
-        // Get all teams
-        const redTeam = document.createElement("option")
-        redTeam.setAttribute("value", "red")
-        redTeam.innerText = "Red"
-        const blueTeam = document.createElement("option")
-        blueTeam.setAttribute("value", "blue")
-        blueTeam.innerText = "Blue"
-        const allTeams = document.createElement("option")
-        allTeams.setAttribute("value", "all")
-        allTeams.innerText = "All Teams"
-        teamSelect.append(redTeam, blueTeam, allTeams)
-        
-        pickBanManagementEl.append(whichMap, pickbanManagementButtonContainer, whichTeam, teamSelect)
-    }
-
-    // Set pick and remove pick
-    if (pickBanManagementCurrentAction === "setPick" || pickBanManagementCurrentAction === "removePick") {
-        // Select Map
-        const whichMap = document.createElement("div")
-        whichMap.innerText = "Which Map?"
-        whichMap.classList.add("pick-ban-management-title")
-        
-        // Select Map
-        const pickbanManagementButtonContainer = document.createElement("div")
-        pickbanManagementButtonContainer.classList.add("pick-ban-management-button-container")   
-        
-        for (const key in allBeatmaps) {
-            const beatmaps = allBeatmaps[key]
-            for (let i = 0; i < beatmaps.length; i++) {
-                const mapButton = document.createElement("div")
-                mapButton.classList.add("pick-ban-management-map-button")
-                mapButton.innerText = `${key}${beatmaps[i].order + 1}`
-                mapButton.addEventListener("click", pickBanManagementSetMap)
-                mapButton.dataset.id = beatmaps[i].beatmap_id
-                pickbanManagementButtonContainer.append(mapButton)
-            }
-        }
-
-        pickBanManagementEl.append(whichMap, pickbanManagementButtonContainer)
-
-        if (pickBanManagementCurrentAction === "setPick") {
-            // Which Team?
-            const whichTeam = document.createElement("div")
-            whichTeam.innerText = "Which Team?"
-            whichTeam.classList.add("pick-ban-management-title")
-
-            // Create select for all teams
-            const teamSelect = document.createElement("select")
-            teamSelect.setAttribute("size", "2")
-            teamSelect.setAttribute("id", "pick-ban-management-select-team")
-            teamSelect.setAttribute("onchange", "pickBanManagementSelectTeam()")
-            // Get all teams
-            const redTeam = document.createElement("option")
-            redTeam.setAttribute("value", "red")
-            redTeam.innerText = "Red"
-            const blueTeam = document.createElement("option")
-            blueTeam.setAttribute("value", "blue")
-            blueTeam.innerText = "Blue"
-            teamSelect.append(redTeam, blueTeam)
-
-            pickBanManagementEl.append(whichTeam, teamSelect)
-        }
-    }
-
-    if (pickBanManagementCurrentAction === "setWinner" || pickBanManagementCurrentAction === "removeWinner") {
-        // Select Map
-        const whichMap = document.createElement("div")
-        whichMap.innerText = "Which Map?"
-        whichMap.classList.add("pick-ban-management-title")
-        
-        // Select Map
-        const pickbanManagementButtonContainer = document.createElement("div")
-        pickbanManagementButtonContainer.classList.add("pick-ban-management-button-container")   
-
-        // Get all category maps
-        const categoryMapEls = document.getElementsByClassName("category-map")
-        for (let i = 0; i < categoryMapEls.length; i++) {
-            if (categoryMapEls[i].dataset.pickerTeam !== "false") {
-
-                // Find map 
-                const beatmap = findBeatmapById(categoryMapEls[i].dataset.id)
-                // Find category
-                const category = getCategoryByBeatmapId(categoryMapEls[i].dataset.id)
-
-
-                const mapButton = document.createElement("div")
-                mapButton.classList.add("pick-ban-management-map-button")
-                mapButton.innerText = `${category}${beatmap.order + 1}`
-                mapButton.addEventListener("click", pickBanManagementSetMap)
-                mapButton.dataset.id = beatmap.beatmap_id
-                pickbanManagementButtonContainer.append(mapButton)
-            }
-        }
-
-        pickBanManagementEl.append(whichMap, pickbanManagementButtonContainer)
-
-        if (pickBanManagementCurrentAction === "setWinner") {
-            // Which Team?
-            const whichTeam = document.createElement("div")
-            whichTeam.innerText = "Which Team?"
-            whichTeam.classList.add("pick-ban-management-title")
-
-            // Create select for all teams
-            const teamSelect = document.createElement("select")
-            teamSelect.setAttribute("size", "2")
-            teamSelect.setAttribute("id", "pick-ban-management-select-team")
-            teamSelect.setAttribute("onchange", "pickBanManagementSelectTeam()")
-            // Get all teams
-            const redTeam = document.createElement("option")
-            redTeam.setAttribute("value", "red")
-            redTeam.innerText = "Red"
-            const blueTeam = document.createElement("option")
-            blueTeam.setAttribute("value", "blue")
-            blueTeam.innerText = "Blue"
-            teamSelect.append(redTeam, blueTeam)
-
-            pickBanManagementEl.append(whichTeam, teamSelect)
-        }
+    if (pickBanManagementCurrentAction === "setWinner" || pickBanManagementCurrentAction === "removeWinner") 
+        pickBanManagementGetMaps(pickbanManagementButtonContainer, true)
+    else pickBanManagementGetMaps(pickbanManagementButtonContainer, false)
+    
+    pickBanManagementEl.append(whichMap, pickbanManagementButtonContainer)
+    if (pickBanManagementCurrentAction !== "removePick" && pickBanManagementCurrentAction !== "removeWinner") {
+        // Which Team Title
+        const whichTeam = pickBanManagementCreateTitle("Which Team?")
+        let teamSelect
+        if (pickBanManagementCurrentAction === "setPick" || pickBanManagementCurrentAction === "setWinner") teamSelect = pickBanManagementCreateTeamSelect(2)
+        else teamSelect = pickBanManagementCreateTeamSelect(3)
+        pickBanManagementEl.append(whichTeam, teamSelect)
     }
 
     // Apply Changes Button Container
@@ -599,29 +466,70 @@ function pickBanManagementSelectAction() {
     applyChangesButton.classList.add("full-length-button", "extra-height-button")
     applyChangesButton.innerText = "Apply Changes"
 
+    let onclick
     switch (pickBanManagementCurrentAction) {
-        case "setBan":
-            applyChangesButton.setAttribute("onclick", "pickBanManagementSetBan()")
-            break
-        case "removeBan":
-            applyChangesButton.setAttribute("onclick", "pickBanManagementRemoveBan()")
-            break
-        case "setPick":
-            applyChangesButton.setAttribute("onclick", "pickBanManagementSetPick()")
-            break
-        case "removePick":
-            applyChangesButton.setAttribute("onclick", "pickBanManagementRemovePick()")
-            break
-        case "setWinner":
-            applyChangesButton.setAttribute("onclick", "pickBanManagementSetWinner()")
-            break
-        case "removeWinner":
-            applyChangesButton.setAttribute("onclick", "pickBanManagementRemoveWinner()")
-            break
+        case "setBan": onclick = "pickBanManagementSetBan()"; break;
+        case "removeBan": onclick = "pickBanManagementRemoveBan()"; break;
+        case "setPick": onclick = "pickBanManagementSetPick()"; break;
+        case "removePick": onclick = "pickBanManagementRemovePick()"; break;
+        case "setWinner": onclick = "pickBanManagementSetWinner()"; break;
+        case "removeWinner": onclick = "pickBanManagementRemoveWinner()"
     }
+    applyChangesButton.setAttribute("onclick", onclick)
 
     applyChangesButtonContainer.append(applyChangesButton)
     pickBanManagementEl.append(applyChangesButtonContainer)
+}
+
+// Title
+function pickBanManagementCreateTitle(text) {
+    const whichMap = document.createElement("div")
+    whichMap.innerText = text
+    whichMap.classList.add("pick-ban-management-title")
+    return whichMap
+}
+
+// Pick Ban Management Get All Maps
+function pickBanManagementGetMaps(elementToAppendTo, pickRequirement) {
+    for (const key in allBeatmaps) {
+        const beatmaps = allBeatmaps[key]
+        for (let i = 0; i < beatmaps.length; i++) {
+            if (pickRequirement && document.getElementById(beatmaps[i].beatmap_id).dataset.pickerTeam === "false") continue
+            const mapButton = document.createElement("div")
+            mapButton.classList.add("pick-ban-management-map-button")
+            mapButton.innerText = `${key}${beatmaps[i].order + 1}`
+            mapButton.addEventListener("click", pickBanManagementSetMap)
+            mapButton.dataset.id = beatmaps[i].beatmap_id
+            elementToAppendTo.append(mapButton)
+        }
+    }
+}
+
+// Pick Ban Management Create Team Select
+function pickBanManagementCreateTeamSelect(numberOfElements) {
+    // Create select for all teams
+    const teamSelect = document.createElement("select")
+    teamSelect.setAttribute("size", numberOfElements)
+    teamSelect.setAttribute("id", "pick-ban-management-select-team")
+    teamSelect.setAttribute("onchange", "pickBanManagementSelectTeam()")
+    // Get all teams
+    const redTeam = document.createElement("option")
+    redTeam.setAttribute("value", "red")
+    redTeam.innerText = "Red"
+    const blueTeam = document.createElement("option")
+    blueTeam.setAttribute("value", "blue")
+    blueTeam.innerText = "Blue"
+
+    teamSelect.append(redTeam, blueTeam)
+
+    if (numberOfElements === 3) {
+        const allTeams = document.createElement("option")
+        allTeams.setAttribute("value", "all")
+        allTeams.innerText = "All Teams"
+        teamSelect.append(allTeams)
+    }
+
+    return teamSelect
 }
 
 // Pick Ban Management Set Map
@@ -645,10 +553,18 @@ const pickBanManagementSelectTeam = () => {
     pickBanManagementCurrentTeam = pickBanManagementSelectTeamEl.value
 }
 
+// Pick Ban Management Check
+function pickBanManagementCheck(teamRequirement) {
+    if (!pickBanManagementCurrentMap) return false
+    if (teamRequirement && !pickBanManagementCurrentTeam) return false
+    const currentMapElement = document.getElementById(pickBanManagementCurrentMap)
+    if (!currentMapElement) return false
+    return currentMapElement
+}
+
 // Pick Ban Management Set Ban
 function pickBanManagementSetBan() {
-    if (!pickBanManagementCurrentTeam || !pickBanManagementCurrentMap) return
-    const currentMapElement = document.getElementById(pickBanManagementCurrentMap)
+    const currentMapElement = pickBanManagementCheck(true)
     if (!currentMapElement) return
 
     // Set actioned
@@ -681,8 +597,7 @@ function pickBanManagementSetBan() {
 
 // Pick Ban Management Remove Ban
 function pickBanManagementRemoveBan() {
-    if (!pickBanManagementCurrentTeam || !pickBanManagementCurrentMap) return
-    const currentMapElement = document.getElementById(pickBanManagementCurrentMap)
+    const currentMapElement = pickBanManagementCheck(true)
     if (!currentMapElement) return
 
     // Check if the map is picked before removing the actioned
@@ -714,8 +629,7 @@ function pickBanManagementRemoveBan() {
 
 // Pick Ban Management Set Pick
 function pickBanManagementSetPick() {
-    if (!pickBanManagementCurrentTeam || !pickBanManagementCurrentMap) return
-    const currentMapElement = document.getElementById(pickBanManagementCurrentMap)
+    const currentMapElement = pickBanManagementCheck(true)
     if (!currentMapElement) return
 
     // Set actioned
@@ -744,11 +658,11 @@ function pickBanManagementSetPick() {
 
 // Pick Ban Management Remove Pick
 function pickBanManagementRemovePick() {
-    if (!pickBanManagementCurrentTeam || !pickBanManagementCurrentMap) return
-    const currentMapElement = document.getElementById(pickBanManagementCurrentMap)
+    const currentMapElement = pickBanManagementCheck(false)
     if (!currentMapElement) return
 
     currentMapElement.dataset.pickerTeam = "false"
+    currentMapElement.children[2].style.display = "none"
 
     // Check if map is banned before removing the actioned
     if (currentMapElement.dataset.bannedByRed === "false" || currentMapElement.dataset.bannedByBlue === "false") {
@@ -759,8 +673,7 @@ function pickBanManagementRemovePick() {
 
 // Pick Ban Management Add Winner
 function pickBanManagementSetWinner() {
-    if (!pickBanManagementCurrentTeam || !pickBanManagementCurrentMap) return
-    const currentMapElement = document.getElementById(pickBanManagementCurrentMap)
+    const currentMapElement = pickBanManagementCheck(true)
     if (!currentMapElement) return
 
     currentMapElement.children[2].style.display = "block"
@@ -769,9 +682,7 @@ function pickBanManagementSetWinner() {
 
 // Pick Ban Management Remove Winner
 function pickBanManagementRemoveWinner() {
-    if (!pickBanManagementCurrentTeam || !pickBanManagementCurrentMap) return
-    const currentMapElement = document.getElementById(pickBanManagementCurrentMap)
+    const currentMapElement = pickBanManagementCheck(false)
     if (!currentMapElement) return
-
     currentMapElement.children[2].style.display = "none"
 }
