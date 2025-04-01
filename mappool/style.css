@@ -222,7 +222,7 @@
     font-family: "Inter Tight";
     display: none;
 }
-.category-map-picked-by-team { color: white; }
+.category-map-pick-ban-team { color: #DDD; }
 /* Category Map Winner */
 .category-map-winner {
     position: absolute;
@@ -382,11 +382,29 @@
     position: absolute;
     top: 0;
     left: 2560px;
-    width: 325px;
+    width: 650px;
     height: 1440px;
     background-color: var(--dark-purple);
     font-family: "Inter Tight";
+    display: flex;
 }
+/* Sidebar Column */
+.column {
+    width: 325px;
+    height: 1440px;
+}
+/* Sidebar Divider */
+.divider {
+    position: absolute;
+    top: 0;
+    width: 2px;
+    height: inherit;
+    background-color: white;
+}
+.divider-1 {
+    left: 324px;
+}
+/* Sidebar Section */
 .sidebar-section {
     padding: 20px 0;
     border-bottom: 2px solid white;
@@ -407,7 +425,7 @@
     text-align: center;
 }
 #next-auto-picker-team { font-size: 2em; }
-#pick-ban-instructions-text { 
+.pick-ban-related-text { 
     width: 94%;
     margin: auto;
     margin-top: 20px;
@@ -425,12 +443,13 @@
 .sidebar-button-container button {
     width: 125px;
     height: 50px;
-    font-weight: 700;
     background-color: transparent;
     border: 2px solid white;
     color: white;
     font-size: 1.5em;
     border-radius: 15px;
+    font-family: "Inter Tight";
+    font-weight: 500;
 }
 .sidebar-button-container button:active {
     color: var(--dark-purple);
@@ -438,3 +457,47 @@
 }
 .sidebar-button-container .full-length-button { width: 265px; }
 .sidebar-button-container .extra-height-button { height: 75px;}
+/* Pick Management Selects */
+select {
+    margin-top: 20px;
+    width: 325px;
+    background-color: transparent;
+}
+select::-webkit-scrollbar { display: none; }
+option[selected] { color: var(--dark-purple); }
+select option {
+    font-family: "Inter Tight";
+    text-align: center;
+    font-size: 1.75em;
+    font-weight: 700;
+    color: white;
+}
+/* Pick Management Title */
+.pick-ban-management-title {
+    margin-top: 30px;
+    font-family: "Inter Tight";
+    text-align: center;
+    font-size: 2em;
+    font-weight: 700;
+    color: white;
+}
+/* Pick Ban Management Button Container */
+.pick-ban-management-button-container {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    color: white;
+    font-family: "Inter Tight";
+    font-weight: 500;
+    text-align: center;
+    font-size: 1.5em;
+}
+.pick-ban-management-map-button {
+    font-family: "Inter Tight";
+    font-weight: 500;
+    width: 90px;
+    height: 40px;
+    line-height: 40px;
+}

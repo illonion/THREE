@@ -2,17 +2,21 @@
 const roundTextEl = document.getElementById("round-text")
 
 // Get beatmaps
-const RO32DefaultBeatmap = "2263578"
-const RO16DefaultBeatmap = "10842"
+const RO32DefaultBeatmap = "4818584"
+const RO16DefaultBeatmap = "41823"
+const QFDefaultBeatmap = ""
+const SFDefaultBeatmap = ""
+const FDefaultBeatmap = ""
+const GFDefaultBeatmap = ""
 const mappoolSectionEl = document.getElementById("mappool-section")
 let currentBestOf = 0, currentFirstTo = 0, currentRedScore = 0, currentBlueScore = 0
-let allBeatmaps
+let allBeatmaps, roundName
 async function getBeatmaps() {
     const response = await fetch("../_data/beatmaps.json")
     const responseJson = await response.json()
     allBeatmaps = responseJson.beatmaps
     
-    const roundName = responseJson.roundName
+    roundName = responseJson.roundName
     roundTextEl.innerText = roundName
     currentBestOf = 13
     switch (roundName) {
@@ -54,6 +58,7 @@ async function getBeatmaps() {
             categoryMap.dataset.bannedByBlue = "false"
             categoryMap.addEventListener("mousedown", mapClickEvent)
             categoryMap.addEventListener("contextmenu", function(event) {event.preventDefault()})
+            categoryMap.setAttribute("id", beatmaps[i].beatmap_id)
 
             // Create category detail container
             const categoryMapDetailContainer = document.createElement("div")
@@ -98,7 +103,7 @@ async function getBeatmaps() {
             const categoryMapPickBanAction = document.createElement("span")
             categoryMapPickBanAction.classList.add("category-map-pick-ban-action")
             const categoryMapPickedByTeam = document.createElement("span")
-            categoryMapPickedByTeam.classList.add("cateogry-map-pick-ban-team")
+            categoryMapPickedByTeam.classList.add("category-map-pick-ban-team")
             categoryMapPickedBy.append(categoryMapPickBanAction, " by ", categoryMapPickedByTeam)
 
             // Create category map winner
@@ -197,12 +202,19 @@ async function mapClickEvent(event) {
     if (event.shiftKey) action = "reset"
 
     // Check if it is the default pick
-    if (currentMapId === RO32DefaultBeatmap) {
+    if ((currentMapId === RO32DefaultBeatmap && roundName === "RO32") ||
+        (currentMapId === RO16DefaultBeatmap && roundName === "RO16") ||
+        (currentMapId === QFDefaultBeatmap && roundName === "QF") ||
+        (currentMapId === SFDefaultBeatmap && roundName === "SF") ||
+        (currentMapId === FDefaultBeatmap && roundName === "F") ||
+        (currentMapId === GFDefaultBeatmap && roundName === "GF")) {
         team = "wheel"
         action = "pick"
     }
 
     if (action === "ban") {
+        this.children[0].classList.add("category-map-detail-container-actioned")
+
         this.dataset.picker = "false"
         if (team === "red") this.dataset.bannedByRed = "true"
         if (team === "blue") this.dataset.bannedByBlue = "true"
@@ -214,6 +226,8 @@ async function mapClickEvent(event) {
         else if (this.dataset.bannedByRed === "true" || this.dataset.bannedByBlue === "true") this.children[1].children[1].innerText = team
     }
     if (action === "pick") {
+        this.children[0].classList.add("category-map-detail-container-actioned")
+
         this.dataset.picker = team
         this.dataset.bannedByRed = "false"
         this.dataset.bannedByBlue = "false"
@@ -409,4 +423,129 @@ let isAutopickOn = true
 function toggleAutopick() {
     isAutopickOn = !isAutopickOn
     toggleAutopickEl.innerText = `Toggle Autopick: ${isAutopickOn? "ON" : "OFF"}`
+}
+
+// Select Action
+const pickBanManagementEl = document.getElementById("pick-ban-management")
+const pickBanManagementSelctOptionEl = document.getElementById("pick-ban-management-select-action")
+let pickBanManagementCurrentAction
+function pickBanManagementSelectAction() {
+    pickBanManagementCurrentAction = pickBanManagementSelctOptionEl.value
+
+    // Remove unwanted elements
+    while (pickBanManagementEl.childElementCount > 3) {
+        pickBanManagementEl.lastElementChild.remove()
+    }
+
+    // Set Ban
+    if (pickBanManagementCurrentAction === "setBan") {
+        // Select Map
+        const whichMap = document.createElement("div")
+        whichMap.innerText = "Which Map?"
+        whichMap.classList.add("pick-ban-management-title")
+        
+        // Select Map
+        const pickbanManagementButtonContainer = document.createElement("div")
+        pickbanManagementButtonContainer.classList.add("pick-ban-management-button-container")   
+        
+        for (const key in allBeatmaps) {
+            const beatmaps = allBeatmaps[key]
+            for (let i = 0; i < beatmaps.length; i++) {
+                const mapButton = document.createElement("div")
+                mapButton.classList.add("pick-ban-management-map-button")
+                mapButton.innerText = `${key}${beatmaps[i].order + 1}`
+                mapButton.addEventListener("click", pickBanManagementSetMap)
+                mapButton.dataset.id = beatmaps[i].beatmap_id
+                pickbanManagementButtonContainer.append(mapButton)
+            }
+        }
+
+        // Which Team?
+        const whichTeam = document.createElement("div")
+        whichTeam.innerText = "Which Team?"
+        whichTeam.classList.add("pick-ban-management-title")
+
+        // Create select for all teams
+        const teamSelect = document.createElement("select")
+        teamSelect.setAttribute("size", "3")
+        teamSelect.setAttribute("id", "pick-ban-management-select-team")
+        teamSelect.setAttribute("onchange", "pickBanManagementSelectTeam()")
+        // Get all teams
+        const redTeam = document.createElement("option")
+        redTeam.setAttribute("value", "red")
+        redTeam.innerText = "Red"
+        const blueTeam = document.createElement("option")
+        blueTeam.setAttribute("value", "blue")
+        blueTeam.innerText = "Blue"
+        const allTeams = document.createElement("option")
+        allTeams.setAttribute("value", "all")
+        allTeams.innerText = "All Teams"
+        teamSelect.append(redTeam, blueTeam, allTeams)
+        
+        pickBanManagementEl.append(whichMap, pickbanManagementButtonContainer, whichTeam, teamSelect)
+    }
+
+    // Apply Changes Button Container
+    const applyChangesButtonContainer = document.createElement("div")
+    applyChangesButtonContainer.classList.add("sidebar-button-container")
+
+    // Apply Changes Button
+    const applyChangesButton = document.createElement("button")
+    applyChangesButton.classList.add("full-length-button", "extra-height-button")
+    applyChangesButton.innerText = "Apply Changes"
+
+    switch (pickBanManagementCurrentAction) {
+        case "setBan":
+            applyChangesButton.setAttribute("onclick", "pickBanManagementSetBan()")
+            break
+    }
+
+    applyChangesButtonContainer.append(applyChangesButton)
+    pickBanManagementEl.append(applyChangesButtonContainer)
+}
+
+// Pick Ban Management Set Map
+let pickBanManagementCurrentMap
+function pickBanManagementSetMap() {
+    pickBanManagementCurrentMap = this.dataset.id
+    const pickBanManagementMapButtonEls = document.getElementsByClassName("pick-ban-management-map-button")
+    for (let i = 0; i < pickBanManagementMapButtonEls.length; i++) {
+        pickBanManagementMapButtonEls[i].style.backgroundColor = "transparent"
+        pickBanManagementMapButtonEls[i].style.color = "white"
+    }
+
+    this.style.backgroundColor = "#CECECE"
+    this.style.color = "black"
+}
+
+// Pick Ban Management Select Team
+let pickBanManagementCurrentTeam
+const pickBanManagementSelectTeam = () => {
+    const pickBanManagementSelectTeamEl = document.getElementById("pick-ban-management-select-team")
+    pickBanManagementCurrentTeam = pickBanManagementSelectTeamEl.value
+}
+
+// Pick Ban Management Set Ban
+function pickBanManagementSetBan() {
+    if (!pickBanManagementCurrentTeam || !pickBanManagementCurrentMap) return
+    const currentMapElement = document.getElementById(pickBanManagementCurrentMap)
+
+    // Set actioned
+    if (!currentMapElement.children[0].classList.contains("category-map-detail-container-actioned")) {
+        currentMapElement.children[0].classList.add("category-map-detail-container-actioned")
+    }
+
+    // Set ban
+    currentMapElement.children[1].children[0].innerText = "banned"
+    currentMapElement.children[1].style.display = "block"
+    if (pickBanManagementCurrentTeam === "red") {
+        currentMapElement.children[1].children[1].innerText = "red"
+    } else if (pickBanManagementCurrentTeam === "blue") {
+        currentMapElement.children[1].children[1].innerText = "blue"
+    } else if (pickBanManagementCurrentTeam === "all") {
+        currentMapElement.children[1].children[1].innerText = "red / blue"
+    }
+
+    // Remove winner
+    currentMapElement.children[2].style.display = "none"
 }
