@@ -315,6 +315,9 @@ let redTeamName, blueTeamName
 const chatDisplayEl = document.getElementById("chat-display-wrapper")
 let chatLen
 
+// Beatmap variables
+let mapId, mapMd5
+
 const socket = createTosuWsSocket()
 socket.onmessage = event => {
     const data = JSON.parse(event.data)
@@ -361,6 +364,42 @@ socket.onmessage = event => {
         chatDisplayEl.append(fragment)
         chatLen = data.tourney.manager.chat.length
         chatDisplayEl.scrollTop = chatDisplayEl.scrollHeight
+    }
+
+    // Autopicking
+    if (mapId !== data.menu.bm.id && mapMd5 !== data.menu.bm.md5) {
+        mapId = data.menu.bm.id
+        mapMd5 = data.menu.bm.md5
+
+        // Find element to click on
+        const currentMap = document.getElementById(mapId)
+        // Check if it can be clicked on
+        if (currentMap && currentMap.dataset.pickerTeam === "false" && currentMap.dataset.bannedByRed === "false" && currentMap.dataset.bannedByBlue === "false" && isAutopickOn) {
+            // Dispatch auto click
+            const event = new MouseEvent('mousedown', {
+                bubbles: true,
+                cancelable: true,
+                view: window,
+                button: (nextPicker === "red")? 0 : 2
+            })
+            currentMap.dispatchEvent(event)
+
+            // Check if it is the default map
+            let setNextPicker = true
+            if ((mapId === RO32DefaultBeatmap && roundName === "RO32") ||
+                (mapId === RO16DefaultBeatmap && roundName === "RO16") ||
+                (mapId === QFDefaultBeatmap && roundName === "QF") ||
+                (mapId === SFDefaultBeatmap && roundName === "SF") ||
+                (mapId === FDefaultBeatmap && roundName === "F") ||
+                (mapId === GFDefaultBeatmap && roundName === "GF")) {
+                setNextPicker = false
+            }
+
+            if (setNextPicker) {
+                if (nextPicker === "red") updateNextAutoPicker("blue")
+                else if (nextPicker === "blue") updateNextAutoPicker("red")
+            }
+        }
     }
 }
 
