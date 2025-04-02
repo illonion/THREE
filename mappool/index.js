@@ -183,6 +183,7 @@ const animationCardPickBanTeamEl = document.getElementById("animation-card-pick-
 const animationCardPickBanActionEl = document.getElementById("animation-card-pick-ban-action")
 
 // Map Click Event
+let currentSelectedElement
 async function mapClickEvent(event) {
     // Find map
     const currentMapId = this.dataset.id
@@ -234,6 +235,8 @@ async function mapClickEvent(event) {
         this.children[1].style.display = "block"
         this.children[1].children[0].innerText = "picked"
         this.children[1].children[1].innerText = team
+
+        currentSelectedElement = this
     }
 
     if (action === "reset") {
@@ -316,7 +319,15 @@ const chatDisplayEl = document.getElementById("chat-display-wrapper")
 let chatLen
 
 // Beatmap variables
-let mapId, mapMd5
+let mappooolMap, mapId, mapMd5
+
+// Current scores
+let scoreVisible
+let redTeamScore = 0, blueTeamScore = 0
+let redTeamScoreSecondary = 0, blueTeamScoreSecondary = 0
+
+// IPC State
+let ipcState, checkedWinner = false
 
 const socket = createTosuWsSocket()
 socket.onmessage = event => {
@@ -373,6 +384,7 @@ socket.onmessage = event => {
 
         // Find element to click on
         const currentMap = document.getElementById(mapId)
+        mappooolMap = findBeatmapById(mapId.toString())
         // Check if it can be clicked on
         if (currentMap && currentMap.dataset.pickerTeam === "false" && currentMap.dataset.bannedByRed === "false" && currentMap.dataset.bannedByBlue === "false" && isAutopickOn) {
             // Dispatch auto click
@@ -400,6 +412,70 @@ socket.onmessage = event => {
                 else if (nextPicker === "blue") updateNextAutoPicker("red")
             }
         }
+    }
+
+    // Get scores
+    if (scoreVisible !== data.tourney.manager.scoreVisible) scoreVisible = data.tourney.manager.scoreVisible
+    if (scoreVisible) {
+        redTeamScore = 0
+        blueTeamScore = 0
+        redTeamScoreSecondary = 0
+        blueTeamScoreSecondary = 0
+
+        for (let i = 0; i < data.tourney.manager.ipcClients.length; i++) {
+            let currentScore = 0
+            let currentScoreSecondary = 0
+            // Check if map is RX
+            if (mappooolMap && mappooolMap.mod.includes("RX")) {
+                currentScore = data.tourney.manager.ipcClients[i].gameplay.hits["0"]
+                currentScoreSecondary = data.tourney.manager.ipcClients[i].accuracy
+            } else {
+                currentScore = data.tourney.manager.ipcClients[i].gameplay.score
+            }
+            
+            if (data.tourney.manager.ipcClients[i].team === "left") {
+                redTeamScore += currentScore
+                redTeamScoreSecondary += currentScoreSecondary
+            } else {
+                blueTeamScore += currentScore
+                blueTeamScoreSecondary += currentScoreSecondary
+            }
+        }
+    }
+
+    // Get current state and assign winner based on state
+    if (ipcState !== data.tourney.manager.ipcState) {
+        ipcState = data.tourney.manager.ipcState
+        if (ipcState !== 4) checkedWinner = false
+        if (ipcState === 4 && isStarOn) {
+            checkedWinner = true
+
+            // If map is RX map, and then apply winner
+            let currentWinner = ""
+            if (mappooolMap && mappooolMap.mod.includes("RX")) {
+                if (redTeamScore < blueTeamScore) currentWinner = "red"
+                else if (redTeamScore > blueTeamScore) currentWinner = "blue"
+                else if (redTeamScoreSecondary > blueTeamScoreSecondary) currentWinner = "red"
+                else if (redTeamScoreSecondary < blueTeamScoreSecondary) currentWinner = "blue"
+            } else {
+                if (redTeamScore > blueTeamScore) currentWinner = "red"
+                else if (blueTeamScore < redTeamScore) currentWinner = "blue"
+            }
+
+            // Update star count
+            updateStarCount(currentWinner, "plus")
+
+            if ((mapId === RO32DefaultBeatmap && roundName === "RO32") ||
+                (mapId === RO16DefaultBeatmap && roundName === "RO16") ||
+                (mapId === QFDefaultBeatmap && roundName === "QF") ||
+                (mapId === SFDefaultBeatmap && roundName === "SF") ||
+                (mapId === FDefaultBeatmap && roundName === "F") ||
+                (mapId === GFDefaultBeatmap && roundName === "GF")) {
+                if (currentWinner === "red") updateNextAutoPicker("blue")
+                else if (currentWinner === "blue") updateNextAutoPicker("red")
+            }
+        }
+
     }
 }
 
