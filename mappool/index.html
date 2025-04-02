@@ -149,6 +149,24 @@
                 </select>
             </div>
         </section>
+        <div class="divider divider-2"></div>
+        <section class="column">
+            <div class="sidebar-section">
+                <div class="sidebar-header">Scene<br>Management</div>
+                <div class="sidebar-button-container">
+                    <button id="auto-advance-button" class="full-length-button extra-height-button" onclick="switchAutoAdvance()">AUTO ADVANCE: OFF</button>
+                </div>
+                <div id="autoAdvanceTimer" class="controlLabel">
+                    <span id="autoAdvanceTimerLabel"></span> <span id="autoAdvanceTimerTime"></span>
+                </div>
+                <h1 class="sidebar-header">Scenes (click<br>to override)</h1>
+                <div id="sceneCollection" class="sidebar-button-container">
+                    <template id="sceneButtonTemplate">
+                        <div class="full-length-button extra-height-button">SWITCH TO __SCENE_NAME__</div>
+                    </template>
+                </div>
+            </div>
+        </section>
     </section>
 
     <script src="../_shared/deps/reconnecting-websocket.min.js"></script>

@@ -26,7 +26,6 @@
 .main {
     width: 2560px;
     height: 1440px;
-    background-image: url("static/background.png");
 }
 
 /* Top Section */
@@ -382,7 +381,7 @@
     position: absolute;
     top: 0;
     left: 2560px;
-    width: 650px;
+    width: 975px;
     height: 1440px;
     background-color: var(--dark-purple);
     font-family: "Inter Tight";
@@ -401,9 +400,8 @@
     height: inherit;
     background-color: white;
 }
-.divider-1 {
-    left: 324px;
-}
+.divider-1 { left: 324px; }
+.divider-2 { left: 649px; }
 /* Sidebar Section */
 .sidebar-section {
     padding: 20px 0;
@@ -440,7 +438,7 @@
     width: inherit;
     gap: 15px;
 }
-.sidebar-button-container button {
+.sidebar-button-container * {
     width: 125px;
     height: 50px;
     background-color: transparent;
@@ -450,13 +448,17 @@
     border-radius: 15px;
     font-family: "Inter Tight";
     font-weight: 500;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.sidebar-button-container button:active {
+.sidebar-button-container *:active {
     color: var(--dark-purple);
     background-color: white;
 }
 .sidebar-button-container .full-length-button { width: 265px; }
-.sidebar-button-container .extra-height-button { height: 75px;}
+.sidebar-button-container .extra-height-button { height: 75px; }
 /* Pick Management Selects */
 select {
     margin-top: 20px;

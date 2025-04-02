@@ -297,6 +297,10 @@ async function mapClickEvent(event) {
     animationCardWrapperEl.style.opacity = 0
     await delay(300)
     animationCardWrapperEl.style.display = "none"
+
+    if (enableAutoAdvance) {
+        scheduleSceneTransition(gameplay_scene_name, pick_to_transition_delay_ms);
+    }
 }
 
 // Display length
@@ -327,7 +331,7 @@ let redTeamScore = 0, blueTeamScore = 0
 let redTeamScoreSecondary = 0, blueTeamScoreSecondary = 0
 
 // IPC State
-let ipcState, checkedWinner = false
+let previousIpcState, ipcState, checkedWinner = false
 
 const socket = createTosuWsSocket()
 socket.onmessage = event => {
@@ -445,7 +449,10 @@ socket.onmessage = event => {
 
     // Get current state and assign winner based on state
     if (ipcState !== data.tourney.manager.ipcState) {
+        previousIpcState = ipcState
         ipcState = data.tourney.manager.ipcState
+
+        // Set winner stuff
         if (ipcState !== 4) checkedWinner = false
         if (ipcState === 4 && isStarOn) {
             checkedWinner = true
@@ -476,6 +483,26 @@ socket.onmessage = event => {
             }
         }
 
+        // Check which scene to go to after a map is over
+        if (previousIpcState === 4 && 
+            ipcState !== previousIpcState && 
+            enableAutoAdvance && 
+            currentBlueScore !== currentFirstTo && 
+            currentRedScore !== currentFirstTo &&
+            isStarOn) {
+            obsGetCurrentScene((scene) => {
+                if (scene.name === mappool_scene_name) return
+                obsSetCurrentScene(mappool_scene_name)
+            })
+        } else if (previousIpcState === 4 &&
+            ipcState !== previousIpcState &&
+            enableAutoAdvance
+        ) {
+            obsGetCurrentScene((scene) => {
+                if (scene.name === winner_scene_name) return
+                obsSetCurrentScene(winner_scene_name)
+            })
+        }
     }
 }
 
@@ -800,4 +827,76 @@ function pickBanManagementRemoveWinner() {
     const currentMapElement = pickBanManagementCheck(false)
     if (!currentMapElement) return
     currentMapElement.children[2].style.display = "none"
+}
+
+// OBS Information
+const sceneCollection = document.getElementById("sceneCollection")
+let autoadvance_button = document.getElementById('auto-advance-button')
+let autoadvance_timer_container = document.getElementById('autoAdvanceTimer')
+let autoadvance_timer_label = document.getElementById('autoAdvanceTimerLabel')
+const pick_to_transition_delay_ms = 10000;
+let enableAutoAdvance = false
+const gameplay_scene_name = "Gameplay"
+const mappool_scene_name = "Mappool"
+const winner_scene_name = "Winner"
+
+let sceneTransitionTimeoutID;
+
+autoadvance_timer_container.style.opacity = '0';
+
+function switchAutoAdvance() {
+    enableAutoAdvance = !enableAutoAdvance
+    if (enableAutoAdvance) {
+        autoadvance_button.innerText = 'AUTO ADVANCE: ON'
+        autoadvance_button.style.backgroundColor = 'var(--green)'
+    } else {
+        autoadvance_button.innerText = 'AUTO ADVANCE: OFF'
+        autoadvance_button.style.backgroundColor = 'transparent'
+    }
+}
+
+const obsGetCurrentScene = window.obsstudio?.getCurrentScene ?? (() => {})
+const obsGetScenes = window.obsstudio?.getScenes ?? (() => {})
+const obsSetCurrentScene = window.obsstudio?.setCurrentScene ?? (() => {})
+
+obsGetScenes(scenes => {
+    for (const scene of scenes) {
+        let clone = document.getElementById("sceneButtonTemplate").content.cloneNode(true)
+        let buttonNode = clone.querySelector('div')
+        buttonNode.id = `scene__${scene}`
+        buttonNode.textContent = `GO TO: ${scene}`
+        buttonNode.onclick = function() { obsSetCurrentScene(scene); }
+        sceneCollection.appendChild(clone)
+    }
+
+    obsGetCurrentScene((scene) => { document.getElementById(`scene__${scene.name}`).classList.add("active-scene") })
+})
+
+function scheduleSceneTransition(targetSceneName, delay) {
+    const createTransitionTask = (duration) => setTimeout(() => {
+        obsGetCurrentScene((currentScene) => {
+            if (currentScene.name === targetSceneName) {
+                autoadvance_timer_label.textContent = `Already on ${targetSceneName}\n`;
+                return;
+            }
+            obsSetCurrentScene(targetSceneName);
+            autoadvance_timer_container.style.opacity = '0';
+        });
+    }, duration)
+
+    // use global timeout for this overlay, the pick/ban style doesn't lend to repeated pick events so
+    // no point in idempotence
+    clearTimeout(sceneTransitionTimeoutID);
+    sceneTransitionTimeoutID = createTransitionTask(delay);
+
+    autoadvance_timer_time = new CountUp('autoAdvanceTimerTime',
+        delay / 1000,
+        0,
+        1,
+        delay / 1000,
+        {useEasing: false, suffix: 's'}
+    );
+    autoadvance_timer_time.start();
+    autoadvance_timer_container.style.opacity = '1';
+    autoadvance_timer_label.textContent = `Switching to ${targetSceneName} in`;
 }
