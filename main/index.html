@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gameplay</title>
 
+    <link rel="stylesheet" href="../_shared/gameplay-mappool.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Background Video -->
@@ -14,7 +18,36 @@
     </video>
 
     <div class="main">
+        <!-- Top Section -->
+        <section class="top-section">
+            <div class="team-icon red-team-icon" id="red-team-icon"></div>
+            <div class="team-icon blue-team-icon" id="blue-team-icon"></div>
 
+            <div class="team-name red-team-name" id="red-team-name">long team name - ffbfbf</div>
+            <div class="team-name blue-team-name" id="blue-team-name">Zain - Bold - 36 - bfddff</div>
+
+            <div class="team-star-container red-team-star-container" id="red-team-star-container">
+                <div class="team-star team-star-fill"></div>
+                <div class="team-star team-star-empty"></div>
+                <div class="team-star team-star-empty"></div>
+                <div class="team-star team-star-empty"></div>
+                <div class="team-star team-star-empty"></div>
+                <div class="team-star team-star-empty"></div>
+            </div>
+            <div class="team-star-container blue-team-star-container" id="blue-team-star-container">
+                <div class="team-star team-star-fill"></div>
+                <div class="team-star team-star-empty"></div>
+                <div class="team-star team-star-empty"></div>
+                <div class="team-star team-star-empty"></div>
+                <div class="team-star team-star-empty"></div>
+                <div class="team-star team-star-empty"></div>
+            </div>
+
+            <!-- Logo Section -->
+            <img class="logo" src="../_shared/assets/three-logo.png">
+            <div class="logo-text showcase-text">:THREE</div>
+            <div class="logo-text round-text" id="round-text">RO32</div>
+        </section>
     </div>
 
     <script src="index.js"></script>

@@ -1,12 +1,6 @@
-/* Background Video / Logo (Stream idle will be deleted later) */
-.background-video, .main {
-    position: absolute;
-    top: 0;
-    left: 0;   
+:root {
+    --team-icon-horizontal-dimension: 115px;
+    --team-name-star-horizontal-dimension: 220px;
 }
 
-/* Main */
-.main {
-    width: 2560px;
-    height: 1440px;
-}
+.main { background-image: url("static/background.png"); }
