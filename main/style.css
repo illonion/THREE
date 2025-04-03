@@ -103,6 +103,7 @@
 .left-score-number { right: 51%; }
 .right-score-number { left: 51%; }
 /* Score Number Accuracy */
-.score-number-accuracy {
-    font-size: 32px;
-}
+.score-number-accuracy { font-size: 32px; }
+
+/* Chat Display */
+.chat-display { height: 208px; }
