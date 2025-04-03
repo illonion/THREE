@@ -69,3 +69,40 @@
     color: #f3ff70;
     font-weight: 800
 }
+
+/* Score Section */
+/* Score Bar */
+.score-bar {
+    position: absolute;
+    top: 1194px;
+    opacity: 0.620;
+    width: 41px;
+    height: 16px;
+    background-color: #ffffff;
+    transition: 200ms ease-in-out;
+}
+.left-score-bar { 
+    right: 50%;
+    border-radius: 20px 0 0 20px;
+}
+.right-score-bar { 
+    left: 50%;
+    border-radius: 0 20px 20px 0;
+}
+/* Score Number */
+.score-number {
+    position: absolute;
+    top: 1213px;
+    font-size: 48px;
+    color: #ffffff;
+    font-weight: 800;
+    font-family: "Zain";
+    opacity: 0.62;
+    transition: 200ms ease-in-out;
+}
+.left-score-number { right: 51%; }
+.right-score-number { left: 51%; }
+/* Score Number Accuracy */
+.score-number-accuracy {
+    font-size: 32px;
+}
