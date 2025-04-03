@@ -1,6 +1,71 @@
 :root {
     --team-icon-horizontal-dimension: 115px;
     --team-name-star-horizontal-dimension: 220px;
+    --match-history-horizontal-dimension: 88px;
+    --match-history-category-id-horizontal-dimension: 13px;
+    --match-history-score-horizontal-dimension: 24px;
 }
 
 .main { background-image: url("static/background.png"); }
+
+/* Match History Section */
+.match-history-section {
+    position: absolute;
+    top: 233px;
+}
+.red-match-history-section { left: var(--match-history-horizontal-dimension); }
+.blue-match-history-section { right: var(--match-history-horizontal-dimension); }
+/* Match History Map */
+.match-history-map {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 5px;
+}
+.blue-match-history-map { flex-direction: row-reverse; }
+/* Picker Triangle */
+.picker-triangle {
+    width: 18px;
+    height: 21px;
+}
+.left-picker-triangle { clip-path: polygon(0% 0%, 100% 50%, 0% 100%); }
+.right-picker-triangle { clip-path: polygon(100% 0%, 0% 50%, 100% 100%); }
+.red-picker-triangle { background-color: #fe7e7e; }
+.blue-picker-triangle { background-color: #7ebafe; }
+.default-picker-triangle { background-color: lightgreen; }
+/* Match History Details */
+.match-history-details {
+    position: relative;
+    width: 384px;
+    height: 54px;
+    border: 1px solid #b5b5b5;
+    font-weight: 800;
+    font-family: "Zain";
+}
+/* Match History Category ID */
+.match-history-category-id {
+    position: absolute;
+    top: 0;
+    line-height: 60px;
+    font-size: 32px;
+    color: #fffbcd;
+    text-shadow: 0 0 29px rgba(192, 192, 25, 0.69), 0 0 59px rgba(192, 192, 25, 0.69);
+}
+.red-match-history-category-id { left: var(--match-history-category-id-horizontal-dimension); }
+.blue-match-history-category-id { right: var(--match-history-category-id-horizontal-dimension); }
+/* Match History Score */
+.match-history-score {
+    position: absolute;
+    top: 0;
+    color: white;
+    font-size: 23px;
+    font-weight: 500;
+    line-height: 60px;
+}
+.red-match-history-score { right: var(--match-history-score-horizontal-dimension); }
+.blue-match-history-score { left: var(--match-history-score-horizontal-dimension); }
+/* Match History Score Winner */
+.match-history-score-winner { 
+    color: #f3ff70;
+    font-weight: 800
+}
