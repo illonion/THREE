@@ -889,7 +889,7 @@ function scheduleSceneTransition(targetSceneName, delay) {
     clearTimeout(sceneTransitionTimeoutID);
     sceneTransitionTimeoutID = createTransitionTask(delay);
 
-    autoadvance_timer_time = new CountUp('autoAdvanceTimerTime',
+    let autoadvance_timer_time = new CountUp('autoAdvanceTimerTime',
         delay / 1000,
         0,
         1,
