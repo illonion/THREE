@@ -1,13 +1,16 @@
 // Round Text
 const roundTextEl = document.getElementById("round-text")
 
+// Get default maps
+let defaultMaps
+async function getDefaultBeatmaps() {
+    const response = await fetch("../_data/beatmaps.json")
+    const responseJson = await response.json()
+    defaultMaps = responseJson
+}
+getDefaultBeatmaps()
+
 // Get beatmaps
-const RO32DefaultBeatmap = "4818584"
-const RO16DefaultBeatmap = "41823"
-const QFDefaultBeatmap = ""
-const SFDefaultBeatmap = ""
-const FDefaultBeatmap = ""
-const GFDefaultBeatmap = ""
 const mappoolSectionEl = document.getElementById("mappool-section")
 let currentBestOf = 0, currentFirstTo = 0, currentRedScore = 0, currentBlueScore = 0
 let allBeatmaps, roundName
@@ -205,12 +208,12 @@ async function mapClickEvent(event) {
     if (event.shiftKey) action = "reset"
 
     // Check if it is the default pick
-    if ((currentMapId === RO32DefaultBeatmap && roundName === "RO32") ||
-        (currentMapId === RO16DefaultBeatmap && roundName === "RO16") ||
-        (currentMapId === QFDefaultBeatmap && roundName === "QF") ||
-        (currentMapId === SFDefaultBeatmap && roundName === "SF") ||
-        (currentMapId === FDefaultBeatmap && roundName === "F") ||
-        (currentMapId === GFDefaultBeatmap && roundName === "GF")) {
+    if ((currentMapId === defaultMaps.RO32DefaultBeatmap && roundName === "RO32") ||
+        (currentMapId === defaultMaps.RO16DefaultBeatmap && roundName === "RO16") ||
+        (currentMapId === defaultMaps.QFDefaultBeatmap && roundName === "QF") ||
+        (currentMapId === defaultMaps.SFDefaultBeatmap && roundName === "SF") ||
+        (currentMapId === defaultMaps.FDefaultBeatmap && roundName === "F") ||
+        (currentMapId === defaultMaps.GFDefaultBeatmap && roundName === "GF")) {
         team = "wheel"
         action = "pick"
     }
@@ -405,12 +408,12 @@ socket.onmessage = event => {
 
             // Check if it is the default map
             let setNextPicker = true
-            if ((mapId === RO32DefaultBeatmap && roundName === "RO32") ||
-                (mapId === RO16DefaultBeatmap && roundName === "RO16") ||
-                (mapId === QFDefaultBeatmap && roundName === "QF") ||
-                (mapId === SFDefaultBeatmap && roundName === "SF") ||
-                (mapId === FDefaultBeatmap && roundName === "F") ||
-                (mapId === GFDefaultBeatmap && roundName === "GF")) {
+            if ((mapId === defaultMaps.RO32DefaultBeatmap && roundName === "RO32") ||
+                (mapId === defaultMaps.RO16DefaultBeatmap && roundName === "RO16") ||
+                (mapId === defaultMaps.QFDefaultBeatmap && roundName === "QF") ||
+                (mapId === defaultMaps.SFDefaultBeatmap && roundName === "SF") ||
+                (mapId === defaultMaps.FDefaultBeatmap && roundName === "F") ||
+                (mapId === defaultMaps.GFDefaultBeatmap && roundName === "GF")) {
                 setNextPicker = false
             }
 
@@ -475,12 +478,12 @@ socket.onmessage = event => {
             // Update star count
             updateStarCount(currentWinner, "plus")
 
-            if ((mapId === RO32DefaultBeatmap && roundName === "RO32") ||
-                (mapId === RO16DefaultBeatmap && roundName === "RO16") ||
-                (mapId === QFDefaultBeatmap && roundName === "QF") ||
-                (mapId === SFDefaultBeatmap && roundName === "SF") ||
-                (mapId === FDefaultBeatmap && roundName === "F") ||
-                (mapId === GFDefaultBeatmap && roundName === "GF")) {
+            if ((mapId === defaultMaps.RO32DefaultBeatmap && roundName === "RO32") ||
+                (mapId === defaultMaps.RO16DefaultBeatmap && roundName === "RO16") ||
+                (mapId === defaultMaps.QFDefaultBeatmap && roundName === "QF") ||
+                (mapId === defaultMaps.SFDefaultBeatmap && roundName === "SF") ||
+                (mapId === defaultMaps.FDefaultBeatmap && roundName === "F") ||
+                (mapId === defaultMaps.GFDefaultBeatmap && roundName === "GF")) {
                 if (currentWinner === "red") updateNextAutoPicker("blue")
                 else if (currentWinner === "blue") updateNextAutoPicker("red")
             }

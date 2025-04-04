@@ -1,3 +1,12 @@
+// Get default maps
+let defaultMaps
+async function getDefaultBeatmaps() {
+    const response = await fetch("../_data/beatmaps.json")
+    const responseJson = await response.json()
+    defaultMaps = responseJson
+}
+getDefaultBeatmaps()
+
 // Round Text
 const roundTextEl = document.getElementById("round-text")
 async function getBeatmaps() {
