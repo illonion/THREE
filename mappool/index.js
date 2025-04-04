@@ -161,6 +161,9 @@ function createStarDisplay() {
         newStar.classList.add("team-star", `team-star-${status}`)
         return newStar
     }
+
+    document.cookie = `currentRedScore=${currentRedScore}; path=/`
+    document.cookie = `currentBlueScore=${currentBlueScore}; path=/`
 }
 
 // Animation elements

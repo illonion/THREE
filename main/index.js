@@ -1,3 +1,27 @@
+// Round Text
+const roundTextEl = document.getElementById("round-text")
+async function getBeatmaps() {
+    const response = await fetch("../_data/beatmaps.json")
+    const responseJson = await response.json()
+    allBeatmaps = responseJson.beatmaps
+    
+    roundName = responseJson.roundName
+    roundTextEl.innerText = roundName
+    currentBestOf = 13
+    switch (roundName) {
+        case "RO32": case "RO16":
+            currentBestOf = 9
+            break
+        case "QF": case "SF":
+            currentBestOf = 11
+            break
+    }
+    currentFirstTo = Math.ceil(currentBestOf / 2)
+
+    createStarDisplay()
+}
+getBeatmaps()
+
 // Team Info
 const redTeamIconEl = document.getElementById("red-team-icon")
 const blueTeamIconEl = document.getElementById("blue-team-icon")
@@ -20,5 +44,56 @@ socket.onmessage = event => {
         blueTeamName = data.tourney.manager.teamName.right
         blueTeamNameEl.innerText = blueTeamName
         blueTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/${blueTeamName.replace(/[<>:"/\\|?*]/g, '_')}.png")`
+    }
+}
+
+// Set star count
+let isStarOn
+const redTeamStarContainerEl = document.getElementById("red-team-star-container")
+const blueTeamStarContainerEl = document.getElementById("blue-team-star-container")
+let currentBestOf = 0, currentFirstTo = 0, currentRedScore = 0, currentBlueScore = 0
+let previousRedScore = 0, previousBlueScore = 0
+setInterval(() => {
+    // Is Star On?
+    isStarOn = getCookie("isStarOn")
+    if (isStarOn === "true") {
+        redTeamStarContainerEl.style.display = "none"
+        blueTeamStarContainerEl.style.display = "none"
+    } else {
+        redTeamStarContainerEl.style.display = "flex"
+        blueTeamStarContainerEl.style.display = "flex"
+    }
+
+    // Change star count
+    console.log(currentRedScore, currentBlueScore)
+    currentRedScore = Number(getCookie("currentRedScore"))
+    currentBlueScore = Number(getCookie("currentBlueScore"))
+    if (currentRedScore !== previousRedScore ||
+        currentBlueScore !== previousBlueScore
+    ) {
+        previousRedScore = currentRedScore
+        previousBlueScore = currentBlueScore
+        createStarDisplay()
+    }
+}, 200)
+
+// Create star display
+function createStarDisplay() {
+    redTeamStarContainerEl.innerHTML = ""
+    blueTeamStarContainerEl.innerHTML = ""
+
+    let i = 0
+    for (i; i < currentRedScore; i++) redTeamStarContainerEl.append(createStar("fill"))
+    for (i; i < currentFirstTo; i++) redTeamStarContainerEl.append(createStar("empty"))
+
+    i = 0
+    for (i; i < currentBlueScore; i++) blueTeamStarContainerEl.append(createStar("fill"))
+    for (i; i < currentFirstTo; i++) blueTeamStarContainerEl.append(createStar("empty"))
+
+    // Create Star
+    function createStar(status) {
+        const newStar = document.createElement("div")
+        newStar.classList.add("team-star", `team-star-${status}`)
+        return newStar
     }
 }
