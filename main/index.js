@@ -111,6 +111,10 @@ const scoreSectionEl = document.getElementById("score-section")
 const nowPlayingSectionEl = document.getElementById("now-playing-section")
 const chatDisplayEl = document.getElementById("chat-display")
 
+// Chat Display
+const chatDisplayWrapperEl = document.getElementById("chat-display-wrapper")
+let chatLen
+
 const socket = createTosuWsSocket()
 socket.onmessage = event => {
     const data = JSON.parse(event.data)
@@ -344,6 +348,37 @@ socket.onmessage = event => {
                 rightScoreBarEl.style.width = "0px"
             }
         }
+    }
+
+    if (chatLen !== data.tourney.manager.chat.length) {
+        (chatLen === 0 || chatLen > data.tourney.manager.chat.length) ? (chatDisplayWrapperEl.innerHTML = "", chatLen = 0) : null
+        const fragment = document.createDocumentFragment()
+
+        for (let i = chatLen; i < data.tourney.manager.chat.length; i++) {
+            const chatColour = data.tourney.manager.chat[i].team
+
+            // Chat message container
+            const chatMessageContainer = document.createElement("div")
+            chatMessageContainer.classList.add("chat-message-container")
+
+            // Name
+            const chatDisplayName = document.createElement("span")
+            chatDisplayName.classList.add("chat-name")
+            chatDisplayName.classList.add(chatColour)
+            chatDisplayName.innerText = data.tourney.manager.chat[i].name + ": ";
+
+            // Message
+            const chatDisplayMessage = document.createElement("span")
+            chatDisplayMessage.classList.add("chat-message")
+            chatDisplayMessage.innerText = data.tourney.manager.chat[i].messageBody
+
+            chatMessageContainer.append(chatDisplayName, chatDisplayMessage)
+            fragment.append(chatMessageContainer)
+        }
+
+        chatDisplayWrapperEl.append(fragment)
+        chatLen = data.tourney.manager.chat.length
+        chatDisplayWrapperEl.scrollTop = chatDisplayWrapperEl.scrollHeight
     }
 }
 
