@@ -286,3 +286,10 @@
     right: -15px;
     top: -8px;
 }
+/* Triangle */
+#now-playing-picker-triangle {
+    position: absolute;
+    left: 622px;
+    bottom: 88px;
+    transform: translateX(-50%);
+}
