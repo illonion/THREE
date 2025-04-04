@@ -163,7 +163,9 @@
     transform: translateX(-50%);
     width: 1280px;
     height: 113px; 
-    /* background-image: url("static/now-playing-background.png") */
+    background-image: url("static/now-playing-background.png");
+    transition: 500ms ease-in-out;
+    opacity: 1;
 }
 /* Now Playing Background Image */
 .now-playing-background-image {

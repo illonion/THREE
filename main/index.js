@@ -42,6 +42,16 @@ function findBeatmapById(beatmapId) {
     return null
 }
 
+// Get category by beatmap id
+function getCategoryByBeatmapId(id) {
+    for (const category in allBeatmaps) {
+        if (allBeatmaps[category].some(obj => obj.beatmap_id === id)) {
+            return category
+        }
+    }
+    return null
+}
+
 // Team Info
 const redTeamIconEl = document.getElementById("red-team-icon")
 const blueTeamIconEl = document.getElementById("blue-team-icon")
@@ -91,8 +101,15 @@ const nowPlayingStatsSrNumberEl = document.getElementById("now-playing-stats-sr-
 const nowPlayingCurrentTimeEl = document.getElementById("now-playing-current-time")
 const nowPlayingTimeProgressEl = document.getElementById("now-playing-time-progress")
 const nowPlayingTimeEndEl = document.getElementById("now-playing-end-time")
+// Map Category ID
+const nowPlayingCategoryIdEl = document.getElementById("now-playing-category-id")
 // Map Variables
 let mapId, mapMd5
+
+// Score visibility
+const scoreSectionEl = document.getElementById("score-section")
+const nowPlayingSectionEl = document.getElementById("now-playing-section")
+const chatDisplayEl = document.getElementById("chat-display")
 
 const socket = createTosuWsSocket()
 socket.onmessage = event => {
@@ -170,11 +187,16 @@ socket.onmessage = event => {
             nowPlayingStatsCsNumberEl.innerText = currentCs
             nowPlayingStatsArNumberEl.innerText = currentAr
             nowPlayingStatsOdNumberEl.innerText = currentOd
+
+            // Category ID
+            nowPlayingCategoryIdEl.style.display = "block"
+            nowPlayingCategoryIdEl.setAttribute("src", `../_shared/assets/mod-icons/${getCategoryByBeatmapId(mapId)}${mappoolMap.order + 1}`)
         } else {
             nowPlayingBottomRowPlusEl.style.display = "none"
             nowPlayingBottomRowModEl.style.display = "none"
             nowPlayingBottomRowMapperSeparatorEl.style.display = "none"
             nowPlayingBottomRowMapperTextEl.style.marginLeft = "0px"
+            nowPlayingCategoryIdEl.style.display = "none";
         }
     }
 
@@ -195,8 +217,21 @@ socket.onmessage = event => {
     }
     nowPlayingTimeProgressEl.style.width = `${data.menu.bm.time.current / data.menu.bm.time.mp3 * 367}px`
 
+    // Change score visibility
+    if (scoreVisible !== data.tourney.manager.bools.scoreVisible) {
+        scoreVisible = data.tourney.manager.bools.scoreVisible
+        if (scoreVisible) {
+            scoreSectionEl.style.opacity = 1
+            nowPlayingSectionEl.style.opacity = 1
+            chatDisplayEl.style.opacity = 0
+        } else {
+            scoreSectionEl.style.opacity = 0
+            nowPlayingSectionEl.style.opacity = 0
+            chatDisplayEl.style.opacity = 1
+        }
+    }
+
     // Get scores
-    if (scoreVisible !== data.tourney.manager.bools.scoreVisible) scoreVisible = data.tourney.manager.bools.scoreVisible
     if (scoreVisible) {
         redTeamScore = 0
         blueTeamScore = 0
