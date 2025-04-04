@@ -82,6 +82,16 @@ const nowPlayingBottomRowModEl = document.getElementById("now-playing-bottom-row
 const nowPlayingBottomRowMapperSeparatorEl = document.getElementById("now-playing-bottom-row-mapper-separator")
 const nowPlayingBottomRowMapperTextEl = document.getElementById("now-playing-bottom-row-mapper-text")
 const nowPlayingBottomRowMapperNameEl = document.getElementById("now-playing-bottom-row-mapper-name")
+// Map Stats
+const nowPlayingStatsCsNumberEl = document.getElementById("now-playing-stats-cs-number")
+const nowPlayingStatsArNumberEl = document.getElementById("now-playing-stats-ar-number")
+const nowPlayingStatsOdNumberEl = document.getElementById("now-playing-stats-od-number")
+const nowPlayingStatsSrNumberEl = document.getElementById("now-playing-stats-sr-number")
+// Map Timer
+const nowPlayingCurrentTimeEl = document.getElementById("now-playing-current-time")
+const nowPlayingTimeProgressEl = document.getElementById("now-playing-time-progress")
+const nowPlayingTimeEndEl = document.getElementById("now-playing-end-time")
+// Map Variables
 let mapId, mapMd5
 
 const socket = createTosuWsSocket()
@@ -137,6 +147,29 @@ socket.onmessage = event => {
                 modSpan.innerText = mappoolMap.mod
                 nowPlayingBottomRowModEl.append(modSpan)
             }
+
+            let currentSr = Math.round(Number(currentMappoolBeatmap.difficultyrating) * 100) / 100
+            let currentCs = Math.round(Number(currentMappoolBeatmap.diff_size) * 10) / 10
+            let currentAr = Math.round(Number(currentMappoolBeatmap.diff_approach) * 10) / 10
+            let currentOd = Math.round(Number(currentMappoolBeatmap.diff_overall) * 10) / 10
+            nowPlayingStatsSrNumberEl.innerText = currentSr
+            switch (currentMappoolBeatmap.mod) {
+                case "HR":
+                    currentCs = Math.min(Math.round(Number(currentMappoolBeatmap.diff_size) * 1.3 * 10) / 10, 10)
+                    currentAr = Math.min(Math.round(Number(currentMappoolBeatmap.diff_approach) * 1.4 * 10) / 10, 10)
+                    currentOd = Math.min(Math.round(Number(currentMappoolBeatmap.diff_overall) * 1.4 * 10) / 10, 10)
+                    break
+                case "DT":
+                    if (currentAr > 5) currentAr = Math.round((((1200 - (( 1200 - (currentAr - 5) * 150) * 2 / 3)) / 150) + 5) * 10) / 10
+                    else currentAr = Math.round((1800 - ((1800 - currentAr * 120) * 2 / 3)) / 120 * 10) / 10
+                    currentOd = Math.round((79.5 - (( 79.5 - 6 * currentOd) * 2 / 3)) / 6 * 10) / 10
+                    currentBpm *= 1.5
+                    currentLength = Math.round(currentLength / 1.5)
+                    break
+            }
+            nowPlayingStatsCsNumberEl.innerText = currentCs
+            nowPlayingStatsArNumberEl.innerText = currentAr
+            nowPlayingStatsOdNumberEl.innerText = currentOd
         } else {
             nowPlayingBottomRowPlusEl.style.display = "none"
             nowPlayingBottomRowModEl.style.display = "none"
@@ -144,6 +177,23 @@ socket.onmessage = event => {
             nowPlayingBottomRowMapperTextEl.style.marginLeft = "0px"
         }
     }
+
+    if (!mappoolMap) {
+        nowPlayingStatsSrNumberEl.innerText = data.menu.bm.stats.fullSR
+        nowPlayingStatsCsNumberEl.innerText = data.menu.bm.stats.CS
+        nowPlayingStatsArNumberEl.innerText = data.menu.bm.stats.AR
+        nowPlayingStatsOdNumberEl.innerText = data.menu.bm.stats.OD
+    }
+
+    // Check for DT, then show timer
+    if (mappoolMap && mappoolMap.mod.includes("DT")) {
+        displayTimeMs(nowPlayingCurrentTimeEl, Math.round(data.menu.bm.time.current / 3 * 2))
+        displayTimeMs(nowPlayingTimeEndEl, Math.round(data.menu.bm.time.mp3 / 3 * 2))
+    } else {
+        displayTimeMs(nowPlayingCurrentTimeEl, data.menu.bm.time.current)
+        displayTimeMs(nowPlayingTimeEndEl, data.menu.bm.time.mp3)
+    }
+    nowPlayingTimeProgressEl.style.width = `${data.menu.bm.time.current / data.menu.bm.time.mp3 * 367}px`
 
     // Get scores
     if (scoreVisible !== data.tourney.manager.bools.scoreVisible) scoreVisible = data.tourney.manager.bools.scoreVisible
