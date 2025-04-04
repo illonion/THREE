@@ -244,6 +244,9 @@ setInterval(() => {
         previousBlueScore = currentBlueScore
         createStarDisplay()
     }
+
+    // Set current picker
+    setCurrentPicker(getCookie("currentPicker"))
 }, 200)
 
 // Create star display
@@ -264,5 +267,33 @@ function createStarDisplay() {
         const newStar = document.createElement("div")
         newStar.classList.add("team-star", `team-star-${status}`)
         return newStar
+    }
+}
+
+// Set Current Picker
+const nowPlayingPickerTriangleEl = document.getElementById("now-playing-picker-triangle")
+const sidebarCurrentPickerEl = document.getElementById("sidebar-current-picker")
+function setCurrentPicker(team) {
+    sidebarCurrentPickerEl.innerText = `${team.slice(0, 1).toUpperCase()}${team.slice(1)}`
+    document.cookie = `currentPicker=${team}; path=/`
+
+
+    if (team === "red") {
+        nowPlayingPickerTriangleEl.style.display = "block"
+        nowPlayingPickerTriangleEl.classList.add("red-picker-triangle")
+        nowPlayingPickerTriangleEl.classList.remove("blue-picker-triangle")
+        nowPlayingPickerTriangleEl.classList.remove("default-picker-triangle")
+    } else if (team === "blue") {
+        nowPlayingPickerTriangleEl.style.display = "block"
+        nowPlayingPickerTriangleEl.classList.remove("red-picker-triangle")
+        nowPlayingPickerTriangleEl.classList.add("blue-picker-triangle")
+        nowPlayingPickerTriangleEl.classList.remove("default-picker-triangle")
+    } else if (team === "wheel") {
+        nowPlayingPickerTriangleEl.style.display = "block"
+        nowPlayingPickerTriangleEl.classList.remove("red-picker-triangle")
+        nowPlayingPickerTriangleEl.classList.remove("blue-picker-triangle")
+        nowPlayingPickerTriangleEl.classList.add("default-picker-triangle")
+    } else if (team === "none") {
+        nowPlayingPickerTriangleEl.style.display = "none"
     }
 }

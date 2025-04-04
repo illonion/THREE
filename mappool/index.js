@@ -243,6 +243,8 @@ async function mapClickEvent(event) {
         this.children[1].children[1].innerText = team
 
         currentSelectedElement = this
+
+        document.cookie = `currentPicker=${team}; path=/`
     }
 
     if (action === "reset") {

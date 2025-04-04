@@ -118,6 +118,19 @@
         </div>
     </div>
 
+    <section class="sidebar">
+        <section class="sidebar-section">
+            <div class="sidebar-header">Set Current Picker:</div>
+            <div class="sidebar-text" id="sidebar-current-picker">Red</div>
+            <div class="sidebar-button-container">
+                <button onclick="setCurrentPicker('red')">Red</button>
+                <button onclick="setCurrentPicker('blue')">Blue</button>
+                <button onclick="setCurrentPicker('wheel')">Wheel</button>
+                <button onclick="setCurrentPicker('none')">No One</button>
+            </div>
+        </section>
+    </section>
+
     <script src="../_shared/deps/reconnecting-websocket.min.js"></script>
     <script src="../_shared/deps/countUp.js"></script>
     <script src="../_shared/utils.js"></script>
