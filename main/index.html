@@ -36,26 +36,9 @@
         </section>
 
         <!-- Match History Section Red -->
-        <section class="match-history-section red-match-history-section">
-            <div class="match-history-map">
-                <div class="picker-triangle red-picker-triangle left-picker-triangle"></div>
-                <div class="match-history-details">
-                    <div class="match-history-category-id red-match-history-category-id">ABC1</div>
-                    <div class="match-history-score red-match-history-score"><span class="match-history-score-winner">1,234,567</span> - 1,012,345</div>
-                </div>
-            </div>
-        </section>
-
+        <section class="match-history-section red-match-history-section" id="red-match-history-section"></section>
         <!-- Match History Section Blue -->
-        <section class="match-history-section blue-match-history-section">
-            <div class="match-history-map blue-match-history-map">
-                <div class="picker-triangle blue-picker-triangle right-picker-triangle"></div>
-                <div class="match-history-details">
-                    <div class="match-history-category-id blue-match-history-category-id">ABC1</div>
-                    <div class="match-history-score blue-match-history-score">1,012,345 - <span class="match-history-score-winner">1,012,345</span></div>
-                </div>
-            </div>
-        </section>
+        <section class="match-history-section blue-match-history-section" id="blue-match-history-section"></section>
 
         <!-- Score Section -->
         <section class="score-section" id="score-section">
@@ -128,6 +111,14 @@
                 <button onclick="setCurrentPicker('blue')">Blue</button>
                 <button onclick="setCurrentPicker('wheel')">Wheel</button>
                 <button onclick="setCurrentPicker('none')">No One</button>
+            </div>
+        </section>
+        <section class="sidebar-section">
+            <div class="sidebar-header">Match History Section:</div>
+            <input class="sidebar-input-number" id="match-id" type="number" placeholder="MP ID">
+            <div class="sidebar-button-container">
+                <button class="full-length-button extra-height-button" onclick="getMatches()">Get New Matches</button>
+                <button class="full-length-button extra-height-button" onclick="resetMatchHistory()">Clear History</button>
             </div>
         </section>
     </section>

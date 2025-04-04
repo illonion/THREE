@@ -29,6 +29,12 @@
 .match-history-section {
     position: absolute;
     top: 233px;
+    height: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 .red-match-history-section { left: var(--match-history-horizontal-dimension); }
 .blue-match-history-section { right: var(--match-history-horizontal-dimension); }
@@ -37,7 +43,6 @@
     display: flex;
     align-items: center;
     gap: 11px;
-    margin-bottom: 5px;
 }
 .blue-match-history-map { flex-direction: row-reverse; }
 /* Picker Triangle */
@@ -307,7 +312,6 @@
     height: 1440px;
     background-color: var(--dark-purple);
     font-family: "Inter Tight";
-    display: flex;
 }
 /* Sidebar Section */
 .sidebar-section {
@@ -357,4 +361,27 @@
 .sidebar-button-container *:active {
     color: var(--dark-purple);
     background-color: white;
+}
+.sidebar-button-container .full-length-button { width: 265px; }
+.sidebar-button-container .extra-height-button { height: 75px; }
+/* Sidebar Input Number */
+.sidebar-input-number {
+    font-family: "Inter Tight";
+    font-weight: 500;
+    font-size: 2em;
+    width: 265px;
+    margin: 25px 30px 0 30px;
+    text-align: center;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-bottom: 2px solid white;
+}
+.sidebar-input-number::-webkit-inner-spin-button,
+.sidebar-input-number::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.sidebar-input-number {
+    -moz-appearance: textfield;
 }

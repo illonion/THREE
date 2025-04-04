@@ -1,3 +1,12 @@
+// Get osu! API
+let osuApi
+async function getOsuApi() {
+    const response = await fetch("../_data/osu-api.json")
+    const responseJson = await response.json()
+    osuApi = responseJson.api
+}
+getOsuApi()
+
 // Get default maps
 let defaultMaps
 async function getDefaultBeatmaps() {
@@ -115,10 +124,12 @@ const chatDisplayEl = document.getElementById("chat-display")
 const chatDisplayWrapperEl = document.getElementById("chat-display-wrapper")
 let chatLen
 
+// IPC State
+
 const socket = createTosuWsSocket()
 socket.onmessage = event => {
     const data = JSON.parse(event.data)
-    console.log(data)
+    // console.log(data)
 
     // Team Details 
     if (redTeamName !== data.tourney.manager.teamName.left) {
@@ -241,6 +252,8 @@ socket.onmessage = event => {
         blueTeamScore = 0
         redTeamScoreSecondary = 0
         blueTeamScoreSecondary = 0
+        let noOfRedPlayers = 0
+        let noOfBluePlayers = 0
 
         for (let i = 0; i < data.tourney.ipcClients.length; i++) {
             let currentScore = 0
@@ -256,11 +269,16 @@ socket.onmessage = event => {
             if (data.tourney.ipcClients[i].team === "left") {
                 redTeamScore += currentScore
                 redTeamScoreSecondary += currentScoreSecondary
+                noOfRedPlayers++
             } else {
                 blueTeamScore += currentScore
                 blueTeamScoreSecondary += currentScoreSecondary
+                noOfBluePlayers++
             }
         }
+
+        redTeamScoreSecondary /= noOfRedPlayers
+        blueTeamScoreSecondary /= noOfBluePlayers
 
         // Display scores
         if (mappoolMap && mappoolMap.mod.includes("RX")) {
@@ -380,6 +398,12 @@ socket.onmessage = event => {
         chatLen = data.tourney.manager.chat.length
         chatDisplayWrapperEl.scrollTop = chatDisplayWrapperEl.scrollHeight
     }
+
+    // IPC State
+    if (ipcState !== data.tourney.manager.ipcState) {
+        ipcState = data.tourney.manager.ipcState
+        if (ipcState === 1 && matchIdEl.value.trim() !== "") getMatches()
+    }
 }
 
 // Set star count
@@ -461,4 +485,152 @@ function setCurrentPicker(team) {
     } else if (team === "none") {
         nowPlayingPickerTriangleEl.style.display = "none"
     }
+}
+
+// MP Links and number of maps counted
+let previousMPLink
+let currentMPLink
+let numberOfMapsCounted = 0
+
+// Get Matches
+const matchIdEl = document.getElementById("match-id")
+function getMatches() {
+    currentMPLink = parseInt(matchIdEl.value)
+    getAndAppendMatchHistory()
+}
+
+// Get and append match history
+async function getAndAppendMatchHistory() {
+    // Get MP Link
+    if (previousMPLink !== currentMPLink) resetMatchHistory()
+        
+    const response = await fetch(`https://osu.ppy.sh/api/get_match?k=${osuApi}&mp=${currentMPLink}`)
+    const responseJson = await response.json()
+
+    for (numberOfMapsCounted; numberOfMapsCounted < responseJson.games.length; numberOfMapsCounted++) {
+        const currentGame = responseJson.games[numberOfMapsCounted]
+        const currentMap = findBeatmapById(currentGame.beatmap_id)
+        const currentCategory = getCategoryByBeatmapId(currentGame.beatmap_id)
+
+        console.log(currentGame)
+
+        if (currentMap && currentCategory !== "TB") {
+            let redTeamScore = 0
+            let blueTeamScore = 0
+            let redTeamScoreSecondary = 0
+            let blueTeamScoreSecondary = 0
+            let noOfRedPlayers = 0
+            let noOfBluePlayers = 0
+
+            for (let i = 0; i < currentGame.scores.length; i++) {
+                // Relax
+                if (currentMap.mod.includeS("RX")) {
+                    let currentTeamScore = Number(currentGame.scores[i].countmiss)
+
+                    let totalNotes = Number(currentGame.scores[i].countmiss) + Number(currentGame.scores[i].count50) + 
+                                    Number(currentGame.scores[i].count100) + Number(currentGame.scores[i].count300) +
+                                    Number(currentGame.scores[i].countgeki) + Number(currentGame.scores[i].countkatu)
+
+                    let accuracy = (Number(currentGame.scores[i].countmiss) * 0 + Number(currentGame.scores[i].count50) * 1 / 6 +
+                                    Number(currentGame.scores[i].count100) * 1 / 3 + Number(currentGame.scores[i].count300) +
+                                    Number(currentGame.scores[i].countgeki) + Number(currentGame.scores[i].countkatu) * 1 / 3) / totalNotes
+
+                    if (currentGame.scores[i].team === "2") {
+                        redTeamScore += currentTeamScore
+                        redTeamScoreSecondary += accuracy
+                        noOfRedPlayers++
+                    } else {
+                        blueTeamScore += currentTeamScore
+                        blueTeamScoreSecondary += accuracy
+                        noOfBluePlayers++
+                    }
+                // No Relax
+                } else {
+                    let currentTeamScore = Number(currentGame.scores[i].score)
+                    if (currentGame.scores[i].team === "2") {
+                        redTeamScore += currentTeamScore
+                    } else {
+                        blueTeamScore += currentTeamScore
+                    }
+                }
+            }
+
+            if (currentMap.mod.includeS("RX")) {
+                redTeamScoreSecondary /= noOfRedPlayers
+                blueTeamScoreSecondary /= noOfBluePlayers
+            }
+
+            // Set winner
+            let winner
+            if (currentMap.mod.includeS("RX")) {
+                if (redTeamScore < blueTeamScore) winner = "red"
+                else if (redTeamScore > blueTeamScore) winner = "blue"
+                else if (redTeamScoreSecondary > blueTeamScoreSecondary) winner = "red"
+                else if (redTeamScoreSecondary < blueTeamScoreSecondary) winner = "blue"
+            } else {
+                if (redTeamScore > blueTeamScore) winner = "red"
+                else if (redTeamScore < blueTeamScore) winner = "blue"
+            }
+            if (!winner) return
+
+            // Create match history map
+            const matchHistoryMap = document.createElement("div")
+            matchHistoryMap.classList.add("match-history-map")
+            if (winner === "blue") matchHistoryMap.classList.add("blue-match-history-map")
+
+            // Picker Triangle
+            const pickerTriangle = document.createElement("div")
+            pickerTriangle.classList.add("picker-triangle")
+            const currentPicker = getCookie("currentPicker")
+            if (numberOfMapsCounted === responseJson.games.length - 1 && (currentPicker === "red" || currentPicker === "blue")) {
+                pickerTriangle.classList.add(`${currentPicker}-picker-triangle`)
+            } else {
+                pickerTriangle.classList.add("default-picker-triangle")
+            }
+            if (winner === "red") pickerTriangle.classList.add("left-picker-triangle")
+            else pickerTriangle.classList.add("right-picker-triangle")
+
+            // Match history details
+            const matchHistoryDetails = document.createElement("div")
+            matchHistoryDetails.classList.add("match-history-details")
+
+            // Match history category id
+            const matchHistoryCategoryId = document.createElement("div")
+            matchHistoryCategoryId.classList.add("match-history-category-id", `${winner}-match-history-category-id`, `match-history-category-${currentCategory.toLowerCase()}`)
+            matchHistoryCategoryId.innerText = `${currentCategory}${currentMap.order + 1}`
+
+            // Match history score
+            const matchHistoryScore = document.createElement("div")
+            matchHistoryScore.classList.add("match-history-score", `${winner}-match-history-score`)
+            let matchHistoryScoreRed = document.createElement("span")
+            let matchHistoryScoreBlue = document.createElement("span")
+            // Check category on how to display score
+            if (currentMap.mod.includes("RX")) {
+                matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x (${redTeamScoreSecondary.toFixed(2)}%)`
+                matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}x (${blueTeamScoreSecondary.toFixed(2)}%)`
+            } else {
+                matchHistoryScoreRed.innerText = redTeamScore.toLocaleString()
+                matchHistoryScoreBlue.innerText = blueTeamScore.toLocaleString()
+            }
+            // Check who won
+            if (winner === "red") matchHistoryScoreRed.classList.add("match-history-score-winner")
+            else matchHistoryScoreBlue.classList.add("match-history-score-winner")
+
+            matchHistoryScore.append(matchHistoryScoreRed, " - ", matchHistoryScoreBlue)
+            matchHistoryDetails.append(matchHistoryCategoryId, matchHistoryScore)
+            matchHistoryMap.append(pickerTriangle, matchHistoryDetails)
+
+            document.getElementById(`${winner}-match-history-section`).append(matchHistoryMap)
+        }
+    }
+}
+
+// Reset match history
+const redMatchHistorySectionEl = document.getElementById("red-match-history-section")
+const blueMatchHistorySectionEl = document.getElementById("blue-match-history-section")
+function resetMatchHistory() {
+    // Reset the history
+    redMatchHistorySectionEl.innerHTML = ""
+    blueMatchHistorySectionEl.innerHTML = ""
+    numberOfMapsCounted = 0
 }
