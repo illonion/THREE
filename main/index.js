@@ -74,6 +74,14 @@ const scoreAnimation = {
 }
 
 // Map information
+const nowPlayingBackgroundImageEl = document.getElementById("now-playing-background-image")
+const nowPlayingArtistEl = document.getElementById("now-playing-artist")
+const nowPlayingTitleEl = document.getElementById("now-playing-title")
+const nowPlayingBottomRowPlusEl = document.getElementById("now-playing-bottom-row-plus")
+const nowPlayingBottomRowModEl = document.getElementById("now-playing-bottom-row-mod")
+const nowPlayingBottomRowMapperSeparatorEl = document.getElementById("now-playing-bottom-row-mapper-separator")
+const nowPlayingBottomRowMapperTextEl = document.getElementById("now-playing-bottom-row-mapper-text")
+const nowPlayingBottomRowMapperNameEl = document.getElementById("now-playing-bottom-row-mapper-name")
 let mapId, mapMd5
 
 const socket = createTosuWsSocket()
@@ -97,7 +105,44 @@ socket.onmessage = event => {
     if (mapId !== data.menu.bm.id && mapMd5 !== data.menu.bm.md5) {
         mapId = data.menu.bm.id
         mapMd5 = data.menu.bm.md5
+
+        // Check mappool map
         mappoolMap = findBeatmapById(mapId.toString())
+
+        // Now Playing Information
+        nowPlayingBackgroundImageEl.style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${data.menu.bm.set}/covers/cover.jpg")`
+        nowPlayingArtistEl.innerText = data.menu.bm.metadata.artist
+        nowPlayingTitleEl.innerText = data.menu.bm.metadata.title
+        nowPlayingBottomRowMapperNameEl.innerText = data.menu.bm.metadata.mapper
+
+        if (mappoolMap) {
+            nowPlayingBottomRowPlusEl.style.display = "block"
+            nowPlayingBottomRowModEl.style.display = "block"
+            nowPlayingBottomRowModEl.innerHTML = ""
+            nowPlayingBottomRowMapperSeparatorEl.style.display = "block"
+            nowPlayingBottomRowMapperTextEl.style.marginLeft = "10px"
+
+            // Check for DTFM
+            if (mappoolMap.mod === "DTFM") {
+                const span1 = document.createElement("span")
+                span1.classList.add("now-playing-bottom-row-dt")
+                span1.innerText = "DT"
+                const span2 = document.createElement("span")
+                span2.classList.add("now-playing-bottom-row-fm")
+                span2.innerText = "FM"
+                nowPlayingBottomRowModEl.append(span1, span2)
+            } else {
+                const modSpan = document.createElement("span")
+                modSpan.classList.add(`now-playing-bottom-row-${mappoolMap.mod.toLowerCase()}`)
+                modSpan.innerText = mappoolMap.mod
+                nowPlayingBottomRowModEl.append(modSpan)
+            }
+        } else {
+            nowPlayingBottomRowPlusEl.style.display = "none"
+            nowPlayingBottomRowModEl.style.display = "none"
+            nowPlayingBottomRowMapperSeparatorEl.style.display = "none"
+            nowPlayingBottomRowMapperTextEl.style.marginLeft = "0px"
+        }
     }
 
     // Get scores

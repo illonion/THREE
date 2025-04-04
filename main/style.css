@@ -176,8 +176,8 @@
     background-position: center;
     background-size: cover;
 }
-/* Now Playing Title */
-.now-playing-title {
+/* Now Playing artist */
+.now-playing-artist {
     position: absolute;
     top: 6px;
     left: 197px;
@@ -187,8 +187,8 @@
     font-family: "Inter Tight";
     letter-spacing: 0.25px;
 }
-/* Now Playing Song Name */
-.now-playing-song-name {
+/* Now Playing Title */
+.now-playing-title {
     position: absolute;
     top: 41px;
     left: 197px;
@@ -216,19 +216,14 @@
 .now-playing-bottom-row-mod-dt { color: var(--color-dt); }
 .now-playing-bottom-row-mod-fm { color: var(--color-fm); }
 .now-playing-bottom-row-mod-rx { color: var(--color-rx); }
-.now-playing-bottom-row-mapper-separator {
-    margin-left: 10px;
-    font-size: 16px;
-}
+.now-playing-bottom-row-mapper-separator { margin-left: 10px; }
 .now-playing-bottom-row-mapper-text {
     color: var(--color-nm);
     margin-left: 10px;
-    font-size: 16px;
     letter-spacing: 0.4px;
 }
 .now-playing-bottom-row-mapper-name {
-    margin-left: 14px;
-    font-size: 16px;
+    margin-left: 10px;
     letter-spacing: 0.4px;
 }
 /* Now Playing Right Hand Side */
