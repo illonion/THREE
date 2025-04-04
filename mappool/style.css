@@ -97,12 +97,12 @@
     top: 77px;
     font-weight: 500;
 }
-.category-map-mod-nm { color: #a4a4a4; }
-.category-map-mod-hd { color: #ffb735; }
-.category-map-mod-hr { color: #ff7575; }
-.category-map-mod-dt { color: #75acff; }
-.category-map-mod-fm { color: #ff75cd; }
-.category-map-mod-rx { color: #75fff7; }
+.category-map-mod-nm { color: var(--color-nm); }
+.category-map-mod-hd { color: var(--color-hd); }
+.category-map-mod-hr { color: var(--color-hr); }
+.category-map-mod-dt { color: var(--color-dt); }
+.category-map-mod-fm { color: var(--color-fm); }
+.category-map-mod-rx { color: var(--color-rx); }
 /* Category Map Picked By */
 .category-map-picked-by {
     position: absolute;

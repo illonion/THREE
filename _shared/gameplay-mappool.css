@@ -1,3 +1,12 @@
+:root {
+    --color-nm: #a4a4a4;
+    --color-hd: #ffb735;
+    --color-hr: #ff7575;
+    --color-dt: #75acff;
+    --color-fm: #ff75cd;
+    --color-rx: #75fff7;
+}
+
 /* Background Video / Logo (Stream idle will be deleted later) */
 .background-video, .main {
     position: absolute;
