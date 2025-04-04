@@ -8,6 +8,7 @@ async function getDefaultBeatmaps() {
 getDefaultBeatmaps()
 
 // Round Text
+let allBeatmaps
 const roundTextEl = document.getElementById("round-text")
 async function getBeatmaps() {
     const response = await fetch("../_data/beatmaps.json")
@@ -30,6 +31,16 @@ async function getBeatmaps() {
     createStarDisplay()
 }
 getBeatmaps()
+
+// Find beatmaps by ID
+function findBeatmapById(beatmapId) {
+    for (const category in allBeatmaps) {
+        const beatmaps = allBeatmaps[category]
+        const result = beatmaps.find(beatmap => beatmap.beatmap_id === beatmapId)
+        if (result) return result
+    }
+    return null
+}
 
 // Team Info
 const redTeamIconEl = document.getElementById("red-team-icon")
@@ -62,6 +73,9 @@ const scoreAnimation = {
     "rightScoreNumberCombo": new CountUp(rightScoreNumberComboEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "x"}),
 }
 
+// Map information
+let mapId, mapMd5
+
 const socket = createTosuWsSocket()
 socket.onmessage = event => {
     const data = JSON.parse(event.data)
@@ -79,26 +93,33 @@ socket.onmessage = event => {
         blueTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/${blueTeamName.replace(/[<>:"/\\|?*]/g, '_')}.png")`
     }
 
+    // Detect mappool map
+    if (mapId !== data.menu.bm.id && mapMd5 !== data.menu.bm.md5) {
+        mapId = data.menu.bm.id
+        mapMd5 = data.menu.bm.md5
+        mappoolMap = findBeatmapById(mapId.toString())
+    }
+
     // Get scores
-    if (scoreVisible !== data.tourney.manager.scoreVisible) scoreVisible = data.tourney.manager.scoreVisible
+    if (scoreVisible !== data.tourney.manager.bools.scoreVisible) scoreVisible = data.tourney.manager.bools.scoreVisible
     if (scoreVisible) {
         redTeamScore = 0
         blueTeamScore = 0
         redTeamScoreSecondary = 0
         blueTeamScoreSecondary = 0
 
-        for (let i = 0; i < data.tourney.manager.ipcClients.length; i++) {
+        for (let i = 0; i < data.tourney.ipcClients.length; i++) {
             let currentScore = 0
             let currentScoreSecondary = 0
             // Check if map is RX
-            if (mappooolMap && mappooolMap.mod.includes("RX")) {
-                currentScore = data.tourney.manager.ipcClients[i].gameplay.hits["0"]
-                currentScoreSecondary = data.tourney.manager.ipcClients[i].accuracy
+            if (mappoolMap && mappoolMap.mod.includes("RX")) {
+                currentScore = data.tourney.ipcClients[i].gameplay.hits["0"]
+                currentScoreSecondary = data.tourney.ipcClients[i].accuracy
             } else {
-                currentScore = data.tourney.manager.ipcClients[i].gameplay.score
+                currentScore = data.tourney.ipcClients[i].gameplay.score
             }
             
-            if (data.tourney.manager.ipcClients[i].team === "left") {
+            if (data.tourney.ipcClients[i].team === "left") {
                 redTeamScore += currentScore
                 redTeamScoreSecondary += currentScoreSecondary
             } else {
@@ -108,7 +129,7 @@ socket.onmessage = event => {
         }
 
         // Display scores
-        if (mappooolMap && mappooolMap.mod.includes("RX")) {
+        if (mappoolMap && mappoolMap.mod.includes("RX")) {
             // Select elements to show
             leftScoreNumberEl.style.display = "none"
             rightScoreNumberEl.style.display = "none"
@@ -150,6 +171,9 @@ socket.onmessage = event => {
             } else if (redTeamScore > blueTeamScore) {
                 leftScoreBarEl.style.width = "0px"
                 rightScoreBarEl.style.width = `${missDifference / 20 * 960}px`
+            } else {
+                leftScoreBarEl.style.width = "0px"
+                rightScoreBarEl.style.width = "0px"
             }
         } else {
             // Select elements to show
@@ -185,6 +209,9 @@ socket.onmessage = event => {
             } else if (redTeamScore < blueTeamScore) {
                 leftScoreBarEl.style.width = "0px"
                 rightScoreBarEl.style.width = `${Math.min(Math.pow(scoreDelta / 600000, 0.5) * 600, 600)}px`
+            } else {
+                leftScoreBarEl.style.width = "0px"
+                rightScoreBarEl.style.width = "0px"
             }
         }
     }

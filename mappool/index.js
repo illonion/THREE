@@ -329,7 +329,7 @@ const chatDisplayEl = document.getElementById("chat-display-wrapper")
 let chatLen
 
 // Beatmap variables
-let mappooolMap, mapId, mapMd5
+let mappoolMap, mapId, mapMd5
 
 // Current scores
 let scoreVisible
@@ -394,7 +394,7 @@ socket.onmessage = event => {
 
         // Find element to click on
         const currentMap = document.getElementById(mapId)
-        mappooolMap = findBeatmapById(mapId.toString())
+        mappoolMap = findBeatmapById(mapId.toString())
         // Check if it can be clicked on
         if (currentMap && currentMap.dataset.pickerTeam === "false" && currentMap.dataset.bannedByRed === "false" && currentMap.dataset.bannedByBlue === "false" && isAutopickOn) {
             // Dispatch auto click
@@ -436,7 +436,7 @@ socket.onmessage = event => {
             let currentScore = 0
             let currentScoreSecondary = 0
             // Check if map is RX
-            if (mappooolMap && mappooolMap.mod.includes("RX")) {
+            if (mappoolMap && mappoolMap.mod.includes("RX")) {
                 currentScore = data.tourney.manager.ipcClients[i].gameplay.hits["0"]
                 currentScoreSecondary = data.tourney.manager.ipcClients[i].accuracy
             } else {
@@ -465,7 +465,7 @@ socket.onmessage = event => {
 
             // If map is RX map, and then apply winner
             let currentWinner = ""
-            if (mappooolMap && mappooolMap.mod.includes("RX")) {
+            if (mappoolMap && mappoolMap.mod.includes("RX")) {
                 if (redTeamScore < blueTeamScore) currentWinner = "red"
                 else if (redTeamScore > blueTeamScore) currentWinner = "blue"
                 else if (redTeamScoreSecondary > blueTeamScoreSecondary) currentWinner = "red"
