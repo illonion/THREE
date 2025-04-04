@@ -38,6 +38,30 @@ const redTeamNameEl = document.getElementById("red-team-name")
 const blueTeamNameEl = document.getElementById("blue-team-name")
 let redTeamName, blueTeamName
 
+// Current scores
+const leftScoreBarEl = document.getElementById("left-score-bar")
+const rightScoreBarEl = document.getElementById("right-score-bar")
+const leftScoreNumberEl = document.getElementById("left-score-number")
+const rightScoreNumberEl = document.getElementById("right-score-number")
+const leftScoreNumberComboAccuracyEl = document.getElementById("left-score-number-combo-accuracy")
+const rightScoreNumberComboAccuracyEl = document.getElementById("right-score-number-combo-accuracy")
+const leftScoreNumberComboEl = document.getElementById("left-score-number-combo")
+const rightScoreNumberComboEl = document.getElementById("right-score-number-combo")
+const leftScoreNumberComboContainerEl = document.getElementById("left-score-number-combo-container")
+const rightScoreNumberComboContainerEl = document.getElementById("right-score-number-combo-container")
+let scoreVisible
+let redTeamScore = 0, blueTeamScore = 0
+let redTeamScoreSecondary = 0, blueTeamScoreSecondary = 0
+
+const scoreAnimation = {
+    "leftScoreNumber": new CountUp(leftScoreNumberEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." }),
+    "rightScoreNumber": new CountUp(rightScoreNumberEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." }),
+    "leftScoreNumberComboAccuracy": new CountUp(leftScoreNumberComboAccuracyEl, 0, 0, 2, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , prefix: "(", suffix: "%)"}),
+    "rightScoreNumberComboAccuracy": new CountUp(rightScoreNumberComboAccuracyEl, 0, 0, 2, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , prefix: "(", suffix: "%)"}),
+    "leftScoreNumberCombo": new CountUp(leftScoreNumberComboEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "x"}),
+    "rightScoreNumberCombo": new CountUp(rightScoreNumberComboEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "x"}),
+}
+
 const socket = createTosuWsSocket()
 socket.onmessage = event => {
     const data = JSON.parse(event.data)
@@ -53,6 +77,116 @@ socket.onmessage = event => {
         blueTeamName = data.tourney.manager.teamName.right
         blueTeamNameEl.innerText = blueTeamName
         blueTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/${blueTeamName.replace(/[<>:"/\\|?*]/g, '_')}.png")`
+    }
+
+    // Get scores
+    if (scoreVisible !== data.tourney.manager.scoreVisible) scoreVisible = data.tourney.manager.scoreVisible
+    if (scoreVisible) {
+        redTeamScore = 0
+        blueTeamScore = 0
+        redTeamScoreSecondary = 0
+        blueTeamScoreSecondary = 0
+
+        for (let i = 0; i < data.tourney.manager.ipcClients.length; i++) {
+            let currentScore = 0
+            let currentScoreSecondary = 0
+            // Check if map is RX
+            if (mappooolMap && mappooolMap.mod.includes("RX")) {
+                currentScore = data.tourney.manager.ipcClients[i].gameplay.hits["0"]
+                currentScoreSecondary = data.tourney.manager.ipcClients[i].accuracy
+            } else {
+                currentScore = data.tourney.manager.ipcClients[i].gameplay.score
+            }
+            
+            if (data.tourney.manager.ipcClients[i].team === "left") {
+                redTeamScore += currentScore
+                redTeamScoreSecondary += currentScoreSecondary
+            } else {
+                blueTeamScore += currentScore
+                blueTeamScoreSecondary += currentScoreSecondary
+            }
+        }
+
+        // Display scores
+        if (mappooolMap && mappooolMap.mod.includes("RX")) {
+            // Select elements to show
+            leftScoreNumberEl.style.display = "none"
+            rightScoreNumberEl.style.display = "none"
+            leftScoreNumberComboAccuracyEl.style.display = "block"
+            rightScoreNumberComboAccuracyEl.style.display = "block"
+            leftScoreNumberComboEl.style.display = "block"
+            rightScoreNumberComboEl.style.display = "block"
+
+            // Update scores
+            scoreAnimation.leftScoreNumberCombo.update(redTeamScore)
+            scoreAnimation.rightScoreNumberCombo.update(blueTeamScore)
+            scoreAnimation.leftScoreNumberComboAccuracy.update(redTeamScoreSecondary)
+            scoreAnimation.rightScoreNumberComboAccuracy.update(blueTeamScoreSecondary)
+
+            // Update leader element
+            if (redTeamScore > blueTeamScore) {
+                leftScoreNumberComboContainerEl.style.opacity = 1
+                rightScoreNumberComboContainerEl.style.opacity = 0.62
+            } else if (redTeamScore < blueTeamScore) {
+                leftScoreNumberComboContainerEl.style.opacity = 0.62
+                rightScoreNumberComboContainerEl.style.opacity = 1
+            } else if (redTeamScoreSecondary > blueTeamScoreSecondary) {
+                leftScoreNumberComboContainerEl.style.opacity = 1
+                rightScoreNumberComboContainerEl.style.opacity = 0.62
+            } else if (redTeamScoreSecondary < blueTeamScoreSecondary) {
+                leftScoreNumberComboContainerEl.style.opacity = 0.62
+                rightScoreNumberComboContainerEl.style.opacity = 1
+            } else {
+                leftScoreNumberComboContainerEl.style.opacity = 0.62
+                rightScoreNumberComboContainerEl.style.opacity = 0.62
+            }
+
+            // Scorebar
+            // 20 misses will be the difference
+            const missDifference = Math.min(Math.abs(redTeamScore - blueTeamScore), 20)
+            if (redTeamScore > blueTeamScore) {
+                leftScoreBarEl.style.width = `${missDifference / 20 * 960}px`
+                rightScoreBarEl.style.width = "0px"
+            } else if (redTeamScore > blueTeamScore) {
+                leftScoreBarEl.style.width = "0px"
+                rightScoreBarEl.style.width = `${missDifference / 20 * 960}px`
+            }
+        } else {
+            // Select elements to show
+            leftScoreNumberEl.style.display = "block"
+            rightScoreNumberEl.style.display = "block"
+            leftScoreNumberComboAccuracyEl.style.display = "none"
+            rightScoreNumberComboAccuracyEl.style.display = "none"
+            leftScoreNumberComboEl.style.display = "none"
+            rightScoreNumberComboEl.style.display = "none"
+
+            // Update scores
+            scoreAnimation.leftScoreNumber.update(redTeamScore)
+            scoreAnimation.rightScoreNumber.update(blueTeamScore)
+
+            // Update leader element
+            if (redTeamScore > blueTeamScore) {
+                leftScoreNumberComboContainerEl.style.opacity = 1
+                rightScoreNumberComboContainerEl.style.opacity = 0.62
+            } else if (redTeamScore < blueTeamScore) {
+                leftScoreNumberComboContainerEl.style.opacity = 0.62
+                rightScoreNumberComboContainerEl.style.opacity = 1
+            } else {
+                leftScoreNumberComboContainerEl.style.opacity = 0.62
+                rightScoreNumberComboContainerEl.style.opacity = 0.62
+            }
+
+            // Scorebar
+            // 20 misses will be the difference
+            const scoreDelta = Math.min(Math.abs(redTeamScore - blueTeamScore), 960)
+            if (redTeamScore > blueTeamScore) {
+                leftScoreBarEl.style.width = `${Math.min(Math.pow(scoreDelta / 600000, 0.5) * 600, 600)}px`
+                rightScoreBarEl.style.width = "0px"
+            } else if (redTeamScore < blueTeamScore) {
+                leftScoreBarEl.style.width = "0px"
+                rightScoreBarEl.style.width = `${Math.min(Math.pow(scoreDelta / 600000, 0.5) * 600, 600)}px`
+            }
+        }
     }
 }
 
@@ -74,7 +208,6 @@ setInterval(() => {
     }
 
     // Change star count
-    console.log(currentRedScore, currentBlueScore)
     currentRedScore = Number(getCookie("currentRedScore"))
     currentBlueScore = Number(getCookie("currentBlueScore"))
     if (currentRedScore !== previousRedScore ||
