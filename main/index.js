@@ -207,7 +207,7 @@ socket.onmessage = event => {
 
             // Category ID
             nowPlayingCategoryIdEl.style.display = "block"
-            nowPlayingCategoryIdEl.setAttribute("src", `../_shared/assets/mod-icons/${getCategoryByBeatmapId(mapId)}${mappoolMap.order + 1}`)
+            nowPlayingCategoryIdEl.setAttribute("src", `../_shared/assets/mod-icons/${getCategoryByBeatmapId(mapId)}-${mappoolMap.order + 1}`)
         } else {
             nowPlayingBottomRowPlusEl.style.display = "none"
             nowPlayingBottomRowModEl.style.display = "none"
@@ -418,8 +418,8 @@ let currentBestOf = 0, currentFirstTo = 0, currentRedScore = 0, currentBlueScore
 let previousRedScore = 0, previousBlueScore = 0
 setInterval(() => {
     // Is Star On?
-    isStarOn = getCookie("isStarOn")
-    if (isStarOn === "true") {
+    isStarOn = getCookie("toggleStars")
+    if (isStarOn === "false") {
         redTeamStarContainerEl.style.display = "none"
         blueTeamStarContainerEl.style.display = "none"
     } else {
@@ -537,6 +537,8 @@ async function getAndAppendMatchHistory() {
                     let accuracy = (Number(currentGame.scores[i].countmiss) * 0 + Number(currentGame.scores[i].count50) * 1 / 6 +
                                     Number(currentGame.scores[i].count100) * 1 / 3 + Number(currentGame.scores[i].count300) +
                                     Number(currentGame.scores[i].countgeki) + Number(currentGame.scores[i].countkatu) * 1 / 3) / totalNotes
+
+                    if (totalNotes === 0) accuracy = 0
 
                     if (currentGame.scores[i].team === "2") {
                         redTeamScore += currentTeamScore
