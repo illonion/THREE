@@ -113,7 +113,7 @@ const nowPlayingTimeEndEl = document.getElementById("now-playing-end-time")
 // Map Category ID
 const nowPlayingCategoryIdEl = document.getElementById("now-playing-category-id")
 // Map Variables
-let mapId, mapMd5
+let mapId, mapMd5, mappoolMap
 
 // Score visibility
 const scoreSectionEl = document.getElementById("score-section")
@@ -125,22 +125,24 @@ const chatDisplayWrapperEl = document.getElementById("chat-display-wrapper")
 let chatLen
 
 // IPC State
+let ipcState
 
 const socket = createTosuWsSocket()
 socket.onmessage = event => {
     const data = JSON.parse(event.data)
-    // console.log(data)
 
     // Team Details 
     if (redTeamName !== data.tourney.manager.teamName.left) {
         redTeamName = data.tourney.manager.teamName.left
         redTeamNameEl.innerText = redTeamName
-        redTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/${redTeamName.replace(/[<>:"/\\|?*]/g, '_')}.png")`
+        if (redTeamName.trim() === "") redTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/transparent.png")`
+        else redTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/${redTeamName.replace(/[<>:"/\\|?*]/g, '_')}.png")`
     }
     if (blueTeamName !== data.tourney.manager.teamName.right) {
         blueTeamName = data.tourney.manager.teamName.right
         blueTeamNameEl.innerText = blueTeamName
-        blueTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/${blueTeamName.replace(/[<>:"/\\|?*]/g, '_')}.png")`
+        if (redTeamName.trim() === "") blueTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/transparent.png")`
+        else blueTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/${blueTeamName.replace(/[<>:"/\\|?*]/g, '_')}.png")`
     }
 
     // Detect mappool map
@@ -180,16 +182,16 @@ socket.onmessage = event => {
                 nowPlayingBottomRowModEl.append(modSpan)
             }
 
-            let currentSr = Math.round(Number(currentMappoolBeatmap.difficultyrating) * 100) / 100
-            let currentCs = Math.round(Number(currentMappoolBeatmap.diff_size) * 10) / 10
-            let currentAr = Math.round(Number(currentMappoolBeatmap.diff_approach) * 10) / 10
-            let currentOd = Math.round(Number(currentMappoolBeatmap.diff_overall) * 10) / 10
+            let currentSr = Math.round(Number(mappoolMap.difficultyrating) * 100) / 100
+            let currentCs = Math.round(Number(mappoolMap.diff_size) * 10) / 10
+            let currentAr = Math.round(Number(mappoolMap.diff_approach) * 10) / 10
+            let currentOd = Math.round(Number(mappoolMap.diff_overall) * 10) / 10
             nowPlayingStatsSrNumberEl.innerText = currentSr
-            switch (currentMappoolBeatmap.mod) {
+            switch (mappoolMap.mod) {
                 case "HR":
-                    currentCs = Math.min(Math.round(Number(currentMappoolBeatmap.diff_size) * 1.3 * 10) / 10, 10)
-                    currentAr = Math.min(Math.round(Number(currentMappoolBeatmap.diff_approach) * 1.4 * 10) / 10, 10)
-                    currentOd = Math.min(Math.round(Number(currentMappoolBeatmap.diff_overall) * 1.4 * 10) / 10, 10)
+                    currentCs = Math.min(Math.round(Number(mappoolMap.diff_size) * 1.3 * 10) / 10, 10)
+                    currentAr = Math.min(Math.round(Number(mappoolMap.diff_approach) * 1.4 * 10) / 10, 10)
+                    currentOd = Math.min(Math.round(Number(mappoolMap.diff_overall) * 1.4 * 10) / 10, 10)
                     break
                 case "DT":
                     if (currentAr > 5) currentAr = Math.round((((1200 - (( 1200 - (currentAr - 5) * 150) * 2 / 3)) / 150) + 5) * 10) / 10
@@ -238,10 +240,12 @@ socket.onmessage = event => {
         if (scoreVisible) {
             scoreSectionEl.style.opacity = 1
             nowPlayingSectionEl.style.opacity = 1
+            nowPlayingPickerTriangleEl.style.opacity = 1
             chatDisplayEl.style.opacity = 0
         } else {
             scoreSectionEl.style.opacity = 0
             nowPlayingSectionEl.style.opacity = 0
+            nowPlayingPickerTriangleEl.style.opacity = 0
             chatDisplayEl.style.opacity = 1
         }
     }
@@ -261,7 +265,7 @@ socket.onmessage = event => {
             // Check if map is RX
             if (mappoolMap && mappoolMap.mod.includes("RX")) {
                 currentScore = data.tourney.ipcClients[i].gameplay.hits["0"]
-                currentScoreSecondary = data.tourney.ipcClients[i].accuracy
+                currentScoreSecondary = data.tourney.ipcClients[i].gameplay.accuracy
             } else {
                 currentScore = data.tourney.ipcClients[i].gameplay.score
             }
@@ -283,12 +287,12 @@ socket.onmessage = event => {
         // Display scores
         if (mappoolMap && mappoolMap.mod.includes("RX")) {
             // Select elements to show
-            leftScoreNumberEl.style.display = "none"
-            rightScoreNumberEl.style.display = "none"
-            leftScoreNumberComboAccuracyEl.style.display = "block"
-            rightScoreNumberComboAccuracyEl.style.display = "block"
-            leftScoreNumberComboEl.style.display = "block"
-            rightScoreNumberComboEl.style.display = "block"
+            leftScoreNumberEl.style.opacity = 0
+            rightScoreNumberEl.style.opacity = 0
+            leftScoreNumberComboAccuracyEl.style.opacity = 0.62
+            rightScoreNumberComboAccuracyEl.style.opacity = 0.62
+            leftScoreNumberComboEl.style.opacity = 0.62
+            rightScoreNumberComboEl.style.opacity = 0.62
 
             // Update scores
             scoreAnimation.leftScoreNumberCombo.update(redTeamScore)
@@ -297,10 +301,10 @@ socket.onmessage = event => {
             scoreAnimation.rightScoreNumberComboAccuracy.update(blueTeamScoreSecondary)
 
             // Update leader element
-            if (redTeamScore > blueTeamScore) {
+            if (redTeamScore < blueTeamScore) {
                 leftScoreNumberComboContainerEl.style.opacity = 1
                 rightScoreNumberComboContainerEl.style.opacity = 0.62
-            } else if (redTeamScore < blueTeamScore) {
+            } else if (redTeamScore > blueTeamScore) {
                 leftScoreNumberComboContainerEl.style.opacity = 0.62
                 rightScoreNumberComboContainerEl.style.opacity = 1
             } else if (redTeamScoreSecondary > blueTeamScoreSecondary) {
@@ -317,7 +321,7 @@ socket.onmessage = event => {
             // Scorebar
             // 20 misses will be the difference
             const missDifference = Math.min(Math.abs(redTeamScore - blueTeamScore), 20)
-            if (redTeamScore > blueTeamScore) {
+            if (redTeamScore < blueTeamScore) {
                 leftScoreBarEl.style.width = `${missDifference / 20 * 960}px`
                 rightScoreBarEl.style.width = "0px"
             } else if (redTeamScore > blueTeamScore) {
@@ -329,12 +333,12 @@ socket.onmessage = event => {
             }
         } else {
             // Select elements to show
-            leftScoreNumberEl.style.display = "block"
-            rightScoreNumberEl.style.display = "block"
-            leftScoreNumberComboAccuracyEl.style.display = "none"
-            rightScoreNumberComboAccuracyEl.style.display = "none"
-            leftScoreNumberComboEl.style.display = "none"
-            rightScoreNumberComboEl.style.display = "none"
+            leftScoreNumberEl.style.opacity = 0.62
+            rightScoreNumberEl.style.opacity = 0.62
+            leftScoreNumberComboAccuracyEl.style.opacity = 0
+            rightScoreNumberComboAccuracyEl.style.opacity = 0
+            leftScoreNumberComboEl.style.opacity = 0
+            rightScoreNumberComboEl.style.opacity = 0
 
             // Update scores
             scoreAnimation.leftScoreNumber.update(redTeamScore)
@@ -342,25 +346,25 @@ socket.onmessage = event => {
 
             // Update leader element
             if (redTeamScore > blueTeamScore) {
-                leftScoreNumberComboContainerEl.style.opacity = 1
-                rightScoreNumberComboContainerEl.style.opacity = 0.62
+                leftScoreNumberEl.style.opacity = 1
+                rightScoreNumberEl.style.opacity = 0.62
             } else if (redTeamScore < blueTeamScore) {
-                leftScoreNumberComboContainerEl.style.opacity = 0.62
-                rightScoreNumberComboContainerEl.style.opacity = 1
+                leftScoreNumberEl.style.opacity = 0.62
+                rightScoreNumberEl.style.opacity = 1
             } else {
-                leftScoreNumberComboContainerEl.style.opacity = 0.62
-                rightScoreNumberComboContainerEl.style.opacity = 0.62
+                leftScoreNumberEl.style.opacity = 0.62
+                rightScoreNumberEl.style.opacity = 0.62
             }
 
             // Scorebar
             // 20 misses will be the difference
-            const scoreDelta = Math.min(Math.abs(redTeamScore - blueTeamScore), 960)
+            const scoreDelta = Math.abs(redTeamScore - blueTeamScore)
             if (redTeamScore > blueTeamScore) {
-                leftScoreBarEl.style.width = `${Math.min(Math.pow(scoreDelta / 600000, 0.5) * 600, 600)}px`
+                leftScoreBarEl.style.width = `${Math.min(Math.pow(scoreDelta / 600000, 0.5) * 600, 960)}px`
                 rightScoreBarEl.style.width = "0px"
             } else if (redTeamScore < blueTeamScore) {
                 leftScoreBarEl.style.width = "0px"
-                rightScoreBarEl.style.width = `${Math.min(Math.pow(scoreDelta / 600000, 0.5) * 600, 600)}px`
+                rightScoreBarEl.style.width = `${Math.min(Math.pow(scoreDelta / 600000, 0.5) * 600, 960)}px`
             } else {
                 leftScoreBarEl.style.width = "0px"
                 rightScoreBarEl.style.width = "0px"
@@ -466,7 +470,6 @@ function setCurrentPicker(team) {
     sidebarCurrentPickerEl.innerText = `${team.slice(0, 1).toUpperCase()}${team.slice(1)}`
     document.cookie = `currentPicker=${team}; path=/`
 
-
     if (team === "red") {
         nowPlayingPickerTriangleEl.style.display = "block"
         nowPlayingPickerTriangleEl.classList.add("red-picker-triangle")
@@ -524,7 +527,7 @@ async function getAndAppendMatchHistory() {
 
             for (let i = 0; i < currentGame.scores.length; i++) {
                 // Relax
-                if (currentMap.mod.includeS("RX")) {
+                if (currentMap.mod.includes("RX")) {
                     let currentTeamScore = Number(currentGame.scores[i].countmiss)
 
                     let totalNotes = Number(currentGame.scores[i].countmiss) + Number(currentGame.scores[i].count50) + 
@@ -555,14 +558,16 @@ async function getAndAppendMatchHistory() {
                 }
             }
 
-            if (currentMap.mod.includeS("RX")) {
+            if (currentMap.mod.includes("RX")) {
                 redTeamScoreSecondary /= noOfRedPlayers
                 blueTeamScoreSecondary /= noOfBluePlayers
+                redTeamScoreSecondary *= 100
+                blueTeamScoreSecondary *= 100
             }
 
             // Set winner
             let winner
-            if (currentMap.mod.includeS("RX")) {
+            if (currentMap.mod.includes("RX")) {
                 if (redTeamScore < blueTeamScore) winner = "red"
                 else if (redTeamScore > blueTeamScore) winner = "blue"
                 else if (redTeamScoreSecondary > blueTeamScoreSecondary) winner = "red"

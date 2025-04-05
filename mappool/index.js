@@ -4,7 +4,7 @@ const roundTextEl = document.getElementById("round-text")
 // Get default maps
 let defaultMaps
 async function getDefaultBeatmaps() {
-    const response = await fetch("../_data/beatmaps.json")
+    const response = await fetch("../_data/default-beatmap.json")
     const responseJson = await response.json()
     defaultMaps = responseJson
 }
@@ -208,6 +208,7 @@ async function mapClickEvent(event) {
     if (event.shiftKey) action = "reset"
 
     // Check if it is the default pick
+    console.log(currentMapId, defaultMaps.RO32DefaultBeatmap, roundName, "RO32")
     if ((currentMapId === defaultMaps.RO32DefaultBeatmap && roundName === "RO32") ||
         (currentMapId === defaultMaps.RO16DefaultBeatmap && roundName === "RO16") ||
         (currentMapId === defaultMaps.QFDefaultBeatmap && roundName === "QF") ||
@@ -251,6 +252,7 @@ async function mapClickEvent(event) {
         this.dataset.pickerTeam = "false"
         this.dataset.bannedByRed = "false"
         this.dataset.bannedByBlue = "false"
+        this.children[0].classList.remove("category-map-detail-container-actioned")
         this.children[1].style.display = "none"
         this.children[2].style.display = "none"
         return
@@ -350,12 +352,14 @@ socket.onmessage = event => {
     if (redTeamName !== data.tourney.manager.teamName.left) {
         redTeamName = data.tourney.manager.teamName.left
         redTeamNameEl.innerText = redTeamName
-        redTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/${redTeamName.replace(/[<>:"/\\|?*]/g, '_')}.png")`
+        if (redTeamName.trim() === "") redTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/transparent.png")`
+        else redTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/${redTeamName.replace(/[<>:"/\\|?*]/g, '_')}.png")`
     }
     if (blueTeamName !== data.tourney.manager.teamName.right) {
         blueTeamName = data.tourney.manager.teamName.right
         blueTeamNameEl.innerText = blueTeamName
-        blueTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/${blueTeamName.replace(/[<>:"/\\|?*]/g, '_')}.png")`
+        if (redTeamName.trim() === "") blueTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/transparent.png")`
+        else blueTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/${blueTeamName.replace(/[<>:"/\\|?*]/g, '_')}.png")`
     }
 
     if (chatLen !== data.tourney.manager.chat.length) {
@@ -506,10 +510,10 @@ socket.onmessage = event => {
             ipcState !== previousIpcState &&
             enableAutoAdvance
         ) {
-            obsGetCurrentScene((scene) => {
-                if (scene.name === winner_scene_name) return
-                obsSetCurrentScene(winner_scene_name)
-            })
+            // obsGetCurrentScene((scene) => {
+            //     if (scene.name === winner_scene_name) return
+            //     obsSetCurrentScene(winner_scene_name)
+            // })
         }
     }
 }

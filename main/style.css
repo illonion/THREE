@@ -301,6 +301,8 @@
     left: 622px;
     bottom: 88px;
     transform: translateX(-50%);
+    opacity: 1;
+    transition: 500ms ease-in-out;
 }
 
 /* Sidebar */

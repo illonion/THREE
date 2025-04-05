@@ -122,7 +122,9 @@
     transform: translateX(-50%);
     width: 874px;
     padding: 10px 25px;
+    overflow-y: scroll;
 }
+.chat-display::-webkit-scrollbar { display: none; }
 .chat-display-background {
     position: absolute;
     top: 0;
@@ -139,7 +141,9 @@
     flex-direction: column;
     justify-content: flex-end;
     gap: 4px;
+    overflow-y: scroll;
 }
+.chat-display-wrapper::-webkit-scrollbar { display: none; }
 .chat-message-container {
     width: 100%;
     font-weight: 700;
@@ -151,4 +155,4 @@
 .unknown { color: yellow; }
 .bot { color: greenyellow; }
 .left { color: lightsalmon; }
-.blue { color: lightblue; }
+.right { color: lightblue; }
