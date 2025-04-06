@@ -53,8 +53,9 @@ function findBeatmapById(beatmapId) {
 
 // Get category by beatmap id
 function getCategoryByBeatmapId(id) {
+    id = id.toString()
     for (const category in allBeatmaps) {
-        if (allBeatmaps[category].some(obj => obj.beatmap_id === id)) {
+        if (allBeatmaps[category].some(beatmap => beatmap.beatmap_id === id)) {
             return category
         }
     }
@@ -146,7 +147,7 @@ socket.onmessage = event => {
     }
 
     // Detect mappool map
-    if (mapId !== data.menu.bm.id && mapMd5 !== data.menu.bm.md5) {
+    if (mapId !== data.menu.bm.id && mapMd5 !== data.menu.bm.md5 && allBeatmaps) {
         mapId = data.menu.bm.id
         mapMd5 = data.menu.bm.md5
 
@@ -197,8 +198,6 @@ socket.onmessage = event => {
                     if (currentAr > 5) currentAr = Math.round((((1200 - (( 1200 - (currentAr - 5) * 150) * 2 / 3)) / 150) + 5) * 10) / 10
                     else currentAr = Math.round((1800 - ((1800 - currentAr * 120) * 2 / 3)) / 120 * 10) / 10
                     currentOd = Math.round((79.5 - (( 79.5 - 6 * currentOd) * 2 / 3)) / 6 * 10) / 10
-                    currentBpm *= 1.5
-                    currentLength = Math.round(currentLength / 1.5)
                     break
             }
             nowPlayingStatsCsNumberEl.innerText = currentCs
@@ -245,8 +244,8 @@ socket.onmessage = event => {
             chatDisplayEl.style.opacity = 0
         } else {
             scoreSectionEl.style.opacity = 0
-            nowPlayingSectionEl.style.opacity = 0
-            nowPlayingPickerTriangleEl.style.opacity = 0
+            nowPlayingSectionEl.style.opacity = 1
+            nowPlayingPickerTriangleEl.style.opacity = 1
             chatDisplayEl.style.opacity = 1
         }
     }
