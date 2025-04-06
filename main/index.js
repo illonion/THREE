@@ -207,14 +207,15 @@ socket.onmessage = event => {
 
             // Category ID
             nowPlayingCategoryIdEl.style.display = "block"
-            nowPlayingCategoryIdEl.setAttribute("src", `../_shared/assets/mod-icons/${getCategoryByBeatmapId(mapId)}-${mappoolMap.order + 1}`)
+            nowPlayingCategoryIdEl.setAttribute("src", `../_shared/assets/mod-icons/${getCategoryByBeatmapId(mapId)}-${mappoolMap.order + 1}.png`)
+
         } else {
             nowPlayingBottomRowPlusEl.style.display = "none"
             nowPlayingBottomRowModEl.style.display = "none"
             nowPlayingBottomRowMapperSeparatorEl.style.display = "none"
             nowPlayingBottomRowMapperTextEl.style.marginLeft = "0px"
-            nowPlayingCategoryIdEl.style.display = "none";
-        }
+            nowPlayingCategoryIdEl.style.display = "none"
+        }   
     }
 
     if (!mappoolMap) {

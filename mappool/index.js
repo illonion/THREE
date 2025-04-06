@@ -208,7 +208,6 @@ async function mapClickEvent(event) {
     if (event.shiftKey) action = "reset"
 
     // Check if it is the default pick
-    console.log(currentMapId, defaultMaps.RO32DefaultBeatmap, roundName, "RO32")
     if ((currentMapId === defaultMaps.RO32DefaultBeatmap && roundName === "RO32") ||
         (currentMapId === defaultMaps.RO16DefaultBeatmap && roundName === "RO16") ||
         (currentMapId === defaultMaps.QFDefaultBeatmap && roundName === "QF") ||
@@ -431,25 +430,25 @@ socket.onmessage = event => {
     }
 
     // Get scores
-    if (scoreVisible !== data.tourney.manager.scoreVisible) scoreVisible = data.tourney.manager.scoreVisible
+    if (scoreVisible !== data.tourney.manager.bools.scoreVisible) scoreVisible = data.tourney.manager.bools.scoreVisible
     if (scoreVisible) {
         redTeamScore = 0
         blueTeamScore = 0
         redTeamScoreSecondary = 0
         blueTeamScoreSecondary = 0
 
-        for (let i = 0; i < data.tourney.manager.ipcClients.length; i++) {
+        for (let i = 0; i < data.tourney.ipcClients.length; i++) {
             let currentScore = 0
             let currentScoreSecondary = 0
             // Check if map is RX
             if (mappoolMap && mappoolMap.mod.includes("RX")) {
-                currentScore = data.tourney.manager.ipcClients[i].gameplay.hits["0"]
-                currentScoreSecondary = data.tourney.manager.ipcClients[i].accuracy
+                currentScore = data.tourney.ipcClients[i].gameplay.hits["0"]
+                currentScoreSecondary = data.tourney.ipcClients[i].accuracy
             } else {
-                currentScore = data.tourney.manager.ipcClients[i].gameplay.score
+                currentScore = data.tourney.ipcClients[i].gameplay.score
             }
             
-            if (data.tourney.manager.ipcClients[i].team === "left") {
+            if (data.tourney.ipcClients[i].team === "left") {
                 redTeamScore += currentScore
                 redTeamScoreSecondary += currentScoreSecondary
             } else {
