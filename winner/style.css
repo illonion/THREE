@@ -1,0 +1,59 @@
+:root {
+    --final-score-horizontal-dimension: 1129px;
+    --dark-purple: #3F1161;
+
+    /* RO32 Match History Text Colour */
+    --color-tcom: #e05d5c;
+    --color-rps: #e09a5c;
+    --color-abc: #e0db5c;
+    --color-vvd: #52bf57;
+    --color-bang: #5c9ae0;
+    --color-tb: #8e5ce0;
+    /* RO32 Match History Text Glow */
+    --glow-tcom: #ff9595;
+    --glow-rps: #ffbd95;
+    --glow-abc: #feff95;
+    --glow-vvd: #5ff783;
+    --glow-bang: #95abff;
+    --glow-tb: #c295ff;
+}
+
+.main { background-image: url("static/background.png"); }
+
+/* Final Scores */
+.final-score {
+    position: absolute;
+    top: 288px;
+    font-size: 105px;
+    color: white;
+    font-weight: 300;
+    font-family: "Zain";
+}
+.red-final-score { 
+    left: var(--final-score-horizontal-dimension);
+    transform: translateX(-50%);
+}
+.blue-final-score {
+    right: var(--final-score-horizontal-dimension);
+    transform: translateX(50%);
+}
+.lead-final-score {
+    font-size: 105px;
+    color: #feff99;
+    font-weight: bold;
+}
+
+/* Team Icon */
+.team-icon {
+    position: absolute;
+    top: 432px;
+    --dimension: 174px;
+    width: var(--dimension);
+    height: var(--dimension);
+    background-color: #e27f49;
+    border: none;
+    border-radius: 0px;
+    box-shadow: none;
+}
+.red-team-icon { left: 1039px; }
+.blue-team-icon { right: 1039px; }
