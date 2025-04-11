@@ -142,7 +142,7 @@ socket.onmessage = event => {
     if (blueTeamName !== data.tourney.manager.teamName.right) {
         blueTeamName = data.tourney.manager.teamName.right
         blueTeamNameEl.innerText = blueTeamName
-        if (redTeamName.trim() === "") blueTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/transparent.png")`
+        if (blueTeamName.trim() === "") blueTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/transparent.png")`
         else blueTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/${blueTeamName.replace(/[<>:"/\\|?*]/g, '_')}.png")`
     }
 
@@ -495,6 +495,16 @@ let previousMPLink
 let currentMPLink
 let numberOfMapsCounted = 0
 
+let mapWinners = []
+let arrowColours = []
+let categoryIds = []
+let orderNumbers = []
+let primaryWinConRed = []
+let primaryWinConBlue = []
+let secondaryWinConRed = []
+let secondaryWinConBlue = []
+let winCons = []
+
 // Get Matches
 const matchIdEl = document.getElementById("match-id")
 function getMatches() {
@@ -567,18 +577,26 @@ async function getAndAppendMatchHistory() {
                 blueTeamScoreSecondary *= 100
             }
 
+            primaryWinConRed.push(redTeamScore)
+            primaryWinConBlue.push(blueTeamScore)
+            secondaryWinConRed.push(redTeamScoreSecondary)
+            secondaryWinConBlue.push(blueTeamScoreSecondary)
+
             // Set winner
             let winner
             if (currentMap.mod.includes("RX")) {
+                winCons.push("RX")
                 if (redTeamScore < blueTeamScore) winner = "red"
                 else if (redTeamScore > blueTeamScore) winner = "blue"
                 else if (redTeamScoreSecondary > blueTeamScoreSecondary) winner = "red"
                 else if (redTeamScoreSecondary < blueTeamScoreSecondary) winner = "blue"
             } else {
+                winCons.push("none")
                 if (redTeamScore > blueTeamScore) winner = "red"
                 else if (redTeamScore < blueTeamScore) winner = "blue"
             }
             if (!winner) return
+            mapWinners.push(winner)
 
             // Create match history map
             const matchHistoryMap = document.createElement("div")
@@ -591,8 +609,10 @@ async function getAndAppendMatchHistory() {
             const currentPicker = getCookie("currentPicker")
             if (numberOfMapsCounted === responseJson.games.length - 1 && (currentPicker === "red" || currentPicker === "blue")) {
                 pickerTriangle.classList.add(`${currentPicker}-picker-triangle`)
+                arrowColours.push(currentPicker)
             } else {
                 pickerTriangle.classList.add("default-picker-triangle")
+                arrowColours.push("default")
             }
             if (winner === "red") pickerTriangle.classList.add("left-picker-triangle")
             else pickerTriangle.classList.add("right-picker-triangle")
@@ -605,6 +625,8 @@ async function getAndAppendMatchHistory() {
             const matchHistoryCategoryId = document.createElement("div")
             matchHistoryCategoryId.classList.add("match-history-category-id", `${winner}-match-history-category-id`, `match-history-category-${currentCategory.toLowerCase()}`)
             matchHistoryCategoryId.innerText = `${currentCategory}${currentMap.order + 1}`
+            categoryIds.push(currentCategory)
+            orderNumbers.push(currentMap.order + 1)
 
             // Match history score
             const matchHistoryScore = document.createElement("div")
@@ -628,6 +650,16 @@ async function getAndAppendMatchHistory() {
             matchHistoryMap.append(pickerTriangle, matchHistoryDetails)
 
             document.getElementById(`${winner}-match-history-section`).append(matchHistoryMap)
+
+            document.cookie = `mapWinners=${mapWinners.join(",")} ;path=/`
+            document.cookie = `arrowColours=${arrowColours.join(",")} ;path=/`
+            document.cookie = `categoryIds=${categoryIds.join(",")} ;path=/`
+            document.cookie = `orderNumbers=${orderNumbers.join(",")}; path=/`
+            document.cookie = `primaryWinConRed=${primaryWinConRed.join(",")} ;path=/`
+            document.cookie = `primaryWinConBlue=${primaryWinConBlue.join(",")} ;path=/`
+            document.cookie = `secondaryWinConRed=${secondaryWinConRed.join(",")} ;path=/`
+            document.cookie = `secondaryWinConBlue=${secondaryWinConBlue.join(",")} ;path=/`
+            document.cookie = `winCons=${winCons.join(",")} ;path=/`
         }
     }
 }
@@ -640,4 +672,34 @@ function resetMatchHistory() {
     redMatchHistorySectionEl.innerHTML = ""
     blueMatchHistorySectionEl.innerHTML = ""
     numberOfMapsCounted = 0
+
+    mapWinners = []
+    arrowColours = []
+    categoryIds = []
+    orderNumbers = []
+    primaryWinConRed = []
+    primaryWinConBlue = []
+    secondaryWinConRed = []
+    secondaryWinConBlue = []
+    winCons = []
+
+    unsetAllCookies()
 }
+
+function unsetAllCookies() {
+    unsetCookie("mapWinners")
+    unsetCookie("arrowColours")
+    unsetCookie("categoryIds")
+    unsetCookie("orderNumbers")
+    unsetCookie("primaryWinConRed")
+    unsetCookie("primaryWinConRed")
+    unsetCookie("primaryWinConBlue")
+    unsetCookie("secondaryWinConRed")
+    unsetCookie("secondaryWinConBlue")
+    unsetCookie("winCons")
+
+    function unsetCookie(cookieName) {
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+    }
+}
+unsetAllCookies()

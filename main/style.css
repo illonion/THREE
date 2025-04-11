@@ -23,8 +23,6 @@
     --glow-tb: #c295ff;
 }
 
-.main { background-image: url("static/background.png"); }
-
 /* Match History Section */
 .match-history-section {
     position: absolute;

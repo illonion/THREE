@@ -353,12 +353,16 @@ socket.onmessage = event => {
         redTeamNameEl.innerText = redTeamName
         if (redTeamName.trim() === "") redTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/transparent.png")`
         else redTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/${redTeamName.replace(/[<>:"/\\|?*]/g, '_')}.png")`
+
+        document.cookie = `currentRedTeamName=${redTeamName}; path=/`
     }
     if (blueTeamName !== data.tourney.manager.teamName.right) {
         blueTeamName = data.tourney.manager.teamName.right
         blueTeamNameEl.innerText = blueTeamName
-        if (redTeamName.trim() === "") blueTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/transparent.png")`
+        if (blueTeamName.trim() === "") blueTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/transparent.png")`
         else blueTeamIconEl.style.backgroundImage = `url("../_shared/assets/team-icons/${blueTeamName.replace(/[<>:"/\\|?*]/g, '_')}.png")`
+
+        document.cookie = `currentBlueTeamName=${blueTeamName}; path=/`
     }
 
     if (chatLen !== data.tourney.manager.chat.length) {
