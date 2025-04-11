@@ -1,7 +1,9 @@
 :root {
     --final-score-horizontal-dimension: 1129px;
     --team-icon-horizontal-dimension: 1347px;
-    --dark-purple: #3F1161;
+    --match-history-horizontal-dimension: 1347px;
+    --match-history-category-id-horizontal-dimension: 13px;
+    --match-history-score-horizontal-dimension: 24px;
 
     /* RO32 Match History Text Colour */
     --color-tcom: #e05d5c;
@@ -20,6 +22,19 @@
 }
 
 .main { background-image: url("static/background.png"); }
+
+/* Tournament Name */
+.tournament-name {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 21px;
+    color: white;
+    font-weight: 700;
+    font-family: "Atkinson Hyperlegible Next";
+    line-height: 21.5px;
+    opacity: 0.2;
+}
 
 /* Final Scores */
 .final-score {
@@ -56,8 +71,13 @@
     border-radius: 0px;
     box-shadow: none;
 }
-.red-team-icon { right: var(--team-icon-horizontal-dimension); }
-.blue-team-icon { left: var(--team-icon-horizontal-dimension); }
+.red-team-icon { 
+    left: unset;
+    right: var(--team-icon-horizontal-dimension); }
+.blue-team-icon { 
+    right: unset;
+    left: var(--team-icon-horizontal-dimension);
+}
 
 /* Team Name */
 .team-name { top: 648px; }
@@ -67,16 +87,14 @@
 /* Match History Section */
 .match-history-section {
     position: absolute;
-    top: 233px;
+    top: 730px;
     height: 480px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
+    gap: 10px;
 }
-.red-match-history-section { left: var(--match-history-horizontal-dimension); }
-.blue-match-history-section { right: var(--match-history-horizontal-dimension); }
+.red-match-history-section { right: var(--match-history-horizontal-dimension); }
+.blue-match-history-section { left: var(--match-history-horizontal-dimension); }
 /* Match History Map */
 .match-history-map {
     display: flex;
@@ -151,4 +169,15 @@
 .match-history-score-winner { 
     color: #f3ff70;
     font-weight: 800
+}
+
+/* Dabble */
+.not-dabble {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    background-image: url("static/dabble.webp");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.073;
 }
