@@ -1,5 +1,6 @@
 :root {
     --final-score-horizontal-dimension: 1129px;
+    --team-icon-horizontal-dimension: 1347px;
     --dark-purple: #3F1161;
 
     /* RO32 Match History Text Colour */
@@ -55,5 +56,10 @@
     border-radius: 0px;
     box-shadow: none;
 }
-.red-team-icon { left: 1039px; }
-.blue-team-icon { right: 1039px; }
+.red-team-icon { right: var(--team-icon-horizontal-dimension); }
+.blue-team-icon { left: var(--team-icon-horizontal-dimension); }
+
+/* Team Name */
+.team-name { top: 648px; }
+.red-team-name { right: var(--team-icon-horizontal-dimension); }
+.blue-team-name { left: var(--team-icon-horizontal-dimension); }
