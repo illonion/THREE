@@ -74,8 +74,8 @@ const leftScoreBarEl = document.getElementById("left-score-bar")
 const rightScoreBarEl = document.getElementById("right-score-bar")
 const leftScoreNumberEl = document.getElementById("left-score-number")
 const rightScoreNumberEl = document.getElementById("right-score-number")
-const leftScoreNumberComboAccuracyEl = document.getElementById("left-score-number-combo-accuracy")
-const rightScoreNumberComboAccuracyEl = document.getElementById("right-score-number-combo-accuracy")
+const leftScoreNumberComboSecondaryEl = document.getElementById("left-score-number-combo-secondary")
+const rightScoreNumberComboSecondaryEl = document.getElementById("right-score-number-combo-secondary")
 const leftScoreNumberComboEl = document.getElementById("left-score-number-combo")
 const rightScoreNumberComboEl = document.getElementById("right-score-number-combo")
 const leftScoreNumberComboContainerEl = document.getElementById("left-score-number-combo-container")
@@ -87,8 +87,10 @@ let redTeamScoreSecondary = 0, blueTeamScoreSecondary = 0
 const scoreAnimation = {
     "leftScoreNumber": new CountUp(leftScoreNumberEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." }),
     "rightScoreNumber": new CountUp(rightScoreNumberEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." }),
-    "leftScoreNumberComboAccuracy": new CountUp(leftScoreNumberComboAccuracyEl, 0, 0, 2, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , prefix: "(", suffix: "%)"}),
-    "rightScoreNumberComboAccuracy": new CountUp(rightScoreNumberComboAccuracyEl, 0, 0, 2, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , prefix: "(", suffix: "%)"}),
+    "leftScoreNumberComboSecondaryAccuracy": new CountUp(leftScoreNumberComboSecondaryEl, 0, 0, 2, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , prefix: "(", suffix: "%)"}),
+    "rightScoreNumberComboSecondaryAccuracy": new CountUp(rightScoreNumberComboSecondaryEl, 0, 0, 2, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , prefix: "(", suffix: "%)"}),
+    "leftScoreNumberComboSecondaryScore": new CountUp(leftScoreNumberComboSecondaryEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , prefix: "(", suffix: ")"}),
+    "rightScoreNumberComboSecondaryScore": new CountUp(rightScoreNumberComboSecondaryEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , prefix: "(", suffix: ")"}),
     "leftScoreNumberCombo": new CountUp(leftScoreNumberComboEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "x"}),
     "rightScoreNumberCombo": new CountUp(rightScoreNumberComboEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "x"}),
 }
@@ -305,16 +307,21 @@ socket.onmessage = event => {
             // Select elements to show
             leftScoreNumberEl.style.opacity = 0
             rightScoreNumberEl.style.opacity = 0
-            leftScoreNumberComboAccuracyEl.style.opacity = 0.62
-            rightScoreNumberComboAccuracyEl.style.opacity = 0.62
+            leftScoreNumberComboSecondaryEl.style.opacity = 0.62
+            rightScoreNumberComboSecondaryEl.style.opacity = 0.62
             leftScoreNumberComboEl.style.opacity = 0.62
             rightScoreNumberComboEl.style.opacity = 0.62
 
             // Update scores
             scoreAnimation.leftScoreNumberCombo.update(redTeamScore)
             scoreAnimation.rightScoreNumberCombo.update(blueTeamScore)
-            scoreAnimation.leftScoreNumberComboAccuracy.update(redTeamScoreSecondary)
-            scoreAnimation.rightScoreNumberComboAccuracy.update(blueTeamScoreSecondary)
+            if (mappoolMap.score_method_2 === "acc") {
+                scoreAnimation.leftScoreNumberComboSecondaryAccuracy.update(redTeamScoreSecondary)
+                scoreAnimation.rightScoreNumberComboSecondaryAccuracy.update(blueTeamScoreSecondary)
+            } else if (mappoolMap.score_method_2 === "scoreV2") {
+                scoreAnimation.leftScoreNumberComboSecondaryScore.update(redTeamScoreSecondary)
+                scoreAnimation.rightScoreNumberComboSecondaryScore.update(blueTeamScoreSecondary)
+            }
 
             // Update leader element
             if (redTeamScore < blueTeamScore) {
@@ -351,8 +358,8 @@ socket.onmessage = event => {
             // Select elements to show
             leftScoreNumberEl.style.opacity = 0.62
             rightScoreNumberEl.style.opacity = 0.62
-            leftScoreNumberComboAccuracyEl.style.opacity = 0
-            rightScoreNumberComboAccuracyEl.style.opacity = 0
+            leftscoreNumberComboSecondaryEl.style.opacity = 0
+            rightscoreNumberComboSecondaryEl.style.opacity = 0
             leftScoreNumberComboEl.style.opacity = 0
             rightScoreNumberComboEl.style.opacity = 0
 
