@@ -86,6 +86,9 @@ const rightScoreNumberComboContainerEl = document.getElementById("right-score-nu
 // Left Score Acc
 const leftScoreAccEl = document.getElementById("left-score-acc")
 const rightScoreAccEl = document.getElementById("right-score-acc")
+// Combo (named miss count)
+const leftScoreMissCountEl = document.getElementById("left-score-miss-count")
+const rightScoreMissCountEl = document.getElementById("right-score-miss-count")
 let scoreVisible
 let redTeamScore = 0, blueTeamScore = 0
 let redTeamScoreSecondary = 0, blueTeamScoreSecondary = 0
@@ -101,6 +104,8 @@ const scoreAnimation = {
     "rightScoreNumberCombo": new CountUp(rightScoreNumberComboEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "x"}),
     "leftScoreAcc": new CountUp(leftScoreAccEl, 0, 0, 2, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "%"}),
     "rightScoreAcc": new CountUp(rightScoreAccEl, 0, 0, 2, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "%"}),
+    "leftScoreMissCount": new CountUp(leftScoreMissCountEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "x"}),
+    "rightScoreMissCount": new CountUp(rightScoreMissCountEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "." , suffix: "x"}),
 }
 
 // Map information
@@ -282,16 +287,18 @@ socket.onmessage = event => {
             let currentScore = 0
             let currentScoreSecondary = 0
             // Check match results
-            if (mappoolMap && mappoolMap.score_method === "miss") {
+            if (mappoolMap && mappoolMap.score_method && mappoolMap.score_method === "miss") {
                 currentScore = data.tourney.ipcClients[i].gameplay.hits["0"]
 
-                if (mappoolMap.score_method_2 === "acc") {
+                if (mappoolMap.score_method_2 && mappoolMap.score_method_2 === "acc") {
                     currentScoreSecondary = data.tourney.ipcClients[i].gameplay.accuracy
-                } else if (mappoolMap.score_method_2 === "scoreV2") {
+                } else if (mappoolMap.score_method_2 && mappoolMap.score_method_2 === "scoreV2") {
                     currentScoreSecondary = data.tourney.ipcClients[i].gameplay.score
                 }
-            } else if (mappoolMap && mappoolMap.score_method === "acc") {
+            } else if (mappoolMap && mappoolMap.score_method && mappoolMap.score_method === "acc") {
                 currentScore = data.tourney.ipcClients[i].gameplay.accuracy
+            } else if (mappoolMap && mappoolMap.score_method && mappoolMap.score_method === "combo") {
+                currentScore = data.tourney.ipcClients[i].gameplay.combo.max
             } else currentScore = data.tourney.ipcClients[i].gameplay.score
             
             if (data.tourney.ipcClients[i].team === "left") {
@@ -306,19 +313,19 @@ socket.onmessage = event => {
         }
 
         // Get acc for misses
-        if (mappoolMap.score_method === "miss" && mappoolMap.score_method_2 === "acc") {
+        if (mappoolMap && mappoolMap.score_method && mappoolMap.score_method === "miss" && mappoolMap.score_method_2 && mappoolMap.score_method_2 === "acc") {
             redTeamScoreSecondary /= noOfRedPlayers
             blueTeamScoreSecondary /= noOfBluePlayers
         }
 
         // Get acc for acc scoring method
-        if (mappoolMap.score_method === "acc") {
+        if (mappoolMap && mappoolMap.score_method && mappoolMap.score_method === "acc") {
             redTeamScore /= noOfRedPlayers
             blueTeamScore /= noOfBluePlayers
         }
 
         // Display scores
-        if (mappoolMap && mappoolMap.score_method === "miss") {
+        if (mappoolMap && mappoolMap.score_method && mappoolMap.score_method === "miss") {
             // Select elements to show
             leftScoreNumberEl.style.opacity = 0
             rightScoreNumberEl.style.opacity = 0
@@ -328,14 +335,16 @@ socket.onmessage = event => {
             rightScoreNumberComboEl.style.opacity = 0.62
             leftScoreAccEl.style.opacity = 0
             rightScoreAccEl.style.opacity = 0
+            leftScoreMissCountEl.style.opacity = 0
+            rightScoreMissCountEl.style.opacity = 0
 
             // Update scores
             scoreAnimation.leftScoreNumberCombo.update(redTeamScore)
             scoreAnimation.rightScoreNumberCombo.update(blueTeamScore)
-            if (mappoolMap.score_method_2 === "acc") {
+            if (mappoolMap.score_method_2 && mappoolMap.score_method_2 === "acc") {
                 scoreAnimation.leftScoreNumberComboSecondaryAccuracy.update(redTeamScoreSecondary)
                 scoreAnimation.rightScoreNumberComboSecondaryAccuracy.update(blueTeamScoreSecondary)
-            } else if (mappoolMap.score_method_2 === "scoreV2") {
+            } else if (mappoolMap.score_method_2 && mappoolMap.score_method_2 === "scoreV2") {
                 scoreAnimation.leftScoreNumberComboSecondaryScore.update(redTeamScoreSecondary)
                 scoreAnimation.rightScoreNumberComboSecondaryScore.update(blueTeamScoreSecondary)
             }
@@ -371,7 +380,7 @@ socket.onmessage = event => {
                 leftScoreBarEl.style.width = "0px"
                 rightScoreBarEl.style.width = "0px"
             }
-        } else if (mappoolMap && mappoolMap.score_method === "acc") {
+        } else if (mappoolMap && mappoolMap.score_method && mappoolMap.score_method === "acc") {
             // Select elements to show
             leftScoreNumberEl.style.opacity = 0
             rightScoreNumberEl.style.opacity = 0
@@ -381,6 +390,8 @@ socket.onmessage = event => {
             rightScoreNumberComboEl.style.opacity = 0
             leftScoreAccEl.style.opacity = 0.62
             rightScoreAccEl.style.opacity = 0.62
+            leftScoreMissCountEl.style.opacity = 0
+            rightScoreMissCountEl.style.opacity = 0
 
             // Update scores
             scoreAnimation.leftScoreAcc.update(redTeamScore)
@@ -410,6 +421,48 @@ socket.onmessage = event => {
                 leftScoreBarEl.style.width = "0px"
                 rightScoreBarEl.style.width = "0px"
             }
+        } else if (mappoolMap && mappoolMap.score_method && mappoolMap.score_method === "combo") {
+            // Select elements to show
+            leftScoreNumberEl.style.opacity = 0
+            rightScoreNumberEl.style.opacity = 0
+            leftScoreNumberComboSecondaryEl.style.opacity = 0
+            rightScoreNumberComboSecondaryEl.style.opacity = 0
+            leftScoreNumberComboEl.style.opacity = 0
+            rightScoreNumberComboEl.style.opacity = 0
+            leftScoreAccEl.style.opacity = 0
+            rightScoreAccEl.style.opacity = 0
+            leftScoreMissCountEl.style.opacity = 0.62
+            rightScoreMissCountEl.style.opacity = 0.62
+
+            // Update scores
+            scoreAnimation.leftScoreMissCount.update(redTeamScore)
+            scoreAnimation.rightScoreMissCount.update(blueTeamScore)
+
+            // Update leader element
+            if (redTeamScore > blueTeamScore) {
+                leftScoreMissCountEl.style.opacity = 1
+                rightScoreMissCountEl.style.opacity = 0.62
+            } else if (redTeamScore < blueTeamScore) {
+                leftScoreMissCountEl.style.opacity = 0.62
+                rightScoreMissCountEl.style.opacity = 1
+            } else {
+                leftScoreMissCountEl.style.opacity = 0.62
+                rightScoreMissCountEl.style.opacity = 0.62
+            }
+
+            // Scorebar
+            // 50 combo will be the difference
+            const comboDifference = Math.min(Math.abs(redTeamScore - blueTeamScore), 20)
+            if (redTeamScore < blueTeamScore) {
+                leftScoreBarEl.style.width = `${comboDifference / 50 * 960}px`
+                rightScoreBarEl.style.width = "0px"
+            } else if (redTeamScore > blueTeamScore) {
+                leftScoreBarEl.style.width = "0px"
+                rightScoreBarEl.style.width = `${comboDifference / 50 * 960}px`
+            } else {
+                leftScoreBarEl.style.width = "0px"
+                rightScoreBarEl.style.width = "0px"
+            }
         } else {
             // Select elements to show
             leftScoreNumberEl.style.opacity = 0.62
@@ -418,6 +471,10 @@ socket.onmessage = event => {
             rightScoreNumberComboSecondaryEl.style.opacity = 0
             leftScoreNumberComboEl.style.opacity = 0
             rightScoreNumberComboEl.style.opacity = 0
+            leftScoreAccEl.style.opacity = 0
+            rightScoreAccEl.style.opacity = 0
+            leftScoreMissCountEl.style.opacity = 0
+            rightScoreMissCountEl.style.opacity = 0
 
             // Update scores
             scoreAnimation.leftScoreNumber.update(redTeamScore)
@@ -616,8 +673,9 @@ async function getAndAppendMatchHistory() {
             let noOfBluePlayers = 0
 
             for (let i = 0; i < currentGame.scores.length; i++) {
-                // Miss scoring method
+                
                 if (currentMap.score_method === "miss") {
+                    // Miss scoring method
                     let currentTeamScore = Number(currentGame.scores[i].countmiss)
 
                     if (currentMap.score_method_2 === "acc") {
@@ -652,28 +710,35 @@ async function getAndAppendMatchHistory() {
                             noOfBluePlayers++
                         }
                     }
-                // No special scoring method
                 } else if (currentMap.score_method === "acc") {
-                    if (currentMap.score_method_2 === "acc") {
-                        let totalNotes = Number(currentGame.scores[i].countmiss) + Number(currentGame.scores[i].count50) + 
-                        Number(currentGame.scores[i].count100) + Number(currentGame.scores[i].count300) +
-                        Number(currentGame.scores[i].countgeki) + Number(currentGame.scores[i].countkatu)
+                    // Acc scoring method
+                    let totalNotes = Number(currentGame.scores[i].countmiss) + Number(currentGame.scores[i].count50) + 
+                    Number(currentGame.scores[i].count100) + Number(currentGame.scores[i].count300) +
+                    Number(currentGame.scores[i].countgeki) + Number(currentGame.scores[i].countkatu)
 
-                        let accuracy = (Number(currentGame.scores[i].countmiss) * 0 + Number(currentGame.scores[i].count50) * 1 / 6 +
-                                        Number(currentGame.scores[i].count100) * 1 / 3 + Number(currentGame.scores[i].count300) +
-                                        Number(currentGame.scores[i].countgeki) + Number(currentGame.scores[i].countkatu) * 1 / 3) / totalNotes
-                    
-                        if (totalNotes === 0) accuracy = 0
+                    let accuracy = (Number(currentGame.scores[i].countmiss) * 0 + Number(currentGame.scores[i].count50) * 1 / 6 +
+                                    Number(currentGame.scores[i].count100) * 1 / 3 + Number(currentGame.scores[i].count300) +
+                                    Number(currentGame.scores[i].countgeki) + Number(currentGame.scores[i].countkatu) * 1 / 3) / totalNotes
+                
+                    if (totalNotes === 0) accuracy = 0
 
-                        if (currentGame.scores[i].team === "2") {
-                            redTeamScore += accuracy
-                            noOfRedPlayers++
-                        } else {
-                            blueTeamScore += accuracy
-                            noOfBluePlayers++
-                        }
+                    if (currentGame.scores[i].team === "2") {
+                        redTeamScore += accuracy
+                        noOfRedPlayers++
+                    } else {
+                        blueTeamScore += accuracy
+                        noOfBluePlayers++
+                    }
+                } else if (currentMap.score_method === "combo") {
+                    // Combo Scoring method
+                    const currentTeamScore = Number(currentGame.scores[i].maxcombo)
+                    if (currentGame.scores[i].team === "2") {
+                        redTeamScore += currentTeamScore
+                    } else {
+                        blueTeamScore += currentTeamScore
                     }
                 } else {
+                    // No special scoring method
                     let currentTeamScore = Number(currentGame.scores[i].score)
                     if (currentGame.scores[i].team === "2") {
                         redTeamScore += currentTeamScore
@@ -702,24 +767,19 @@ async function getAndAppendMatchHistory() {
 
             // Set winner
             let winner
-            if (currentMap.score_method === "miss") {
+            if (currentMap.score_method && currentMap.score_method === "miss") {
                 winCons.push("miss")
                 winCons2.push(currentMap.score_method_2)
                 if (redTeamScore < blueTeamScore) winner = "red"
                 else if (redTeamScore > blueTeamScore) winner = "blue"
                 else if (redTeamScoreSecondary > blueTeamScoreSecondary) winner = "red"
                 else if (redTeamScoreSecondary < blueTeamScoreSecondary) winner = "blue"
-            } else if (currentMap.score_method === "acc") {
-                winCons.push("acc")
-                winCons2.push("none")
-                if (redTeamScore > blueTeamScore) winner = "red"
-                else if (redTeamScore < blueTeamScore) winner = "blue"
             } else {
-                winCons.push("none")
+                if (currentMap.score_method) winCons.push(currentMap.score_method)
                 winCons2.push("none")
                 if (redTeamScore > blueTeamScore) winner = "red"
                 else if (redTeamScore < blueTeamScore) winner = "blue"
-            }
+            } 
             if (!winner) return
             mapWinners.push(winner)
 
@@ -759,12 +819,15 @@ async function getAndAppendMatchHistory() {
             let matchHistoryScoreRed = document.createElement("span")
             let matchHistoryScoreBlue = document.createElement("span")
             // Check category on how to display score
-            if (currentMap.score_method === "miss" && currentMap.score_method_2 === "acc") {
+            if (currentMap.score_method && currentMap.score_method === "miss" && currentMap.score_method_2 && currentMap.score_method_2 === "acc") {
                 matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x (${redTeamScoreSecondary.toFixed(2)}%)`
                 matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}x (${blueTeamScoreSecondary.toFixed(2)}%)`
-            } else if (currentMap.score_method === "miss" && currentMap.score_method_2 === "acc") {
+            } else if (currentMap.score_method && currentMap.score_method === "miss" && currentMap.score_method_2 && currentMap.score_method_2 === "scoreV2") {
                 matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x (${redTeamScoreSecondary})`
                 matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}x (${blueTeamScoreSecondary})`
+            } else if (currentMap.score_method && currentMap.score_method === "combo") {
+                matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x`
+                matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}`
             } else {
                 matchHistoryScoreRed.innerText = redTeamScore.toLocaleString()
                 matchHistoryScoreBlue.innerText = blueTeamScore.toLocaleString()

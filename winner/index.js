@@ -221,6 +221,9 @@ setInterval(() => {
             } else if (currentWinConStringsArray[i] === "acc") {
                 matchHistoryScoreRed.innerText = `${redTeamScore.toFixed(2)}%`
                 matchHistoryScoreBlue.innerText = `${blueTeamScore.toFixed(2)}%`
+            } else if (currentWinConStringsArray[i] === "combo") {
+                matchHistoryScoreRed.innerText = `${redTeamScore}x`
+                matchHistoryScoreBlue.innerText = `${blueTeamScore}x`
             } else {
                 matchHistoryScoreRed.innerText = redTeamScore.toLocaleString()
                 matchHistoryScoreBlue.innerText = blueTeamScore.toLocaleString()

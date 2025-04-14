@@ -444,16 +444,19 @@ socket.onmessage = event => {
         for (let i = 0; i < data.tourney.ipcClients.length; i++) {
             let currentScore = 0
             let currentScoreSecondary = 0
-            // Check if map is RX
-            if (mappoolMap && mappoolMap.score_method === "miss") {
+            // Check match results
+            if (mappoolMap && mappoolMap.score_method && mappoolMap.score_method === "miss") {
                 currentScore = data.tourney.ipcClients[i].gameplay.hits["0"]
-                if (mappoolMap.score_method_2 === "acc") {
+
+                if (mappoolMap.score_method_2 && mappoolMap.score_method_2 === "acc") {
                     currentScoreSecondary = data.tourney.ipcClients[i].gameplay.accuracy
-                } else if (mappoolMap.score_method_2 === "scoreV2") {
+                } else if (mappoolMap.score_method_2 && mappoolMap.score_method_2 === "scoreV2") {
                     currentScoreSecondary = data.tourney.ipcClients[i].gameplay.score
                 }
-            } else if (mappoolMap && mappoolMap.score_method === "acc") {
+            } else if (mappoolMap && mappoolMap.score_method && mappoolMap.score_method === "acc") {
                 currentScore = data.tourney.ipcClients[i].gameplay.accuracy
+            } else if (mappoolMap && mappoolMap.score_method && mappoolMap.score_method === "combo") {
+                currentScore = data.tourney.ipcClients[i].gameplay.combo.max
             } else currentScore = data.tourney.ipcClients[i].gameplay.score
             
             if (data.tourney.ipcClients[i].team === "left") {
