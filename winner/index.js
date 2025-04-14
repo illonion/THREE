@@ -74,6 +74,7 @@ let currentPrimaryWinConBlueStrings
 let currentSecondaryWinConRedStrings
 let currentSecondaryWinConBlueStrings
 let currentWinConsStrings
+let currentWinCons2Strings
 let previousMapWinnersStrings
 let previousArrowColoursStrings
 let previousCategoryIdsStrings
@@ -83,6 +84,7 @@ let previousPrimaryWinConBlueStrings
 let previousSecondaryWinConRedStrings
 let previousSecondaryWinConBlueStrings
 let previousWinConsStrings
+let previousWinCons2Strings
 
 setInterval(() => {
     // Set current score
@@ -136,6 +138,7 @@ setInterval(() => {
     currentSecondaryWinConRedStrings = getCookie("secondaryWinConRed")
     currentSecondaryWinConBlueStrings = getCookie("secondaryWinConBlue")
     currentWinConsStrings = getCookie("winCons")
+    currentWinCons2Strings = getCookie("winCons2")
 
     if (
         currentMapWinnersStrings !== previousMapWinnersStrings ||
@@ -146,7 +149,8 @@ setInterval(() => {
         currentPrimaryWinConBlueStrings !== previousPrimaryWinConBlueStrings ||
         currentSecondaryWinConRedStrings !== previousSecondaryWinConRedStrings ||
         currentSecondaryWinConBlueStrings !== previousSecondaryWinConBlueStrings ||
-        currentWinConsStrings !== previousWinConsStrings
+        currentWinConsStrings !== previousWinConsStrings ||
+        currentWinCons2Strings !== previousWinCons2Strings
     ) {
         redMatchHistorySectionEl.innerHTML = ""
         blueMatchHistorySectionEl.innerHTML = ""
@@ -160,6 +164,7 @@ setInterval(() => {
         previousSecondaryWinConRedStrings = currentSecondaryWinConRedStrings
         previousSecondaryWinConBlueStrings = currentSecondaryWinConBlueStrings
         previousWinConsStrings = currentWinConsStrings
+        previousWinCons2Strings = currentWinCons2Strings
 
         const currentMapWinnersStringsArray = currentMapWinnersStrings.split(",")
         const currentArrowColoursStringsArray = currentArrowColoursStrings.split(",")
@@ -170,6 +175,7 @@ setInterval(() => {
         const currentSecondaryWinConRedStringsArray = currentSecondaryWinConRedStrings.split(",")
         const currentSecondaryWinConBlueStringsArray = currentSecondaryWinConBlueStrings.split(",")
         const currentWinConsStringsArray = currentWinConsStrings.split(",")
+        const currentWinCons2StringsArray = currentWinCons2Strings.split(",")
 
         for (let i = 0; i < currentMapWinnersStringsArray.length; i++) {
             const currentWinner = currentMapWinnersStringsArray[i]
@@ -206,9 +212,12 @@ setInterval(() => {
             const blueTeamScore = Number(currentPrimaryWinConBlueStringsArray[i])
             const redTeamScoreSecondary = Number(currentSecondaryWinConRedStringsArray[i])
             const blueTeamScoreSecondary = Number(currentSecondaryWinConBlueStringsArray[i])
-            if (currentWinConsStringsArray[i] === "RX") {
+            if (currentWinConsStringsArray[i] === "miss" && currentWinCons2StringsArray[i] === "acc") {
                 matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x (${redTeamScoreSecondary.toFixed(2)}%)`
                 matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}x (${blueTeamScoreSecondary.toFixed(2)}%)`
+            } else if (currentWinConsStringsArray[i] === "miss" && currentWinCons2StringsArray[i] === "scoreV2") {
+                matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x (${redTeamScoreSecondary}%)`
+                matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}x (${blueTeamScoreSecondary}%)`
             } else {
                 matchHistoryScoreRed.innerText = redTeamScore.toLocaleString()
                 matchHistoryScoreBlue.innerText = blueTeamScore.toLocaleString()

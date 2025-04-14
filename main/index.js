@@ -272,12 +272,12 @@ socket.onmessage = event => {
             let currentScore = 0
             let currentScoreSecondary = 0
             // Check match results
-            if (mappoolMap && mappoolMap.mod.score_method === "miss") {
+            if (mappoolMap && mappoolMap.score_method === "miss") {
                 currentScore = data.tourney.ipcClients[i].gameplay.hits["0"]
 
-                if (mappoolMap.mod.score_method_2 === "acc") {
+                if (mappoolMap.score_method_2 === "acc") {
                     currentScoreSecondary = data.tourney.ipcClients[i].gameplay.accuracy
-                } else if (mappoolMap.mod.score_method_2 === "scoreV2") {
+                } else if (mappoolMap.score_method_2 === "scoreV2") {
                     currentScoreSecondary = data.tourney.ipcClients[i].gameplay.score
                 }
             } else {
@@ -295,7 +295,7 @@ socket.onmessage = event => {
             }
         }
 
-        if (mappoolMap.mod.score_method === "miss" && mappoolMap.mod.score_method_2 === "acc") {
+        if (mappoolMap.score_method === "miss" && mappoolMap.score_method_2 === "acc") {
             redTeamScoreSecondary /= noOfRedPlayers
             blueTeamScoreSecondary /= noOfBluePlayers
         }
@@ -520,6 +520,7 @@ let primaryWinConBlue = []
 let secondaryWinConRed = []
 let secondaryWinConBlue = []
 let winCons = []
+let winCons2 = []
 
 // Get Matches
 const matchIdEl = document.getElementById("match-id")
@@ -616,13 +617,16 @@ async function getAndAppendMatchHistory() {
             // Set winner
             let winner
             if (currentMap.score_method === "miss") {
-                winCons.push("RX")
+                winCons.push("miss")
                 if (redTeamScore < blueTeamScore) winner = "red"
                 else if (redTeamScore > blueTeamScore) winner = "blue"
                 else if (redTeamScoreSecondary > blueTeamScoreSecondary) winner = "red"
                 else if (redTeamScoreSecondary < blueTeamScoreSecondary) winner = "blue"
+
+                winCons2.push(currentMap.score_method_2)
             } else {
                 winCons.push("none")
+                winCons2.push("none")
                 if (redTeamScore > blueTeamScore) winner = "red"
                 else if (redTeamScore < blueTeamScore) winner = "blue"
             }
@@ -694,6 +698,7 @@ async function getAndAppendMatchHistory() {
             document.cookie = `secondaryWinConRed=${secondaryWinConRed.join(",")} ;path=/`
             document.cookie = `secondaryWinConBlue=${secondaryWinConBlue.join(",")} ;path=/`
             document.cookie = `winCons=${winCons.join(",")} ;path=/`
+            document.cookie = `winCons2=${winCons2.join(",")} ;path/`
 
             console.log(numberOfMapsCounted)
         }
@@ -718,6 +723,7 @@ function resetMatchHistory() {
     secondaryWinConRed = []
     secondaryWinConBlue = []
     winCons = []
+    winCons2 = []
 
     unsetAllCookies()
 }
@@ -733,6 +739,7 @@ function unsetAllCookies() {
     unsetCookie("secondaryWinConRed")
     unsetCookie("secondaryWinConBlue")
     unsetCookie("winCons")
+    unsetCookie("winCons2")
 
     function unsetCookie(cookieName) {
         document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;

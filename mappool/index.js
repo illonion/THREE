@@ -445,9 +445,13 @@ socket.onmessage = event => {
             let currentScore = 0
             let currentScoreSecondary = 0
             // Check if map is RX
-            if (mappoolMap && mappoolMap.mod.includes("RX")) {
+            if (mappoolMap && mappoolMap.score_method === "miss") {
                 currentScore = data.tourney.ipcClients[i].gameplay.hits["0"]
-                currentScoreSecondary = data.tourney.ipcClients[i].accuracy
+                if (mappoolMap.score_method_2 === "acc") {
+                    currentScoreSecondary = data.tourney.ipcClients[i].gameplay.accuracy
+                } else if (mappoolMap.score_method_2 === "scoreV2") {
+                    currentScoreSecondary = data.tourney.ipcClients[i].gameplay.score
+                }
             } else {
                 currentScore = data.tourney.ipcClients[i].gameplay.score
             }
@@ -474,7 +478,7 @@ socket.onmessage = event => {
 
             // If map is RX map, and then apply winner
             let currentWinner = ""
-            if (mappoolMap && mappoolMap.mod.includes("RX")) {
+            if (mappoolMap && mappoolMap.score_method === "miss") {
                 if (redTeamScore < blueTeamScore) currentWinner = "red"
                 else if (redTeamScore > blueTeamScore) currentWinner = "blue"
                 else if (redTeamScoreSecondary > blueTeamScoreSecondary) currentWinner = "red"
@@ -513,10 +517,10 @@ socket.onmessage = event => {
             ipcState !== previousIpcState &&
             enableAutoAdvance
         ) {
-            // obsGetCurrentScene((scene) => {
-            //     if (scene.name === winner_scene_name) return
-            //     obsSetCurrentScene(winner_scene_name)
-            // })
+            obsGetCurrentScene((scene) => {
+                if (scene.name === winner_scene_name) return
+                obsSetCurrentScene(winner_scene_name)
+            })
         }
     }
 }
