@@ -13,7 +13,7 @@
     --panel-leng: #1b5f33;
     --panel-date: #2d418d;
 
-    /* RO32 */
+    /* RO32 / RO16 */
     /* Background */
     --background-tcom: #e05d5c;
     --background-rps: #e09a5c;
@@ -34,6 +34,32 @@
     --panel-abc: #8d872d;
     --panel-vvd: #1b5f33;
     --panel-bang: #2d418d;
+    --panel-tb: #4c2d8d;
+
+    /* QF / SF */
+    /* Background */
+    --background-rgb: #e05d5c;
+    --background-wum: #e09a5c;
+    --background-plyr: #e0db5c;
+    --background-esc: #52bf57;
+    --background-elwn: #5c9ae0;
+    --background-rev: #5c9ae0;
+    --background-tb: #8e5ce0;
+    /* Glow */
+    --glow-rgb: #ff9595;
+    --glow-wum: #ffbd95;
+    --glow-plyr: #feff95;
+    --glow-esc: #5ff783;
+    --glow-elwn: #95abff;
+    --glow-rev: #95abff;
+    --glow-tb: #c295ff;
+    /* Panel */
+    --panel-rgb: #8d2d2d;
+    --panel-wum: #8d4a2d;
+    --panel-plyr: #8d872d;
+    --panel-esc: #1b5f33;
+    --panel-elwn: #2d418d;
+    --panel-rev: #2d418d;
     --panel-tb: #4c2d8d;
     
     --right-section-gray: #9F9F9F;
@@ -99,11 +125,24 @@
     opacity: 0.51;
     transition: 500ms ease-in-out;
 }
+/* QL */
+#left-section-tb-background { box-shadow: 0 0 35px var(--glow-sea); }
+#left-section-tb-background { box-shadow: 0 0 35px var(--glow-leng) ; }
+#left-section-tb-background { box-shadow: 0 0 35px var(--glow-date); }
+/* RO32 */
 #left-section-tcom-background { background-color: var(--background-tcom); }
 #left-section-rps-background { background-color: var(--background-rps); }
 #left-section-abc-background { background-color: var(--background-abc); }
 #left-section-vvd-background { background-color: var(--background-vvd); }
 #left-section-bang-background { background-color: var(--background-bang); }
+#left-section-tb-background { background-color: var(--background-tb); }
+/* RO32 */
+#left-section-rgb-background { background-color: var(--background-rgb); }
+#left-section-wum-background { background-color: var(--background-wum); }
+#left-section-plyr-background { background-color: var(--background-plyr); }
+#left-section-esc-background { background-color: var(--background-esc); }
+#left-section-elwn-background { background-color: var(--background-elwn); }
+#left-section-rev-background { background-color: var(--background-rev); }
 #left-section-tb-background { background-color: var(--background-tb); }
 
 /* Left Section Map Wrapper */
@@ -138,12 +177,20 @@
 .left-section-map-active > .left-section-map-container-sea { box-shadow: 0 0 35px var(--glow-sea); }
 .left-section-map-active > .left-section-map-container-leng { box-shadow: 0 0 35px var(--glow-leng) ; }
 .left-section-map-active > .left-section-map-container-date { box-shadow: 0 0 35px var(--glow-date); }
-/* Panel Colour RO32 */
+/* Panel Colour RO32 / RO16 */
 .left-section-map-active > .left-section-map-container-tcom { box-shadow: 0 0 35px var(--glow-tcom); }
 .left-section-map-active > .left-section-map-container-rps { box-shadow: 0 0 35px var(--glow-rps) ; }
 .left-section-map-active > .left-section-map-container-abc { box-shadow: 0 0 35px var(--glow-abc); }
 .left-section-map-active > .left-section-map-container-vvd { box-shadow: 0 0 35px var(--glow-vvd); }
 .left-section-map-active > .left-section-map-container-bang { box-shadow: 0 0 35px var(--glow-bang) ; }
+.left-section-map-active > .left-section-map-container-tb { box-shadow: 0 0 35px var(--glow-tb); }
+/* Panel Colour QF / SF */
+.left-section-map-active > .left-section-map-container-rgb { box-shadow: 0 0 35px var(--glow-rgb); }
+.left-section-map-active > .left-section-map-container-wum { box-shadow: 0 0 35px var(--glow-wum) ; }
+.left-section-map-active > .left-section-map-container-plyr { box-shadow: 0 0 35px var(--glow-plyr); }
+.left-section-map-active > .left-section-map-container-esc { box-shadow: 0 0 35px var(--glow-esc); }
+.left-section-map-active > .left-section-map-container-elwn { box-shadow: 0 0 35px var(--glow-elwn) ; }
+.left-section-map-active > .left-section-map-container-rev { box-shadow: 0 0 35px var(--glow-rev) ; }
 .left-section-map-active > .left-section-map-container-tb { box-shadow: 0 0 35px var(--glow-tb); }
 .left-section-map-container {
     position: relative;
@@ -162,12 +209,20 @@
 .left-section-map-container-sea { background-color: var(--panel-sea); }
 .left-section-map-container-leng { background-color: var(--panel-leng); }
 .left-section-map-container-date { background-color: var(--panel-date); }
-/* RO32 */
+/* RO32 / RO16*/
 .left-section-map-container-tcom { background-color: var(--panel-tcom); }
 .left-section-map-container-rps { background-color: var(--panel-rps); }
 .left-section-map-container-abc { background-color: var(--panel-abc); }
 .left-section-map-container-vvd { background-color: var(--panel-vvd); }
 .left-section-map-container-bang { background-color: var(--panel-bang); }
+.left-section-map-container-tb { background-color: var(--panel-tb); }
+/* QF / SF */
+.left-section-map-container-rgb { background-color: var(--panel-rgb); }
+.left-section-map-container-wum { background-color: var(--panel-wum); }
+.left-section-map-container-plyr { background-color: var(--panel-plyr); }
+.left-section-map-container-esc { background-color: var(--panel-esc); }
+.left-section-map-container-elwn { background-color: var(--panel-elwn); }
+.left-section-map-container-rev { background-color: var(--panel-rev); }
 .left-section-map-container-tb { background-color: var(--panel-tb); }
 /* Map Mod Image */
 .left-section-map-mod-image {

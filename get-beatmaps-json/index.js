@@ -23,17 +23,18 @@ async function getBeatmaps() {
             const beatmap = beatmaps[i]
 
             let modNumber = 0
-            if (beatmap.mod === "HR") modNumber = 16
-            else if (beatmap.mod === "DT") modNumber = 64
-            else if (beatmap.mod === "HD") modNumber = 8
-            else if (beatmap.mod === "EZ") modNumber = 2
+            if (beatmap.mod.includes("HR")) modNumber += 16
+            if (beatmap.mod.includes("DT")) modNumber += 64
+            if (beatmap.mod.includes("HD")) modNumber += 8
+            if (beatmap.mod.includes("EZ")) modNumber += 2
+            if (beatmap.mod.includes("HT")) modNumber += 256
 
             const apiUrl = `https://api.codetabs.com/v1/proxy?quest=` + encodeURIComponent(
                 `https://osu.ppy.sh/api/get_beatmaps?k=${osuApi}&b=${beatmap.beatmap_id}&mods=${modNumber}`
             )
 
             const apiResponse = await fetch(apiUrl)
-            await delay(1000) // throttle
+            await delay(1000)
             const apiJson = await apiResponse.json()
 
             if (!apiJson[0]) {
@@ -46,6 +47,9 @@ async function getBeatmaps() {
                 mod: beatmap.mod,
                 order: i
             }
+
+            if (beatmap.score_method) enrichedBeatmap["score_method"] = beatmap.score_method
+            if (beatmap.score_method_2) enrichedBeatmap["score_method_2"] = beatmap.score_method_2
 
             structuredBeatmaps[categoryName].push(enrichedBeatmap)
         }

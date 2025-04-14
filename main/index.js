@@ -176,6 +176,14 @@ socket.onmessage = event => {
                 span2.classList.add("now-playing-bottom-row-fm")
                 span2.innerText = "FM"
                 nowPlayingBottomRowModEl.append(span1, span2)
+            } else if (mappoolMap.mod === "DTHR") {
+                const span1 = document.createElement("span")
+                span1.classList.add("now-playing-bottom-row-dt")
+                span1.innerText = "DT"
+                const span2 = document.createElement("span")
+                span2.classList.add("now-playing-bottom-row-hr")
+                span2.innerText = "HR"
+                nowPlayingBottomRowModEl.append(span1, span2)
             } else {
                 const modSpan = document.createElement("span")
                 modSpan.classList.add(`now-playing-bottom-row-${mappoolMap.mod.toLowerCase()}`)
@@ -187,6 +195,7 @@ socket.onmessage = event => {
             let currentCs = Math.round(Number(mappoolMap.diff_size) * 10) / 10
             let currentAr = Math.round(Number(mappoolMap.diff_approach) * 10) / 10
             let currentOd = Math.round(Number(mappoolMap.diff_overall) * 10) / 10
+
             nowPlayingStatsSrNumberEl.innerText = currentSr
             switch (mappoolMap.mod) {
                 case "HR":
@@ -244,8 +253,8 @@ socket.onmessage = event => {
             chatDisplayEl.style.opacity = 0
         } else {
             scoreSectionEl.style.opacity = 0
-            nowPlayingSectionEl.style.opacity = 1
-            nowPlayingPickerTriangleEl.style.opacity = 1
+            nowPlayingSectionEl.style.opacity = 0
+            nowPlayingPickerTriangleEl.style.opacity = 0
             chatDisplayEl.style.opacity = 1
         }
     }
@@ -262,10 +271,15 @@ socket.onmessage = event => {
         for (let i = 0; i < data.tourney.ipcClients.length; i++) {
             let currentScore = 0
             let currentScoreSecondary = 0
-            // Check if map is RX
-            if (mappoolMap && mappoolMap.mod.includes("RX")) {
+            // Check match results
+            if (mappoolMap && mappoolMap.mod.score_method === "miss") {
                 currentScore = data.tourney.ipcClients[i].gameplay.hits["0"]
-                currentScoreSecondary = data.tourney.ipcClients[i].gameplay.accuracy
+
+                if (mappoolMap.mod.score_method_2 === "acc") {
+                    currentScoreSecondary = data.tourney.ipcClients[i].gameplay.accuracy
+                } else if (mappoolMap.mod.score_method_2 === "scoreV2") {
+                    currentScoreSecondary = data.tourney.ipcClients[i].gameplay.score
+                }
             } else {
                 currentScore = data.tourney.ipcClients[i].gameplay.score
             }
@@ -281,11 +295,13 @@ socket.onmessage = event => {
             }
         }
 
-        redTeamScoreSecondary /= noOfRedPlayers
-        blueTeamScoreSecondary /= noOfBluePlayers
+        if (mappoolMap.mod.score_method === "miss" && mappoolMap.mod.score_method_2 === "acc") {
+            redTeamScoreSecondary /= noOfRedPlayers
+            blueTeamScoreSecondary /= noOfBluePlayers
+        }
 
         // Display scores
-        if (mappoolMap && mappoolMap.mod.includes("RX")) {
+        if (mappoolMap && mappoolMap.score_method === "miss") {
             // Select elements to show
             leftScoreNumberEl.style.opacity = 0
             rightScoreNumberEl.style.opacity = 0
@@ -516,6 +532,7 @@ function getMatches() {
 async function getAndAppendMatchHistory() {
     // Get MP Link
     if (previousMPLink !== currentMPLink) resetMatchHistory()
+        previousMPLink = currentMPLink
         
     const response = await fetch(`https://osu.ppy.sh/api/get_match?k=${osuApi}&mp=${currentMPLink}`)
     const responseJson = await response.json()
@@ -537,28 +554,42 @@ async function getAndAppendMatchHistory() {
 
             for (let i = 0; i < currentGame.scores.length; i++) {
                 // Relax
-                if (currentMap.mod.includes("RX")) {
+                if (currentMap.score_method === "miss") {
                     let currentTeamScore = Number(currentGame.scores[i].countmiss)
 
-                    let totalNotes = Number(currentGame.scores[i].countmiss) + Number(currentGame.scores[i].count50) + 
-                                    Number(currentGame.scores[i].count100) + Number(currentGame.scores[i].count300) +
-                                    Number(currentGame.scores[i].countgeki) + Number(currentGame.scores[i].countkatu)
+                    if (currentMap.score_method_2 === "acc") {
+                        let totalNotes = Number(currentGame.scores[i].countmiss) + Number(currentGame.scores[i].count50) + 
+                        Number(currentGame.scores[i].count100) + Number(currentGame.scores[i].count300) +
+                        Number(currentGame.scores[i].countgeki) + Number(currentGame.scores[i].countkatu)
 
-                    let accuracy = (Number(currentGame.scores[i].countmiss) * 0 + Number(currentGame.scores[i].count50) * 1 / 6 +
-                                    Number(currentGame.scores[i].count100) * 1 / 3 + Number(currentGame.scores[i].count300) +
-                                    Number(currentGame.scores[i].countgeki) + Number(currentGame.scores[i].countkatu) * 1 / 3) / totalNotes
+                        let accuracy = (Number(currentGame.scores[i].countmiss) * 0 + Number(currentGame.scores[i].count50) * 1 / 6 +
+                                        Number(currentGame.scores[i].count100) * 1 / 3 + Number(currentGame.scores[i].count300) +
+                                        Number(currentGame.scores[i].countgeki) + Number(currentGame.scores[i].countkatu) * 1 / 3) / totalNotes
 
-                    if (totalNotes === 0) accuracy = 0
+                        if (totalNotes === 0) accuracy = 0
 
-                    if (currentGame.scores[i].team === "2") {
-                        redTeamScore += currentTeamScore
-                        redTeamScoreSecondary += accuracy
-                        noOfRedPlayers++
-                    } else {
-                        blueTeamScore += currentTeamScore
-                        blueTeamScoreSecondary += accuracy
-                        noOfBluePlayers++
+                        if (currentGame.scores[i].team === "2") {
+                            redTeamScore += currentTeamScore
+                            redTeamScoreSecondary += accuracy
+                            noOfRedPlayers++
+                        } else {
+                            blueTeamScore += currentTeamScore
+                            blueTeamScoreSecondary += accuracy
+                            noOfBluePlayers++
+                        }
+                    } else if (currentMap.score_method_2 === "scoreV2") {
+                        let currentScore = Number(currentGame.scores[i].score)
+                        if (currentGame.scores[i].team === "2") {
+                            redTeamScore += currentTeamScore
+                            redTeamScoreSecondary += currentScore
+                            noOfRedPlayers++
+                        } else {
+                            blueTeamScore += currentTeamScore
+                            blueTeamScoreSecondary += currentScore
+                            noOfBluePlayers++
+                        }
                     }
+
                 // No Relax
                 } else {
                     let currentTeamScore = Number(currentGame.scores[i].score)
@@ -570,7 +601,7 @@ async function getAndAppendMatchHistory() {
                 }
             }
 
-            if (currentMap.mod.includes("RX")) {
+            if (currentMap.score_method === "miss" && currentMap.score_method_2 === "acc") {
                 redTeamScoreSecondary /= noOfRedPlayers
                 blueTeamScoreSecondary /= noOfBluePlayers
                 redTeamScoreSecondary *= 100
@@ -584,7 +615,7 @@ async function getAndAppendMatchHistory() {
 
             // Set winner
             let winner
-            if (currentMap.mod.includes("RX")) {
+            if (currentMap.score_method === "miss") {
                 winCons.push("RX")
                 if (redTeamScore < blueTeamScore) winner = "red"
                 else if (redTeamScore > blueTeamScore) winner = "blue"
@@ -634,9 +665,12 @@ async function getAndAppendMatchHistory() {
             let matchHistoryScoreRed = document.createElement("span")
             let matchHistoryScoreBlue = document.createElement("span")
             // Check category on how to display score
-            if (currentMap.mod.includes("RX")) {
+            if (currentMap.score_method === "miss" && currentMap.score_method_2 === "acc") {
                 matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x (${redTeamScoreSecondary.toFixed(2)}%)`
                 matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}x (${blueTeamScoreSecondary.toFixed(2)}%)`
+            } else if (currentMap.score_method === "miss" && currentMap.score_method_2 === "acc") {
+                matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x (${redTeamScoreSecondary})`
+                matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}x (${blueTeamScoreSecondary})`
             } else {
                 matchHistoryScoreRed.innerText = redTeamScore.toLocaleString()
                 matchHistoryScoreBlue.innerText = blueTeamScore.toLocaleString()
@@ -660,6 +694,8 @@ async function getAndAppendMatchHistory() {
             document.cookie = `secondaryWinConRed=${secondaryWinConRed.join(",")} ;path=/`
             document.cookie = `secondaryWinConBlue=${secondaryWinConBlue.join(",")} ;path=/`
             document.cookie = `winCons=${winCons.join(",")} ;path=/`
+
+            console.log(numberOfMapsCounted)
         }
     }
 }

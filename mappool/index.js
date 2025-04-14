@@ -481,7 +481,7 @@ socket.onmessage = event => {
                 else if (redTeamScoreSecondary < blueTeamScoreSecondary) currentWinner = "blue"
             } else {
                 if (redTeamScore > blueTeamScore) currentWinner = "red"
-                else if (blueTeamScore < redTeamScore) currentWinner = "blue"
+                else if (redTeamScore < blueTeamScore) currentWinner = "blue"
             }
 
             // Update star count
