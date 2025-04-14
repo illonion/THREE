@@ -6,9 +6,6 @@ async function getApi() {
     osuApi = responseJson.api
 }
 
-const allBeatmapsJson = []
-let fullJson = []
-
 async function getBeatmaps() {
     const response = await fetch("../_data/beatmaps-base.json")
     const responseJson = await response.json()
@@ -22,7 +19,7 @@ async function getBeatmaps() {
         for (let i = 0; i < beatmaps.length; i++) {
             const beatmap = beatmaps[i]
 
-            let modNumber = 0
+            let modNumber = 0;
             if (beatmap.mod.includes("HR")) modNumber += 16
             if (beatmap.mod.includes("DT")) modNumber += 64
             if (beatmap.mod.includes("HD")) modNumber += 8
@@ -53,12 +50,12 @@ async function getBeatmaps() {
 
             structuredBeatmaps[categoryName].push(enrichedBeatmap)
         }
-        allBeatmapsJson.push(structuredBeatmaps)
     }
 
+    // Create the final JSON object directly from structuredBeatmaps
     const fullJson = {
         roundName: roundName,
-        beatmaps: allBeatmapsJson
+        beatmaps: structuredBeatmaps
     }
 
     const jsonString = JSON.stringify(fullJson, null, 4)
@@ -73,4 +70,5 @@ async function initialise() {
     await getApi()
     await getBeatmaps()
 }
+
 initialise()
