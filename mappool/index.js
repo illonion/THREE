@@ -452,9 +452,9 @@ socket.onmessage = event => {
                 } else if (mappoolMap.score_method_2 === "scoreV2") {
                     currentScoreSecondary = data.tourney.ipcClients[i].gameplay.score
                 }
-            } else {
-                currentScore = data.tourney.ipcClients[i].gameplay.score
-            }
+            } else if (mappoolMap && mappoolMap.score_method === "acc") {
+                currentScore = data.tourney.ipcClients[i].gameplay.accuracy
+            } else currentScore = data.tourney.ipcClients[i].gameplay.score
             
             if (data.tourney.ipcClients[i].team === "left") {
                 redTeamScore += currentScore

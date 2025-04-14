@@ -218,6 +218,9 @@ setInterval(() => {
             } else if (currentWinConsStringsArray[i] === "miss" && currentWinCons2StringsArray[i] === "scoreV2") {
                 matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x (${redTeamScoreSecondary}%)`
                 matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}x (${blueTeamScoreSecondary}%)`
+            } else if (currentWinConStringsArray[i] === "acc") {
+                matchHistoryScoreRed.innerText = `${redTeamScore.toFixed(2)}%`
+                matchHistoryScoreBlue.innerText = `${blueTeamScore.toFixed(2)}%`
             } else {
                 matchHistoryScoreRed.innerText = redTeamScore.toLocaleString()
                 matchHistoryScoreBlue.innerText = blueTeamScore.toLocaleString()
