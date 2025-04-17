@@ -216,12 +216,12 @@ setInterval(() => {
                 matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x (${redTeamScoreSecondary.toFixed(2)}%)`
                 matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}x (${blueTeamScoreSecondary.toFixed(2)}%)`
             } else if (currentWinConsStringsArray[i] === "miss" && currentWinCons2StringsArray[i] === "scoreV2") {
-                matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x (${redTeamScoreSecondary}%)`
-                matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}x (${blueTeamScoreSecondary}%)`
-            } else if (currentWinConStringsArray[i] === "acc") {
+                matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x (${redTeamScoreSecondary.toLocaleString()})`
+                matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}x (${blueTeamScoreSecondary.toLocaleString()})`
+            } else if (currentWinConsStringsArray[i] === "acc") {
                 matchHistoryScoreRed.innerText = `${redTeamScore.toFixed(2)}%`
                 matchHistoryScoreBlue.innerText = `${blueTeamScore.toFixed(2)}%`
-            } else if (currentWinConStringsArray[i] === "combo") {
+            } else if (currentWinConsStringsArray[i] === "combo") {
                 matchHistoryScoreRed.innerText = `${redTeamScore}x`
                 matchHistoryScoreBlue.innerText = `${blueTeamScore}x`
             } else {
@@ -253,7 +253,6 @@ let mapId, mapMd5
 const socket = createTosuWsSocket()
 socket.onmessage = event => {
     const data = JSON.parse(event.data)
-    console.log(data)
     
     // Map metadata
     if (mapId !== data.menu.bm.id || mapMd5 !== data.menu.bm.md5) {

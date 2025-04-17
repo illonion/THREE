@@ -662,8 +662,6 @@ async function getAndAppendMatchHistory() {
         const currentMap = findBeatmapById(currentGame.beatmap_id)
         const currentCategory = getCategoryByBeatmapId(currentGame.beatmap_id)
 
-        console.log(currentGame)
-
         if (currentMap && currentCategory !== "TB") {
             let redTeamScore = 0
             let blueTeamScore = 0
@@ -776,6 +774,7 @@ async function getAndAppendMatchHistory() {
                 else if (redTeamScoreSecondary < blueTeamScoreSecondary) winner = "blue"
             } else {
                 if (currentMap.score_method) winCons.push(currentMap.score_method)
+                else winCons.push("none")
                 winCons2.push("none")
                 if (redTeamScore > blueTeamScore) winner = "red"
                 else if (redTeamScore < blueTeamScore) winner = "blue"
@@ -823,11 +822,11 @@ async function getAndAppendMatchHistory() {
                 matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x (${redTeamScoreSecondary.toFixed(2)}%)`
                 matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}x (${blueTeamScoreSecondary.toFixed(2)}%)`
             } else if (currentMap.score_method && currentMap.score_method === "miss" && currentMap.score_method_2 && currentMap.score_method_2 === "scoreV2") {
-                matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x (${redTeamScoreSecondary})`
-                matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}x (${blueTeamScoreSecondary})`
+                matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x (${redTeamScoreSecondary.toLocaleString()})`
+                matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}x (${blueTeamScoreSecondary.toLocaleString()})`
             } else if (currentMap.score_method && currentMap.score_method === "combo") {
                 matchHistoryScoreRed.innerText = `${redTeamScore.toLocaleString()}x`
-                matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}`
+                matchHistoryScoreBlue.innerText = `${blueTeamScore.toLocaleString()}x`
             } else {
                 matchHistoryScoreRed.innerText = redTeamScore.toLocaleString()
                 matchHistoryScoreBlue.innerText = blueTeamScore.toLocaleString()
@@ -851,9 +850,7 @@ async function getAndAppendMatchHistory() {
             document.cookie = `secondaryWinConRed=${secondaryWinConRed.join(",")} ;path=/`
             document.cookie = `secondaryWinConBlue=${secondaryWinConBlue.join(",")} ;path=/`
             document.cookie = `winCons=${winCons.join(",")} ;path=/`
-            document.cookie = `winCons2=${winCons2.join(",")} ;path/`
-
-            console.log(numberOfMapsCounted)
+            document.cookie = `winCons2=${winCons2.join(",")} ;path=/`
         }
     }
 }

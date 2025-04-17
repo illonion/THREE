@@ -1,0 +1,148 @@
+:root {
+    /* RO32 Match History Text Colour */
+    --color-tcom: #e05d5c;
+    --color-rps: #e09a5c;
+    --color-abc: #e0db5c;
+    --color-vvd: #52bf57;
+    --color-bang: #5c9ae0;
+    --color-tb: #8e5ce0;
+    /* RO32 Match History Text Glow */
+    --glow-tcom: #ff9595;
+    --glow-rps: #ffbd95;
+    --glow-abc: #feff95;
+    --glow-vvd: #5ff783;
+    --glow-bang: #95abff;
+    --glow-tb: #c295ff;
+
+    /* QF / SF */
+    /* Background */
+    --color-rgb: #e05d5c;
+    --color-wum: #e09a5c;
+    --color-plyr: #e0db5c;
+    --color-esc: #52bf57;
+    --color-elwn: #5c9ae0;
+    --color-rev: #5c9ae0;
+    --color-tb: #8e5ce0;
+    /* Glow */
+    --glow-rgb: #ff9595;
+    --glow-wum: #ffbd95;
+    --glow-plyr: #feff95;
+    --glow-esc: #5ff783;
+    --glow-elwn: #95abff;
+    --glow-rev: #95abff;
+    --glow-tb: #c295ff;    
+}
+
+/* Match History Section */
+.match-history-section {
+    position: absolute;
+    height: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+/* Match History Map */
+.match-history-map {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+.blue-match-history-map { flex-direction: row-reverse; }
+/* Picker Triangle */
+.picker-triangle {
+    width: 18px;
+    height: 21px;
+}
+.left-picker-triangle { clip-path: polygon(0% 0%, 100% 50%, 0% 100%); }
+.right-picker-triangle { clip-path: polygon(100% 0%, 0% 50%, 100% 100%); }
+.red-picker-triangle { background-color: #fe7e7e; }
+.blue-picker-triangle { background-color: #7ebafe; }
+.default-picker-triangle { background-color: #7efe93; }
+/* Match History Details */
+.match-history-details {
+    position: relative;
+    width: 400px;
+    height: 54px;
+    border: 1px solid #b5b5b5;
+    font-weight: 800;
+    font-family: "Zain";
+}
+/* Match History Category ID */
+.match-history-category-id {
+    position: absolute;
+    top: 0;
+    line-height: 60px;
+    font-size: 32px;
+}
+.red-match-history-category-id { left: var(--match-history-category-id-horizontal-dimension); }
+.blue-match-history-category-id { right: var(--match-history-category-id-horizontal-dimension); }
+/* RO32 / 16 */
+.match-history-category-tcom {
+    color: var(--color-tcom);
+    text-shadow: 0 0 29px var(--glow-tcom), 0 0 59px var(--glow-tcom);
+}
+.match-history-category-rps {
+    color: var(--color-rps);
+    text-shadow: 0 0 29px var(--glow-rps), 0 0 59px var(--glow-rps);
+}
+.match-history-category-abc {
+    color: var(--color-abc);
+    text-shadow: 0 0 29px var(--glow-abc), 0 0 59px var(--glow-abc);
+}
+.match-history-category-vvd {
+    color: var(--color-vvd);
+    text-shadow: 0 0 29px var(--glow-vvd), 0 0 59px var(--glow-vvd);
+}
+.match-history-category-bang {
+    color: var(--color-bang);
+    text-shadow: 0 0 29px var(--glow-bang), 0 0 59px var(--glow-bang);
+}
+.match-history-category-tb {
+    color: var(--color-tb);
+    text-shadow: 0 0 29px var(--glow-tb), 0 0 59px var(--glow-tb);
+}
+/* QF / SF */
+.match-history-category-rgb {
+    color: var(--color-rgb);
+    text-shadow: 0 0 29px var(--glow-rgb), 0 0 59px var(--glow-rgb);
+}
+.match-history-category-wum {
+    color: var(--color-wum);
+    text-shadow: 0 0 29px var(--glow-wum), 0 0 59px var(--glow-wum);
+}
+.match-history-category-plyr {
+    color: var(--color-plyr);
+    text-shadow: 0 0 29px var(--glow-plyr), 0 0 59px var(--glow-plyr);
+}
+.match-history-category-esc {
+    color: var(--color-esc);
+    text-shadow: 0 0 29px var(--glow-esc), 0 0 59px var(--glow-esc);
+}
+.match-history-category-elwn {
+    color: var(--color-elwn);
+    text-shadow: 0 0 29px var(--glow-elwn), 0 0 59px var(--glow-elwn);
+}
+.match-history-category-rev {
+    color: var(--color-rev);
+    text-shadow: 0 0 29px var(--glow-rev), 0 0 59px var(--glow-rev);
+}
+.match-history-category-tb {
+    color: var(--color-tb);
+    text-shadow: 0 0 29px var(--glow-tb), 0 0 59px var(--glow-tb);
+}
+/* Match History Score */
+.match-history-score {
+    position: absolute;
+    top: 0;
+    color: white;
+    font-size: 23px;
+    font-weight: 500;
+    line-height: 60px;
+}
+.red-match-history-score { right: var(--match-history-score-horizontal-dimension); }
+.blue-match-history-score { left: var(--match-history-score-horizontal-dimension); }
+/* Match History Score Winner */
+.match-history-score-winner { 
+    color: #f3ff70;
+    font-weight: 800
+}
