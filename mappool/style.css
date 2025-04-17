@@ -13,6 +13,15 @@
     --background-vvd: #1b5f33a0;
     --background-bang: #2d418da0;
     --background-tb: #4c2d8da0;
+    /* QF / SF */
+    /* Background */
+    --background-rgb: #8d2d2da0;
+    --background-wum: #8d4a2da0;
+    --background-plyr: #8d872da0;
+    --background-esc: #1b5f33a0;
+    --background-elvn: #2d7e8da0;
+    --background-rev: #2d418da0;
+    --background-tb: #4c2d8da0;
 }
 
 /* Mappool Section */

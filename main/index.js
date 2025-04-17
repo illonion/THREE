@@ -230,7 +230,7 @@ socket.onmessage = event => {
 
             // Category ID
             nowPlayingCategoryIdEl.style.display = "block"
-            nowPlayingCategoryIdEl.setAttribute("src", `../_shared/assets/mod-icons/${getCategoryByBeatmapId(mapId)}-${mappoolMap.order + 1}.png`)
+            nowPlayingCategoryIdEl.setAttribute("src", `../_shared/assets/mod-icons/${getCategoryByBeatmapId(mapId)}${mappoolMap.order + 1}.png`)
 
         } else {
             nowPlayingBottomRowPlusEl.style.display = "none"
