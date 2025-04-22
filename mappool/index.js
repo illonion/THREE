@@ -108,6 +108,14 @@ async function getBeatmaps() {
                 categoryMapModTextFM.classList.add(`category-map-mod-hr`)
                 categoryMapModTextFM.innerText = "HR"
                 categoryMapMod.append("+ ", categoryMapModTextDT, categoryMapModTextFM)
+            } else if (beatmaps[i].mod === "FLFM") {
+                const categoryMapModTextDT = document.createElement("span")
+                categoryMapModTextDT.classList.add(`category-map-mod-fl`)
+                categoryMapModTextDT.innerText = "FL"
+                const categoryMapModTextFM = document.createElement("span")
+                categoryMapModTextFM.classList.add(`category-map-mod-fm`)
+                categoryMapModTextFM.innerText = "FM"
+                categoryMapMod.append("+ ", categoryMapModTextDT, categoryMapModTextFM)
             } else {
                 const categoryMapModText = document.createElement("span")
                 categoryMapModText.classList.add(`category-map-mod-${beatmaps[i].mod.toLowerCase()}`)

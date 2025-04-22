@@ -65,7 +65,7 @@
     /* F / GF */
     /* Background */
     --background-tale: #e05d5c;
-    --background-hh: #e05d5c;
+    --background-hh: #e05c94;
     --background-wu: #e09a5c;
     --background-placeholder: #e0db5c;
     --background-pc: #52bf57;
@@ -74,7 +74,7 @@
     --background-tb: #8e5ce0;
     /* Glow */
     --glow-tale: #ff9595;
-    --glow-hh: #ffbd95;
+    --glow-hh: #ff95ec;
     --glow-wu: #ffbd95;
     --glow-placeholder: #feff95;
     --glow-pc: #5ff783;
@@ -83,13 +83,14 @@
     --glow-tb: #c295ff;
     /* Panel */
     --panel-tale: #8d2d2d;
-    --panel-hh: #8d2d2d;
+    --panel-hh: #8d2d6c;
     --panel-wu: #8d4a2d;
     --panel-placeholder: #8d872d;
     --panel-pc: #1b5f33;
     --panel-unr: #2d418d;
     --panel-four: #2d418d;
     --panel-tb: #4c2d8d;
+
     --right-section-gray: #9F9F9F;
 }
 
