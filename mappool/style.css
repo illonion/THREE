@@ -1,6 +1,6 @@
 :root {
-    --team-icon-horizontal-dimension: 174px;
-    --team-name-star-horizontal-dimension: 279px;
+    --team-icon-horizontal-dimension: 136px;
+    --team-name-star-horizontal-dimension: 243px;
     --dark-purple: #3F1161
 }
 
@@ -29,7 +29,7 @@
     position: absolute;
     top: 210px;
     width: inherit;
-    height: 900px;
+    height: 950px;
     display: flex;
     flex-direction: column;
 }
@@ -45,16 +45,17 @@
 .category-icon {
     position: absolute;
     top: 50%;
-    left: 160px;
+    left: 20px;
     transform: translateY(-50%);
     height: 100px;
 }
 /* Category Maps Container */
 .category-map-container {
     position: absolute;
-    right: 283px;
+    right: 136px;
+    width: 2288px;
     display: flex;
-    gap: 149px;
+    justify-content: space-between;
 }
 /* Category Map */
 .category-map {
@@ -136,7 +137,7 @@
 }
 
 /* Chat Display */
-.chat-display { height: 293px; }
+.chat-display { height: 243px; }
 
 /* Animation Card Wrapper */
 .animation-card-wrapper {

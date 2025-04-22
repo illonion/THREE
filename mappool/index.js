@@ -62,6 +62,7 @@ async function getBeatmaps() {
             categoryMap.addEventListener("mousedown", mapClickEvent)
             categoryMap.addEventListener("contextmenu", function(event) {event.preventDefault()})
             categoryMap.setAttribute("id", beatmaps[i].beatmap_id)
+            if (beatmaps.length === 3) categoryMap.style.width = "758px";
 
             // Create category detail container
             const categoryMapDetailContainer = document.createElement("div")
