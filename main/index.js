@@ -292,19 +292,25 @@ socket.onmessage = event => {
             let currentScore = 0
             let currentScoreSecondary = 0
             // Check match results
+
+            const playerGameplay = data.tourney.ipcClients[i].gameplay
             if (mappoolMap && mappoolMap.score_method && mappoolMap.score_method === "miss") {
-                currentScore = data.tourney.ipcClients[i].gameplay.hits["0"]
+                currentScore = playerGameplay.hits["0"]
 
                 if (mappoolMap.score_method_2 && mappoolMap.score_method_2 === "acc") {
-                    currentScoreSecondary = data.tourney.ipcClients[i].gameplay.accuracy
+                    currentScoreSecondary = playerGameplay.accuracy
                 } else if (mappoolMap.score_method_2 && mappoolMap.score_method_2 === "scoreV2") {
-                    currentScoreSecondary = data.tourney.ipcClients[i].gameplay.score
+                    currentScoreSecondary = playerGameplay.score
                 }
             } else if (mappoolMap && mappoolMap.score_method && mappoolMap.score_method === "acc") {
-                currentScore = data.tourney.ipcClients[i].gameplay.accuracy
+                currentScore = playerGameplay.accuracy
             } else if (mappoolMap && mappoolMap.score_method && mappoolMap.score_method === "combo") {
-                currentScore = data.tourney.ipcClients[i].gameplay.combo.max
-            } else currentScore = data.tourney.ipcClients[i].gameplay.score
+                currentScore = playerGameplay.combo.max
+            } else if (playerGameplay.mods.str.includes("EZ")) {
+                currentScore = Math.round(playerGameplay.score * 1.7)
+            } else {
+                currentScore = playerGameplay.score
+            }
             
             if (data.tourney.ipcClients[i].team === "left") {
                 redTeamScore += currentScore
@@ -457,7 +463,7 @@ socket.onmessage = event => {
 
             // Scorebar
             // 50 combo will be the difference
-            const comboDifference = Math.min(Math.abs(redTeamScore - blueTeamScore), 20)
+            const comboDifference = Math.min(Math.abs(redTeamScore - blueTeamScore), 50)
             if (redTeamScore < blueTeamScore) {
                 leftScoreBarEl.style.width = "0px"
                 rightScoreBarEl.style.width = `${comboDifference / 50 * 960}px`
@@ -665,7 +671,10 @@ async function getAndAppendMatchHistory() {
     for (numberOfMapsCounted; numberOfMapsCounted < responseJson.games.length; numberOfMapsCounted++) {
         const currentGame = responseJson.games[numberOfMapsCounted]
         const currentMap = findBeatmapById(currentGame.beatmap_id)
+
         const currentCategory = getCategoryByBeatmapId(currentGame.beatmap_id)
+
+        console.log(responseJson.games[numberOfMapsCounted])
 
         if (currentMap && currentCategory !== "TB") {
             let redTeamScore = 0
@@ -743,6 +752,8 @@ async function getAndAppendMatchHistory() {
                 } else {
                     // No special scoring method
                     let currentTeamScore = Number(currentGame.scores[i].score)
+
+                    if (getMods(Number(currentGame.scores[i].enabled_mods)).contains("EZ")) currentTeamScore *= 1.7
                     if (currentGame.scores[i].team === "2") {
                         redTeamScore += currentTeamScore
                     } else {
