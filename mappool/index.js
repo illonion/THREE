@@ -91,6 +91,22 @@ async function getBeatmaps() {
                 categoryMapModTextFM.classList.add(`category-map-mod-fm`)
                 categoryMapModTextFM.innerText = "FM"
                 categoryMapMod.append("+ ", categoryMapModTextDT, categoryMapModTextFM)
+            } else if (beatmaps[i].mod === "HTFM") {
+                const categoryMapModTextDT = document.createElement("span")
+                categoryMapModTextDT.classList.add(`category-map-mod-ht`)
+                categoryMapModTextDT.innerText = "HT"
+                const categoryMapModTextFM = document.createElement("span")
+                categoryMapModTextFM.classList.add(`category-map-mod-fm`)
+                categoryMapModTextFM.innerText = "FM"
+                categoryMapMod.append("+ ", categoryMapModTextDT, categoryMapModTextFM)
+            } else if (beatmaps[i].mod === "DTHR") {
+                const categoryMapModTextDT = document.createElement("span")
+                categoryMapModTextDT.classList.add(`category-map-mod-dt`)
+                categoryMapModTextDT.innerText = "DT"
+                const categoryMapModTextFM = document.createElement("span")
+                categoryMapModTextFM.classList.add(`category-map-mod-hr`)
+                categoryMapModTextFM.innerText = "HR"
+                categoryMapMod.append("+ ", categoryMapModTextDT, categoryMapModTextFM)
             } else {
                 const categoryMapModText = document.createElement("span")
                 categoryMapModText.classList.add(`category-map-mod-${beatmaps[i].mod.toLowerCase()}`)
@@ -302,7 +318,7 @@ async function mapClickEvent(event) {
     animationCardWrapperEl.style.display = "block"
     await delay(100)
     animationCardWrapperEl.style.opacity = 1
-    await delay(5000)
+    await delay(17500)
     animationCardWrapperEl.style.opacity = 0
     await delay(300)
     animationCardWrapperEl.style.display = "none"

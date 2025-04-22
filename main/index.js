@@ -206,19 +206,22 @@ socket.onmessage = event => {
                 nowPlayingBottomRowModEl.append(modSpan)
             }
 
+            console.log(data)
             let currentSr = Math.round(Number(mappoolMap.difficultyrating) * 100) / 100
             let currentCs = Math.round(Number(mappoolMap.diff_size) * 10) / 10
             let currentAr = Math.round(Number(mappoolMap.diff_approach) * 10) / 10
             let currentOd = Math.round(Number(mappoolMap.diff_overall) * 10) / 10
+            let currentBpm = Math.round(Number(mappoolMap.bpm) * 10) / 10
+            let currentLength = Math.round(Number(mappoolMap.total_length))
 
             nowPlayingStatsSrNumberEl.innerText = currentSr
             // Set mods
-            if (currentMappoolBeatmap.mod.includes("HR")) {
-                currentCs = Math.min(Math.round(Number(currentMappoolBeatmap.diff_size) * 1.3 * 10) / 10, 10)
-                currentAr = Math.min(Math.round(Number(currentMappoolBeatmap.diff_approach) * 1.4 * 10) / 10, 10)
-                currentOd = Math.min(Math.round(Number(currentMappoolBeatmap.diff_overall) * 1.4 * 10) / 10, 10)
+            if (mappoolMap.mod.includes("HR")) {
+                currentCs = Math.min(Math.round(Number(mappoolMap.diff_size) * 1.3 * 10) / 10, 10)
+                currentAr = Math.min(Math.round(Number(mappoolMap.diff_approach) * 1.4 * 10) / 10, 10)
+                currentOd = Math.min(Math.round(Number(mappoolMap.diff_overall) * 1.4 * 10) / 10, 10)
             }
-            if (currentMappoolBeatmap.mod.includes("DT")) {
+            if (mappoolMap.mod.includes("DT")) {
                 if (currentAr > 5) currentAr = Math.round((((1200 - (( 1200 - (currentAr - 5) * 150) * 2 / 3)) / 150) + 5) * 10) / 10
                 else currentAr = Math.round((1800 - ((1800 - currentAr * 120) * 2 / 3)) / 120 * 10) / 10
                 currentOd = Math.round((79.5 - (( 79.5 - 6 * currentOd) * 2 / 3)) / 6 * 10) / 10
@@ -401,18 +404,18 @@ socket.onmessage = event => {
 
             // Update leader element
             if (redTeamScore > blueTeamScore) {
-                leftScoreNumberEl.style.opacity = 1
-                rightScoreNumberEl.style.opacity = 0.62
+                leftScoreAccEl.style.opacity = 1
+                rightScoreAccEl.style.opacity = 0.62
             } else if (redTeamScore < blueTeamScore) {
-                leftScoreNumberEl.style.opacity = 0.62
-                rightScoreNumberEl.style.opacity = 1
+                leftScoreAccEl.style.opacity = 0.62
+                rightScoreAccEl.style.opacity = 1
             } else {
-                leftScoreNumberEl.style.opacity = 0.62
-                rightScoreNumberEl.style.opacity = 0.62
+                leftScoreAccEl.style.opacity = 0.62
+                rightScoreAccEl.style.opacity = 0.62
             }
 
             // Scorebar
-            const scoreDelta = Math.abs(redteamScore - blueTeamScore)
+            const scoreDelta = Math.abs(redTeamScore - blueTeamScore)
             if (redTeamScore > blueTeamScore) {
                 leftScoreBarEl.style.width = `${Math.min(Math.pow(scoreDelta / 20, 0.5) * 600, 960)}px`
                 rightScoreBarEl.style.width = "0px"
@@ -456,11 +459,11 @@ socket.onmessage = event => {
             // 50 combo will be the difference
             const comboDifference = Math.min(Math.abs(redTeamScore - blueTeamScore), 20)
             if (redTeamScore < blueTeamScore) {
-                leftScoreBarEl.style.width = `${comboDifference / 50 * 960}px`
-                rightScoreBarEl.style.width = "0px"
-            } else if (redTeamScore > blueTeamScore) {
                 leftScoreBarEl.style.width = "0px"
                 rightScoreBarEl.style.width = `${comboDifference / 50 * 960}px`
+            } else if (redTeamScore > blueTeamScore) {
+                leftScoreBarEl.style.width = `${comboDifference / 50 * 960}px`
+                rightScoreBarEl.style.width = "0px"
             } else {
                 leftScoreBarEl.style.width = "0px"
                 rightScoreBarEl.style.width = "0px"

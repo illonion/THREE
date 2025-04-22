@@ -15,13 +15,13 @@
     --background-tb: #4c2d8da0;
     /* QF / SF */
     /* Background */
-    --background-rgb: #8d2d2da0;
-    --background-wum: #8d4a2da0;
-    --background-plyr: #8d872da0;
-    --background-esc: #1b5f33a0;
-    --background-elvn: #2d7e8da0;
-    --background-rev: #2d418da0;
-    --background-tb: #4c2d8da0;
+    --background-rgb: #8d2d2d76;
+    --background-wum: #ff8f2c47;
+    --background-plyr: #b9d42051;
+    --background-esc: #2cff4f43;
+    --background-elvn: #2cffe641;
+    --background-rev: #2c99ff42;
+    --background-tb: #842cff3d;
 }
 
 /* Mappool Section */
@@ -112,6 +112,8 @@
 .category-map-mod-dt { color: var(--color-dt); }
 .category-map-mod-fm { color: var(--color-fm); }
 .category-map-mod-rx { color: var(--color-rx); }
+.category-map-mod-ht { color: var(--color-ht); }
+.category-map-mod-fl { color: var(--color-fl); }
 /* Category Map Picked By */
 .category-map-picked-by {
     position: absolute;
