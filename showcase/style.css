@@ -67,7 +67,7 @@
     --background-tale: #e05d5c;
     --background-hh: #e05c94;
     --background-wu: #e09a5c;
-    --background-placeholder: #e0db5c;
+    --background-mm: #e0db5c;
     --background-pc: #52bf57;
     --background-unr: #5c9ae0;
     --background-four: #5c9ae0;
@@ -76,7 +76,7 @@
     --glow-tale: #ff9595;
     --glow-hh: #ff95ec;
     --glow-wu: #ffbd95;
-    --glow-placeholder: #feff95;
+    --glow-mm: #feff95;
     --glow-pc: #5ff783;
     --glow-unr: #95abff;
     --glow-four: #95abff;
@@ -85,7 +85,7 @@
     --panel-tale: #8d2d2d;
     --panel-hh: #8d2d6c;
     --panel-wu: #8d4a2d;
-    --panel-placeholder: #8d872d;
+    --panel-mm: #8d872d;
     --panel-pc: #1b5f33;
     --panel-unr: #2d418d;
     --panel-four: #2d418d;
@@ -177,7 +177,7 @@
 #left-section-tale-background { background-color: var(--background-tale); }
 #left-section-hh-background { background-color: var(--background-hh); }
 #left-section-wu-background { background-color: var(--background-wu); }
-#left-section-placeholder-background { background-color: var(--background-placeholder); }
+#left-section-mm-background { background-color: var(--background-mm); }
 #left-section-pc-background { background-color: var(--background-pc); }
 #left-section-unr-background { background-color: var(--background-unr); }
 #left-section-four-background { background-color: var(--background-four); }
@@ -234,7 +234,7 @@
 .left-section-map-active > .left-section-map-container-tale { box-shadow: 0 0 35px var(--glow-tale); }
 .left-section-map-active > .left-section-map-container-hh { box-shadow: 0 0 35px var(--glow-hh) ; }
 .left-section-map-active > .left-section-map-container-wu { box-shadow: 0 0 35px var(--glow-wu) ; }
-.left-section-map-active > .left-section-map-container-placeholder { box-shadow: 0 0 35px var(--glow-placeholder); }
+.left-section-map-active > .left-section-map-container-mm { box-shadow: 0 0 35px var(--glow-mm); }
 .left-section-map-active > .left-section-map-container-pc { box-shadow: 0 0 35px var(--glow-pc); }
 .left-section-map-active > .left-section-map-container-unr { box-shadow: 0 0 35px var(--glow-unr) ; }
 .left-section-map-active > .left-section-map-container-four { box-shadow: 0 0 35px var(--glow-four) ; }
@@ -275,7 +275,7 @@
 .left-section-map-container-tale { background-color: var(--panel-tale); }
 .left-section-map-container-hh { background-color: var(--panel-hh); }
 .left-section-map-container-wu { background-color: var(--panel-wu); }
-.left-section-map-container-placeholder { background-color: var(--panel-placeholder); }
+.left-section-map-container-mm { background-color: var(--panel-mm); }
 .left-section-map-container-pc { background-color: var(--panel-pc); }
 .left-section-map-container-unr { background-color: var(--panel-unr); }
 .left-section-map-container-four { background-color: var(--panel-four); }
