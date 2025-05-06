@@ -235,7 +235,7 @@ socket.onmessage = event => {
 
             // Category ID
             nowPlayingCategoryIdEl.style.display = "block"
-            nowPlayingCategoryIdEl.setAttribute("src", `../_shared/assets/mod-icons/${getCategoryByBeatmapId(mapId)}${mappoolMap.order + 1}.png`)
+            nowPlayingCategoryIdEl.setAttribute("src", `../_shared/assets/mod-icons/${getCategoryByBeatmapId(mapId)}-${mappoolMap.order + 1}.png`)
 
         } else {
             nowPlayingBottomRowPlusEl.style.display = "none"
@@ -753,7 +753,7 @@ async function getAndAppendMatchHistory() {
                     // No special scoring method
                     let currentTeamScore = Number(currentGame.scores[i].score)
 
-                    if (getMods(Number(currentGame.scores[i].enabled_mods)).contains("EZ")) currentTeamScore *= 1.7
+                    if (getMods(Number(currentGame.scores[i].enabled_mods)).includes("EZ")) currentTeamScore *= 1.7
                     if (currentGame.scores[i].team === "2") {
                         redTeamScore += currentTeamScore
                     } else {
